@@ -2,7 +2,8 @@
 
  1. Save raw HTML from nhl.com
  2. Parse the goalie pull stats we need
- 3. Solve for the posterior probabilties at time t:
+ 3. Exploratory analysis
+ 4. Solve for the posterior probabilties at time t:
 ```
 P(goal for | goalie pulled)
 P(goal against | goalie pulled)
