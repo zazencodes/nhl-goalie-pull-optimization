@@ -19,6 +19,7 @@ The idea is to figure out the risk reward of pulling a goalie as a function of t
 
 ## Project Structure
 
+```
 ├── LICENSE
 ├── README.md
 ├── data
@@ -59,6 +60,6 @@ The idea is to figure out the risk reward of pulling a goalie as a function of t
 │   │
 │   └── visualization  <- Scripts to create exploratory and results oriented visualizations
 │       └── visualize.py
-
+```
 
 
