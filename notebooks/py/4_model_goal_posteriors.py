@@ -1,7 +1,7 @@
 
 # coding: utf-8
 
-# In[3]:
+# In[42]:
 
 
 # %load jupyter_default.py
@@ -46,7 +46,7 @@ from IPython.display import HTML
 HTML('<style>div.text_cell_render{font-size:130%;}</style>')
 
 
-# In[4]:
+# In[43]:
 
 
 get_ipython().run_line_magic('reload_ext', 'version_information')
@@ -122,7 +122,7 @@ df = clean_df(df)
 
 # #### Data loading
 
-# In[8]:
+# In[44]:
 
 
 def load_training_samples(df, cols, dtype='timedelta64[s]') -> np.ndarray:
@@ -143,20 +143,20 @@ def load_training_samples(df, cols, dtype='timedelta64[s]') -> np.ndarray:
 
 # Let's start by modeling the 5 on 6 goal times in 3rd period, where time is a continuous (or rather, discretized by second) and measured in minutes.
 
-# In[9]:
+# In[45]:
 
 
 features = ['goal_for_time', 'goal_against_time']
 training_samples = load_training_samples(df, features)
 
 
-# In[10]:
+# In[46]:
 
 
 training_samples[0].shape
 
 
-# In[11]:
+# In[47]:
 
 
 training_samples[0][:10]
@@ -166,7 +166,7 @@ training_samples[0][:10]
 
 # #### Modeling
 
-# In[12]:
+# In[48]:
 
 
 # with pm.Model() as model:
@@ -178,7 +178,33 @@ training_samples[0][:10]
 # THINK ABOUT IT
 
 
-# In[13]:
+# In[60]:
+
+
+from scipy.stats import poisson
+
+
+# In[61]:
+
+
+get_ipython().run_line_magic('pinfo', 'poisson')
+
+
+# ```
+# pmf(k, mu, loc=0)   
+#     Probability mass function.
+# ```
+
+# In[63]:
+
+
+x = np.arange(0, 20, 1)
+y = [poisson.pmf(_x, 1, 1)
+     for _x in x]
+plt.plot(x, y)
+
+
+# In[49]:
 
 
 def bayes_model(training_samples):
@@ -211,29 +237,49 @@ def bayes_model(training_samples):
 # model
 
 
-# In[14]:
+# In[50]:
 
 
 model, trace = bayes_model(training_samples)
 model
 
 
-# In[15]:
+# In[51]:
 
 
 N_burn = 10000
 burned_trace = trace[N_burn:]
 
 
-# In[16]:
+# In[52]:
+
+
+get_ipython().run_line_magic('pinfo', 'pm.plots.traceplot')
+
+
+# In[53]:
 
 
 pm.plots.traceplot(trace=trace, varnames=['p_goal_for', 'p_goal_against'])
+
+
+# What do red and blue represent? 
+
+# In[60]:
+
+
 pm.plots.plot_posterior(trace=trace['p_goal_for'])
 pm.plots.plot_posterior(trace=trace['p_goal_against'])
 
 
-# In[17]:
+# The HDR is really interesting! For the above case (normally distributed data), the HDR is pretty much equivalent to the SD based confience interval. However it generalizes to more complicated distributions 
+# 
+# https://stats.stackexchange.com/questions/148439/what-is-a-highest-density-region-hdr
+# e.g. 
+# 
+# ![](https://i.stack.imgur.com/Dy89t.png)
+
+# In[62]:
 
 
 ALPHA = 0.6
@@ -250,7 +296,7 @@ plt.xlabel('$\mu$ (seconds)')
 plt.legend();
 
 
-# In[18]:
+# In[63]:
 
 
 plt.plot(trace['mu_goal_for'], label='mu_goal_for')
@@ -263,7 +309,9 @@ plt.axvline(N_burn, color='black', lw=2, label='Burn threshold')
 plt.legend();
 
 
-# In[19]:
+# Include both those plots in blog ^
+
+# In[64]:
 
 
 from scipy.special import factorial
@@ -271,31 +319,31 @@ poisson = lambda mu, k: mu**k * np.exp(-mu) / factorial(k)
 poisson(0.5, np.array([1, 4, 5, 2]))
 
 
-# In[20]:
+# In[65]:
 
 
 from scipy.stats import poisson
 
 
-# In[21]:
+# In[66]:
 
 
 get_ipython().run_line_magic('pinfo', 'poisson.pmf')
 
 
-# In[22]:
+# In[67]:
 
 
 poisson.pmf(3, 1)
 
 
-# In[23]:
+# In[68]:
 
 
 poisson.pmf(np.array([1, 4, 3]), 1)
 
 
-# In[24]:
+# In[69]:
 
 
 p = poisson.pmf
@@ -313,7 +361,7 @@ plt.plot(x, y_goal_for, label=r'$P(\rm{goal\;for};\mu_{avg})$', color='green')
 plt.plot(x, y_goal_against, label=r'$P(\rm{goal\;against};\mu_{avg})$', color='red')
 
 
-# In[25]:
+# In[70]:
 
 
 p = poisson.pmf
@@ -331,7 +379,7 @@ plt.plot(x, y_goal_for, label=r'$P(\rm{goal\;for};\mu_{avg})$', color='green')
 plt.plot(x, y_goal_against, label=r'$P(\rm{goal\;against};\mu_{avg})$', color='red')
 
 
-# In[26]:
+# In[72]:
 
 
 ALPHA = 0.6
@@ -368,7 +416,7 @@ y_goal_against = p(x, mu_goal_against)
 
 # Convert into minutes and rescale to fit chart
 x = x / 60
-scale_frac = 0.8
+scale_frac = 0.7
 y_goal_for = y_goal_for / y_goal_for.max() * scale_frac
 y_goal_against = y_goal_against / y_goal_against.max() * scale_frac
 
@@ -381,6 +429,8 @@ plt.xlabel('Game clock (3rd period)')
 plt.legend();
 
 
+# (Do not include this plot ^ in blog, but re-use source code)
+
 # In reality, the probability of an empty net goal should be zero after 20 minutes (since the period is over). We would also need to normalize the probabilities such that   
 # 
 # $
@@ -389,28 +439,18 @@ plt.legend();
 # 
 # Since this was just a toy model to get us warmed up with `pymc`, let's just leave this and move on to a more interesting problem.
 
-# In[60]:
+# ---
 
+# I wonder if we can answer the question: what are the odds of scoring a goal based on when the goalie is pulled?
+# 
+# It's probably best to decide that based on the "time since goalie pull" metric and the time remaining in the game. For the chart above, the goal for probability is clearly shifted to the left - however this does not mean that pulling a goalie at the 19 minute mark will have lower odds of a good outcome than pulling at the 18 minute mark. This chart is just a litlihood of scoring given the goalie pull times.
+# 
+# What we should do is label the goalie pull times with the eventual outcome, then model that.
 
-from scipy.stats import poisson
-
-
-# In[61]:
-
-
-get_ipython().run_line_magic('pinfo', 'poisson')
-
-
-# ```
-# pmf(k, mu, loc=0)   
-#     Probability mass function.
-# ```
-
-# In[63]:
-
-
-x = np.arange(0, 20, 1)
-y = [poisson.pmf(_x, 1, 1)
-     for _x in x]
-plt.plot(x, y)
-
+# ---
+# 
+# Let's focus on our original question
+# 
+# What is the **risk reward of pulling a goalie as a function of:**
+#  - ~~**t = Time remaining in the game.** For instance, if there's 3 minutes left, what is the chance that pulling the goalie will result in a goal for? What is the probability it will result in a goal against?~~
+#  - **t = Time since goalie pull.** For instance, after the goalie has been pulled for 1 minute, what is the chance of seeing a goal for or goal against?
