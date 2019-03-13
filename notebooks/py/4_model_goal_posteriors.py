@@ -567,8 +567,8 @@ savefig(plt, 'time_elapsed_poisson_cdf')
 plt.show()
 
 
-# The end of game values have been normalized sum up to one, but this ratio changes over time. We can visualize this with the risk-reward ratio.
-
+# The end of game values have been normalized sum up to one, but this ratio changes over time. We can visualize this with the risk-reward ratio (see below).
+# 
 # To better compare these probability distributions, we can normalize each bin to 1. The re-weighting factor for each time step 
 # 
 # $$
@@ -578,6 +578,82 @@ plt.show()
 # $$
 # 
 # This will allow us to re-weight the posteriors later, so we can compare them better and yield a different interpretation.
+
+# In[502]:
+
+
+alpha = np.power(
+    np.sum([y_goal_for, y_goal_against, y_no_goal], axis=0),
+    -1
+)
+
+
+# In[503]:
+
+
+plt.plot(x, alpha, label=r'$\alpha$', lw=LW)
+plt.ylabel('Alpha re-weighting parameter')
+# plt.yticks([])
+plt.xlabel('Time elapsed (3rd period)')
+plt.legend()
+
+# savefig(plt, 'time_elapsed_poisson_cdf')
+
+plt.show()
+
+
+# In[425]:
+
+
+from scipy.stats import poisson
+ALPHA = 0.6
+LW = 3 
+
+''' Plot the poisson distributions '''
+x, y_goal_for, y_goal_against, y_no_goal = poisson_posterior(
+    mu_mcmc, norm_factors=model_normalizing_factors
+)
+
+# Alpha has same shape as x, y above
+alpha = np.power(
+    np.sum([y_goal_for, y_goal_against, y_no_goal], axis=0),
+    -1
+)
+
+y_goal_for = alpha * y_goal_for
+y_goal_against = alpha * y_goal_against
+y_no_goal = alpha * y_no_goal
+plt.plot(x, y_goal_for, label=r'$\alpha \cdot P(\mathrm{goal\;for}\;|\;X)$', color='green', lw=LW)
+plt.plot(x, y_goal_against, label=r'$\alpha \cdot P(\mathrm{goal\;against}\;|\;X)$', color='red', lw=LW)
+plt.plot(x, y_no_goal, label=r'$\alpha \cdot P(\mathrm{no\;goal}\;|\;X)$', color='orange', lw=LW)
+
+plt.ylabel('Chance of outcome at time $t$')
+# plt.yticks([])
+plt.xlabel('Time elapsed (3rd period)')
+plt.legend()
+
+savefig(plt, 'time_elapsed_outcome_chance_timeseries')
+
+plt.show()
+
+
+# Note how there are very few samples to draw conclusions from for the low and high times.
+# 
+# e.g. less than 17
+
+# In[426]:
+
+
+np.sum(training_samples[0] < 17*60) + np.sum(training_samples[1] < 17*60) + np.sum(training_samples[2] < 17*60)
+
+
+# more than 17
+
+# In[427]:
+
+
+np.sum(training_samples[0] > 17*60) + np.sum(training_samples[1] > 17*60) + np.sum(training_samples[2] > 17*60)
+
 
 # Let's look at the chance of scoring a goal, compared to either outcome. We want to maximze this.
 
@@ -2359,7 +2435,7 @@ mu_mcmc = [
 ]
 
 
-# In[395]:
+# In[501]:
 
 
 x, y_goal_for, y_goal_against, y_no_goal = poisson_posterior(
@@ -2367,7 +2443,7 @@ x, y_goal_for, y_goal_against, y_no_goal = poisson_posterior(
 )
 
 
-# In[411]:
+# In[502]:
 
 
 alpha = np.power(
@@ -2376,10 +2452,10 @@ alpha = np.power(
 )
 
 
-# In[413]:
+# In[503]:
 
 
-plt.plot(x, alpha, label=r'\alpha', lw=LW)
+plt.plot(x, alpha, label=r'$\alpha$', lw=LW)
 plt.ylabel('Alpha re-weighting parameter')
 # plt.yticks([])
 plt.xlabel('Time elapsed (3rd period)')

@@ -1,14 +1,14 @@
-#!/usr/bin/env python
+
 # coding: utf-8
 
-# In[7]:
+# In[1]:
 
 
 from IPython.display import HTML
 HTML('<style>div.text_cell_render{font-size:130%;}</style>')
 
 
-# In[8]:
+# In[2]:
 
 
 get_ipython().run_line_magic('load_ext', 'version_information')
@@ -21,7 +21,7 @@ get_ipython().run_line_magic('version_information', 'pandas')
 
 # ## Explore Parsed Goalie Pull Data
 
-# In[9]:
+# In[3]:
 
 
 import pandas as pd
@@ -35,7 +35,7 @@ from tqdm import tqdm_notebook
 from colorama import Fore, Style
 
 
-# In[10]:
+# In[17]:
 
 
 get_ipython().run_line_magic('matplotlib', 'inline')
@@ -52,19 +52,19 @@ def savefig(plt, name):
     plt.savefig(f'../../figures/{name}.png', bbox_inches='tight', dpi=300)
 
 
-# In[11]:
+# In[5]:
 
 
 ls ../../data/processed/
 
 
-# In[12]:
+# In[6]:
 
 
 ls ../../data/processed/pkl
 
 
-# In[13]:
+# In[7]:
 
 
 def load_data():
@@ -91,138 +91,199 @@ def clean_df(df):
     return _df
 
 
-# In[14]:
+# In[8]:
 
 
 df = load_data()
 df = clean_df(df)
 
 
-# In[15]:
+# In[44]:
+
+
+# Label the outcomes
+df['label'] = ''
+label_masks = {
+    'goal_for': ~(df.goal_for_time.isnull()),
+    'goal_against': ~(df.goal_against_time.isnull()),
+    'no_goals': ~(df.game_end_timedelta.isnull()),   
+}
+for label, mask in label_masks.items():
+    df.loc[mask, 'label'] = label
+df.loc[df.label == '', 'label'] = float('nan')
+df.label.isnull().sum()
+
+
+# In[9]:
 
 
 df.head()
 
 
-# In[16]:
+# In[10]:
 
 
 df.tail()
 
 
-# In[12]:
+# In[11]:
 
 
 df.describe().T
 
 
-# In[13]:
+# In[12]:
 
 
 df.dtypes
 
 
-# In[14]:
+# In[13]:
 
 
 df.isnull().sum() / df.shape[0]
 
 
-# In[17]:
+# In[34]:
 
 
-plt.ylabel('Frequency')
+plt.ylabel('Data Frequency')
 plt.yticks([])
-df.date.hist(color='b', bins=100)
+df.date.hist(
+    color='b',
+    bins=100,
+    histtype='stepfilled')
 savefig(plt, 'date_distribution')
 
 
-# In[18]:
+# In[22]:
 
 
 df.columns
 
 
-# In[19]:
+# In[35]:
 
 
 col = ['pull_time']
-(df[col].astype('timedelta64[s]') / 60)    .plot.hist(bins=50, color='b')
-plt.xlabel(f'Game clock (3rd period)')
+(df[col].astype('timedelta64[s]') / 60)    .plot.hist(bins=50,
+               color='b',
+               histtype='stepfilled')
+plt.xlabel(f'Time elapsed (3rd period)')
 plt.yticks([])
 savefig(plt, 'goalie_pull_game_times_hist')
 
 
-# In[20]:
+# We're interested in knowing about the outcome, given the pull time. This way we can look at the odds of scoring as a function of game time elapsed.
+
+# In[75]:
+
+
+df.head()
+
+
+# In[81]:
+
+
+# ax = plt.subplot(111)
+# ax.set_prop_cycle(color=['red', 'green', 'orange'])
+
+df['pull_time_seconds'] = df['pull_time'].astype('timedelta64[s]') / 60
+
+iterables = zip(['orange', 'red', 'green'],
+                ['no_goals', 'goal_against', 'goal_for'])
+
+for c, label in iterables:
+    (df[df.label==label]['pull_time_seconds']
+         .plot.hist(bins=60,
+                    alpha=0.6,
+                    color=c,
+                    histtype='stepfilled',
+                    label=label))
+
+plt.xlabel(f'Time elapsed (3rd period)')
+plt.yticks([])
+plt.legend()
+
+savefig(plt, 'goalie_pull_outcomes_game_times_hist')
+del df['pull_time_seconds']
+
+
+# In[36]:
 
 
 cols = ['goal_for_time', 'goal_against_time']
 (df[cols].astype('timedelta64[s]') / 60)    .plot.hist(bins=50,
                alpha=0.5,
-               color=['green', 'red'])
-plt.xlabel('Game clock (3rd period)')
+               color=['green', 'red'],
+               histtype='stepfilled')
+plt.xlabel('Time elapsed (3rd period)')
 plt.yticks([])
 savefig(plt, '5_on_6_goals')
 
 
-# In[21]:
+# In[37]:
 
 
 cols = ['goal_for_time', 'goal_against_time']
 (df[cols].astype('timedelta64[s]') / 60)    .plot.hist(bins=50,
                alpha=0.5,
                density='normed',
-               color=['green', 'red'])
-plt.xlabel('Game clock (3rd period)')
+               color=['green', 'red'],
+               histtype='stepfilled')
+plt.xlabel('Time elapsed (3rd period)')
 plt.yticks([])
 savefig(plt, '5_on_6_goals_normed')
 
 
-# In[22]:
+# In[38]:
 
 
 print('Number of goals found:')
 (~df[['goal_for_time', 'goal_against_time']].isnull()).sum()
 
 
-# In[23]:
+# In[39]:
 
 
 print('Total goals found:')
 (~df[['goal_for_time', 'goal_against_time']].isnull()).sum().sum()
 
 
-# We want to model the time between goalie pull and goal (i.e. the timedelta).
+# We also want to model the time between goalie pull and goal (i.e. the timedelta).
 
-# In[24]:
+# In[27]:
 
 
 cols = ['game_end_timedelta', 'goal_against_timedelta', 'goal_for_timedelta', ]
 (df[cols].astype('timedelta64[s]') / 60)    .plot.hist(bins=50, alpha=0.5,
-               color=['blue', 'red','green'])
+               color=['blue', 'red','green'],
+               histtype='stepfilled')
 plt.xlabel('Time since goalie pull (mins)')
 plt.yticks([])
 savefig(plt, '5_on_6_goalie_pull_outcomes')
 
 
-# In[25]:
+# In[28]:
 
 
 cols = ['goal_against_timedelta', 'goal_for_timedelta', ]
 (df[cols].astype('timedelta64[s]') / 60)    .plot.hist(bins=50, alpha=0.5,
-               color=['red', 'green',])
+               color=['red', 'green',],
+               histtype='stepfilled')
 plt.xlabel('Time since goalie pull (mins)')
 plt.yticks([])
 savefig(plt, '5_on_6_goalie_pull_goal_timedeltas')
 
 
-# In[26]:
+# In[29]:
 
 
 cols = ['goal_against_timedelta', 'goal_for_timedelta', ]
 (df[cols].astype('timedelta64[s]') / 60)    .plot.hist(bins=50, alpha=0.5,
                density='normed',
-               color=['red', 'green',])
+               color=['red', 'green'],
+               histtype='stepfilled')
 plt.xlabel('Time since goalie pull (mins)')
 plt.yticks([])
 savefig(plt, '5_on_6_goalie_pull_goal_timedeltas_normed')
@@ -230,88 +291,28 @@ savefig(plt, '5_on_6_goalie_pull_goal_timedeltas_normed')
 
 # The mean/median number of seconds until a goal (after pulling the goalie)
 
-# In[27]:
+# In[30]:
 
 
 (df[cols].astype('timedelta64[s]')).mean()
 
 
-# In[28]:
+# In[31]:
 
 
 (df[cols].astype('timedelta64[s]')).median()
 
 
-# In[29]:
+# In[33]:
 
 
-(df['game_end_timedelta'].astype('timedelta64[s]') / 60).plot.hist(bins=50, color='b')
+(df['game_end_timedelta'].astype('timedelta64[s]') / 60).plot.hist(bins=50, color='b', histtype='stepfilled')
 plt.xlabel('Time since goalie pull (mins)')
 plt.yticks([])
 savefig(plt, '5_on_6_game_end_timedeltas')
 
 
-# In[ ]:
-
-
-
-
-
-# In[ ]:
-
-
-
-
-
-# In[ ]:
-
-
-
-
-
-# In[ ]:
-
-
-
-
-
 # ### Rough work
-
-# In[ ]:
-
-
-
-
-
-# In[ ]:
-
-
-
-
-
-# In[ ]:
-
-
-
-
-
-# In[ ]:
-
-
-
-
-
-# In[ ]:
-
-
-
-
-
-# In[ ]:
-
-
-
-
 
 # ### Bugs
 
@@ -382,9 +383,3 @@ mask.sum(), df.shape[0]
 
 
 # Obviously the game will end at 20:00, this column corresponds to the last row parsed.
-
-# In[ ]:
-
-
-
-
