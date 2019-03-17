@@ -1,7 +1,7 @@
 
 # coding: utf-8
 
-# In[27]:
+# In[19]:
 
 
 # %load jupyter_default.py
@@ -63,7 +63,7 @@ get_ipython().run_line_magic('version_information', 'pandas, numpy')
 #  - **t = Time elapsed** e.g. if there's 3 minutes left, what is the chance that pulling the goalie will result in a goal for?
 #  - **t = Time since goalie pull** e.g. after the goalie has been pulled for 1 minute, what is the chance of getting a goal?
 
-# In[2]:
+# In[3]:
 
 
 import pymc3 as pm
@@ -71,13 +71,13 @@ import pymc3 as pm
 
 # ### Load the training data
 
-# In[3]:
+# In[4]:
 
 
 ls ../../data/processed/pkl/
 
 
-# In[4]:
+# In[5]:
 
 
 def load_data():
@@ -103,14 +103,14 @@ def clean_df(df):
     return _df
 
 
-# In[5]:
+# In[6]:
 
 
 df = load_data()
 df = clean_df(df)
 
 
-# In[6]:
+# In[7]:
 
 
 def load_training_samples(
@@ -142,7 +142,7 @@ def load_training_samples(
 
 # ### Load data
 
-# In[231]:
+# In[7]:
 
 
 # Load time of pull for eventual outcomes:
@@ -158,7 +158,7 @@ masks = [
 training_samples = load_training_samples(df, features, masks)
 
 
-# In[232]:
+# In[8]:
 
 
 (training_samples[0][:10],
@@ -166,7 +166,7 @@ training_samples[1][:10],
 training_samples[2][:10],)
 
 
-# In[622]:
+# In[9]:
 
 
 feature_names
@@ -174,7 +174,7 @@ feature_names
 
 # ### PyMC3 Model
 
-# In[242]:
+# In[20]:
 
 
 def bayes_model(training_samples) -> pm.model.Model:
@@ -228,14 +228,14 @@ model, trace = bayes_model(training_samples)
 model
 
 
-# In[244]:
+# In[21]:
 
 
 N_burn = 10000
 burned_trace = trace[N_burn:]
 
 
-# In[70]:
+# In[22]:
 
 
 from typing import Tuple
@@ -272,7 +272,7 @@ def poisson_posterior(
 
 # ### MCMC Samples
 
-# In[360]:
+# In[23]:
 
 
 ALPHA = 0.6
@@ -280,17 +280,17 @@ LW = 3
 
 ''' Plot MCMC samples '''
 
-plt.hist(burned_trace['p_goal_for'] / 60, bins=50,
+plt.hist(burned_trace['p_goal_for']/60, bins=50,
          color='green', label='p_goal_for samples',
          density='normed',
          histtype='stepfilled', alpha=ALPHA)
 
-plt.hist(burned_trace['p_goal_against'] / 60, bins=50,
+plt.hist(burned_trace['p_goal_against']/60, bins=50,
          color='red', label='p_goal_against samples',
          density='normed',
          histtype='stepfilled', alpha=ALPHA)
 
-plt.hist(burned_trace['p_no_goal'] / 60, bins=50,
+plt.hist(burned_trace['p_no_goal']/60, bins=50,
          color='orange', label='p_no_goal samples',
          density='normed',
          histtype='stepfilled', alpha=ALPHA)
@@ -324,7 +324,7 @@ savefig(plt, 'time_elapsed_poisson_mcmc_samples')
 plt.show()
 
 
-# In[335]:
+# In[24]:
 
 
 plt.plot(trace['mu_goal_for']/60, label='mu_goal_for', color='green')
@@ -855,20 +855,20 @@ plt.show()
 # The work thus far has been to model the outcomes as a function of "time 
 # elapsed". Now we'll shift our attention to "time since goalie pull".
 
-# In[7]:
+# In[8]:
 
 
 import inspect
 print(inspect.getsource(load_training_samples))
 
 
-# In[19]:
+# In[9]:
 
 
 df.head()
 
 
-# In[20]:
+# In[10]:
 
 
 # Load time of pull for eventual outcomes:
@@ -876,7 +876,7 @@ feature_names = ['goal_for_timedelta', 'goal_against_timedelta', 'game_end_timed
 training_samples = load_training_samples(df=df, cols=feature_names)
 
 
-# In[21]:
+# In[11]:
 
 
 (training_samples[0][:10],
@@ -884,7 +884,7 @@ training_samples[1][:10],
 training_samples[2][:10],)
 
 
-# In[22]:
+# In[12]:
 
 
 feature_names
@@ -892,7 +892,7 @@ feature_names
 
 # ### PyMC3 Model
 
-# In[29]:
+# In[13]:
 
 
 def bayes_model(training_samples) -> pm.model.Model:
@@ -946,15 +946,17 @@ model, trace = bayes_model(training_samples)
 model
 
 
-# In[73]:
+# In[14]:
 
 
 N_burn = 10000
 burned_trace = trace[N_burn:]
 
 
-# In[91]:
+# In[16]:
 
+
+from typing import Tuple
 
 def poisson_posterior(
     mu=None,
@@ -964,7 +966,8 @@ def poisson_posterior(
     p = poisson.pmf
     x = np.arange(0, 5*60, 1)
     if mu is None:
-        return (x / 60,)
+#         return (x / 60,)
+        return (x,)
     
     mu_goal_for = mu[0]
     mu_goal_against = mu[1]
@@ -980,15 +983,17 @@ def poisson_posterior(
         y_no_goal = p(x, mu_no_goal) * norm_factors[2]
     
     # Convert into minutes
-    x = x / 60
+#     x = x / 60
 
     return x, y_goal_for, y_goal_against, y_no_goal
 
 
 # ### MCMC Samples
 
-# In[92]:
+# In[22]:
 
+
+from scipy.stats import poisson
 
 ALPHA = 0.6
 LW = 3
@@ -996,17 +1001,17 @@ BINS = 30
 
 ''' Plot MCMC samples '''
 
-plt.hist(burned_trace['p_goal_for'] / 60, bins=BINS,
+plt.hist(burned_trace['p_goal_for'], bins=BINS,
          color='green', label='p_goal_for samples',
          density='normed',
          histtype='stepfilled', alpha=ALPHA)
 
-plt.hist(burned_trace['p_goal_against'] / 60, bins=BINS,
+plt.hist(burned_trace['p_goal_against'], bins=BINS,
          color='red', label='p_goal_against samples',
          density='normed',
          histtype='stepfilled', alpha=ALPHA)
 
-plt.hist(burned_trace['p_no_goal'] / 60, bins=BINS,
+plt.hist(burned_trace['p_no_goal'], bins=BINS,
          color='orange', label='p_no_goal samples',
          density='normed',
          histtype='stepfilled', alpha=ALPHA)
@@ -1019,7 +1024,7 @@ x, y_goal_for, y_goal_against, y_no_goal = poisson_posterior([
 ])
 
 # Rescale
-scale_frac = 3
+scale_frac = 0.05
 y_goal_for = y_goal_for / y_goal_for.max() * scale_frac
 y_goal_against = y_goal_against / y_goal_against.max() * scale_frac
 y_no_goal = y_no_goal / y_no_goal.max() * scale_frac
@@ -1032,7 +1037,7 @@ plt.plot(x, y_no_goal, label=r'$P(\rm{no\;goal};\mu_{MCMC})$', color='orange', l
 
 plt.ylabel('Counts')
 # plt.yticks([])
-plt.xlabel('Time since pull (minutes)')
+plt.xlabel('Time since pull (seconds)')
 plt.legend()
 
 savefig(plt, 'time_since_poisson_mcmc_samples')
@@ -1040,13 +1045,13 @@ savefig(plt, 'time_since_poisson_mcmc_samples')
 plt.show()
 
 
-# In[93]:
+# In[23]:
 
 
-plt.plot(trace['mu_goal_for']/60, label='mu_goal_for', color='green')
-plt.plot(trace['mu_goal_against']/60, label='mu_goal_against', color='red')
-plt.plot(trace['mu_no_goal']/60, label='mu_no_goal', color='orange')
-plt.ylabel('$\mu$ (minutes)')
+plt.plot(trace['mu_goal_for'], label='mu_goal_for', color='green')
+plt.plot(trace['mu_goal_against'], label='mu_goal_against', color='red')
+plt.plot(trace['mu_no_goal'], label='mu_no_goal', color='orange')
+plt.ylabel('$\mu$ (seconds)')
 plt.xlabel('MCMC step')
 
 plt.axvline(N_burn, color='black', lw=2, label='Burn threshold')
@@ -1058,7 +1063,7 @@ savefig(plt, 'time_since_mu_steps')
 plt.show()
 
 
-# In[94]:
+# In[24]:
 
 
 ALPHA = 0.6
@@ -1076,7 +1081,7 @@ plt.hist(burned_trace['mu_no_goal']/60, bins=50,
          histtype='stepfilled', alpha=ALPHA)
 
 plt.ylabel('MCMC counts')
-plt.xlabel('$\mu$ (minutes)')
+plt.xlabel('$\mu$ (seconds)')
 plt.legend()
 
 savefig(plt, 'time_elapsed_mu_samples')
@@ -1087,7 +1092,7 @@ plt.show()
 
 # Now I need to normalize these. Let's confirm equal sample numbers
 
-# In[95]:
+# In[25]:
 
 
 (burned_trace['mu_goal_for'].shape,
@@ -1095,7 +1100,7 @@ burned_trace['mu_goal_against'].shape,
 burned_trace['mu_no_goal'].shape)
 
 
-# In[96]:
+# In[26]:
 
 
 len(burned_trace) * 4
@@ -1105,7 +1110,7 @@ len(burned_trace) * 4
 # 
 # Let's define the average shape parameter $\mu$ and then solve for the normalizing fractions.
 
-# In[97]:
+# In[27]:
 
 
 mu_mcmc = [
@@ -1117,7 +1122,7 @@ mu_mcmc = [
 print(f'MCMC values for mu: {mu_mcmc}')
 
 
-# In[98]:
+# In[28]:
 
 
 mcmc_normalizing_factors = np.array([
@@ -1130,7 +1135,7 @@ mcmc_normalizing_factors = mcmc_normalizing_factors / mcmc_normalizing_factors.s
 print(f'MCMC normalizing factors =\n{mcmc_normalizing_factors}')
 
 
-# In[99]:
+# In[29]:
 
 
 x, y_goal_for, y_goal_against, y_no_goal = poisson_posterior(mu_mcmc)
@@ -1147,7 +1152,7 @@ print(f'Poisson normalizing factors =\n{model_normalizing_factors}')
 
 # Here's what the properly weighted samlpes look like:
 
-# In[100]:
+# In[30]:
 
 
 ALPHA = 0.6
@@ -1157,14 +1162,14 @@ BINS = 30
 ''' Plot the MCMC samples '''
 
 plt.hist(np.random.choice(
-            burned_trace['p_goal_for'] / 60,
+            burned_trace['p_goal_for'],
             size=int(burned_trace['p_goal_for'].shape[0] * mcmc_normalizing_factors[0])
          ),
          bins=BINS, color='green', label='p_goal_for samples',
          histtype='stepfilled', alpha=ALPHA, zorder=3)
 
 plt.hist(np.random.choice(
-            burned_trace['p_goal_against'] / 60,
+            burned_trace['p_goal_against'],
             size=int(burned_trace['p_goal_against'].shape[0] * mcmc_normalizing_factors[1])
          ),
          bins=BINS,
@@ -1172,7 +1177,7 @@ plt.hist(np.random.choice(
          histtype='stepfilled', alpha=ALPHA, zorder=2)
 
 plt.hist(np.random.choice(
-            burned_trace['p_no_goal'] / 60,
+            burned_trace['p_no_goal'],
             size=int(burned_trace['p_no_goal'].shape[0] * mcmc_normalizing_factors[2])
          ),
          bins=BINS,
@@ -1181,7 +1186,7 @@ plt.hist(np.random.choice(
 
 plt.ylabel('Sampled frequency (normed)')
 plt.yticks([])
-plt.xlabel('minutes')
+plt.xlabel('seconds')
 plt.legend();
 
 savefig(plt, 'time_since_normed_poisson_mcmc_samples')
@@ -1193,14 +1198,14 @@ plt.show()
 # 
 # Re-normalize for cutoff Poisson distributions
 
-# In[101]:
+# In[31]:
 
 
 import inspect
 print(inspect.getsource(poisson_posterior))
 
 
-# In[102]:
+# In[32]:
 
 
 x, y_goal_for, y_goal_against, y_no_goal = poisson_posterior(
@@ -1208,7 +1213,7 @@ x, y_goal_for, y_goal_against, y_no_goal = poisson_posterior(
 )
 
 
-# In[103]:
+# In[34]:
 
 
 from scipy.stats import poisson
@@ -1225,8 +1230,9 @@ plt.plot(x, y_no_goal, label=r'$P(\mathrm{no\;goal}\;|\;X)$', color='orange', lw
 
 plt.ylabel('Posterior probability')
 # plt.yticks([])
-plt.xlabel('Time since pull (minutes)')
+plt.xlabel('Time since pull (seconds)')
 plt.legend()
+plt.xlim(0, 100)
 
 savefig(plt, 'time_since_normed_poisson')
 
@@ -1235,7 +1241,7 @@ plt.show()
 
 # ### Interpretation
 
-# In[104]:
+# In[35]:
 
 
 print('Time of max posterior probability =\n'
@@ -1243,8 +1249,8 @@ print('Time of max posterior probability =\n'
 
 
 # Notes:
-#  - Goals usually come less than a minute after pulling the goalie.
-#  - Games tend to end just over a minute after pulling the goalie. This roughly corresponds to the average time remaining on pull.
+#  - Goals usually come 30 seconds - 1 minutes after pulling the goalie.
+#  - Games tend to end 1 minute - 1 min 30 seconds after pulling the goalie. This roughly corresponds to the average time remaining on pull.
 #  
 # From now on we'll work from the distributions as our source of truth. These are hard coded below to help with reproducibility.
 
@@ -1268,7 +1274,7 @@ mu_mcmc = [
 # 
 # Calculating the CDF will allow us to make some interesting observations on the results.
 
-# In[106]:
+# In[36]:
 
 
 x, y_goal_for, y_goal_against, y_no_goal = poisson_posterior(
@@ -1281,11 +1287,12 @@ plt.plot(x, np.cumsum(y_no_goal), label=r'$cumsum [ P(\mathrm{no\;goal}\;|\;X) ]
 
 plt.ylabel('Posterior CDF')
 # plt.yticks([])
-plt.xlabel('Time since pull (minutes)')
+plt.xlabel('Time since pull (seconds)')
 plt.legend()
 
 ax = plt.gca()
 ax.yaxis.tick_right()
+plt.xlim(0, 100)
 
 savefig(plt, 'time_since_poisson_cdf')
 
@@ -1308,7 +1315,7 @@ plt.show()
 # 
 # Essentially, we'll be able to interpret the resulting distribution as the chance of each outcome at time $t$. This stands in contrast to the probability distributions above, where the total area under the curves sum to 1.
 
-# In[107]:
+# In[37]:
 
 
 alpha = np.power(
@@ -1317,13 +1324,13 @@ alpha = np.power(
 )
 
 
-# In[108]:
+# In[38]:
 
 
 plt.plot(x, alpha, label=r'$\alpha$', lw=LW)
 plt.ylabel('Alpha re-weighting parameter')
 # plt.yticks([])
-plt.xlabel('Time since pull (minutes)')
+plt.xlabel('Time since pull (seconds)')
 plt.legend()
 
 # savefig(plt, 'time_elapsed_poisson_cdf')
@@ -1331,7 +1338,7 @@ plt.legend()
 plt.show()
 
 
-# In[109]:
+# In[39]:
 
 
 from scipy.stats import poisson
@@ -1358,7 +1365,7 @@ plt.plot(x, y_no_goal, label=r'$\alpha \cdot P(\mathrm{no\;goal}\;|\;X)$', color
 
 plt.ylabel('Chance of outcome at time $t$')
 # plt.yticks([])
-plt.xlabel('Time since pull (minutes)')
+plt.xlabel('Time since pull (seconds)')
 plt.legend()
 
 # Plotting below with error bar
@@ -1373,15 +1380,13 @@ plt.show()
 # 
 # e.g. more than 2 minutes
 
-# In[110]:
+# In[40]:
 
 
 np.sum(training_samples[0] > 2*60) + np.sum(training_samples[1] > 2*60) + np.sum(training_samples[2] > 2*60)
 
 
-# less than 2
-
-# In[111]:
+# In[41]:
 
 
 np.sum(training_samples[0] < 2*60) + np.sum(training_samples[1] < 2*60) + np.sum(training_samples[2] < 2*60)
@@ -1389,7 +1394,7 @@ np.sum(training_samples[0] < 2*60) + np.sum(training_samples[1] < 2*60) + np.sum
 
 # We can show this uncertainty visually using error bars. Starting with the $\mu$ MCMC samples...
 
-# In[112]:
+# In[42]:
 
 
 plt.hist(burned_trace['mu_goal_for'])
@@ -1405,7 +1410,7 @@ plt.hist(burned_trace['mu_no_goal'])
 # 
 # where $\sigma_{\mu}$ is the standard deviation of the $\mu$ samples.
 
-# In[113]:
+# In[43]:
 
 
 mu_mcmc_std = [
@@ -1415,33 +1420,33 @@ mu_mcmc_std = [
 ]
 
 
-# In[114]:
+# In[44]:
 
 
 mu_mcmc_std
 
 
-# In[115]:
+# In[45]:
 
 
 model_normalizing_factors
 
 
-# In[116]:
+# In[46]:
 
 
 import inspect
 print(inspect.getsource(poisson_posterior))
 
 
-# In[117]:
+# In[50]:
 
 
 from scipy.misc import derivative
 from tqdm import tqdm_notebook
 
 def calc_posteror_error(mu, mu_std, mu_step=1e-6):
-    x = poisson_posterior()[0] * 60 # convert back into seconds (discrete)
+    x = poisson_posterior()[0]
     err = mu_std * np.abs(np.array([
         derivative(lambda _mu: poisson.pmf(int(t), _mu), mu, dx=mu_step)
         for t in tqdm_notebook(x)
@@ -1449,7 +1454,7 @@ def calc_posteror_error(mu, mu_std, mu_step=1e-6):
     return err
 
 
-# In[118]:
+# In[51]:
 
 
 from scipy.stats import poisson
@@ -1488,8 +1493,8 @@ plt.fill_between(x, y_no_goal-err_p_no_goal, y_no_goal+err_p_no_goal,
 
 plt.ylabel('Chance of outcome at time $t$')
 # plt.yticks([])
-plt.xlabel('Time since pull (minutes)')
-plt.xlim(17, 20)
+plt.xlabel('Time since pull (seconds)')
+plt.xlim(0, 100)
 plt.ylim(0, 1)
 plt.legend()
 
@@ -1503,7 +1508,7 @@ plt.show()
 # ### Odds of scoring a goal
 # Let's go into odds-space and look at the chance of scoring a goal, compared to either outcome. We want to maximze this.
 
-# In[620]:
+# In[52]:
 
 
 ALPHA = 0.6
@@ -1540,10 +1545,59 @@ plt.fill_between(x, odds_goal_for-err_odds_goal_for, odds_goal_for+err_odds_goal
 
 plt.ylabel('Odds')
 # plt.yticks([])
-plt.xlabel('Time since pull (minutes)')
+plt.xlabel('Time since pull (seconds)')
 
-plt.xlim(17, 20)
-plt.ylim(0, 1)
+plt.xlim(0, 1.2)
+plt.ylim(0, 10)
+
+plt.legend()
+
+# savefig(plt, 'time_since_odds_goal_for')
+
+plt.show()
+
+
+# In[55]:
+
+
+ALPHA = 0.6
+ALPHA_LIGHT = 0.3
+LW = 3
+
+''' Odds ratio '''
+
+x, y_goal_for, y_goal_against, y_no_goal = poisson_posterior(
+    mu_mcmc, norm_factors=model_normalizing_factors
+)
+
+odds_goal_for = y_goal_for / (y_goal_against + y_no_goal)
+
+''' Error bars '''
+
+err_p_goal_for = calc_posteror_error(mu_mcmc[0], mu_mcmc_std[0])
+err_p_goal_against = calc_posteror_error(mu_mcmc[1], mu_mcmc_std[1])
+err_p_no_goal = calc_posteror_error(mu_mcmc[2], mu_mcmc_std[2])
+err_odds_goal_for = (
+    np.power(err_p_goal_for / y_goal_for, 2)
+    + np.power(err_p_goal_against / y_goal_against, 2)
+    + np.power(err_p_no_goal / y_no_goal, 2)
+)
+err_odds_goal_for = odds_goal_for * np.sqrt(err_odds_goal_for)
+
+''' Plots '''
+
+plt.plot(x, odds_goal_for,
+         label=r'$odds(\mathrm{goal\;for})$',
+         color='green', lw=LW, alpha=ALPHA)
+plt.fill_between(x, odds_goal_for-err_odds_goal_for, odds_goal_for+err_odds_goal_for,
+                 color='green', lw=LW, alpha=ALPHA_LIGHT)
+
+plt.ylabel('Odds')
+# plt.yticks([])
+plt.xlabel('Time since pull (seconds)')
+
+plt.xlim(0, 100)
+plt.ylim(0, 2)
 
 plt.legend()
 
@@ -1552,13 +1606,13 @@ savefig(plt, 'time_since_odds_goal_for')
 plt.show()
 
 
-# In[621]:
+# In[56]:
 
 
 (odds_goal_for-err_odds_goal_for).max()
 
 
-# This chart suggests that odds of scoring are highest when the goalie is pulled before the 18.5 minute mark. Although the odds of scoring trend up as $t$ gets smaller, there's no statistically significant evidence for odds greater than 16%.
+# This chart suggests that odds of scoring drop off the longer the goalie remains pulled. There's no statistically significant evidence for odds at less than 30 seconds, after which the odds drop from ~0.6 to 0 within the first minute.
 
 # ### Rough work
 
