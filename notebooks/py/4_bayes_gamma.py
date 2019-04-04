@@ -1404,20 +1404,6 @@ plt.show()
 
 # ### Adding error bars
 
-# #### TODO: update notes for gamma
-# 
-# Note how there are very few samples to draw conclusions from for the low and high times.
-# 
-# e.g. less than 17
-
-np.sum(training_samples[0] < 17*60) + np.sum(training_samples[1] < 17*60) + np.sum(training_samples[2] < 17*60)
-
-
-# more than 17
-
-np.sum(training_samples[0] > 17*60) + np.sum(training_samples[1] > 17*60) + np.sum(training_samples[2] > 17*60)
-
-
 # We can show this uncertainty visually using error bars. Starting with the parameter ($\alpha$ and $\beta$) MCMC samples...
 
 plt.hist(burned_trace['alpha_goal_for'])
@@ -1578,8 +1564,6 @@ savefig(plt, 'time_since_outcome_chances_gamma')
 plt.show()
 
 
-# We can't say anything conclusive due to huge errors on low times, but we are much more confident on late game predictions
-
 # ### Odds of scoring a goal
 # Let's go into odds-space and look at the chance of scoring a goal, compared to either outcome. We want to maximze this.
 # 
@@ -1685,8 +1669,6 @@ plt.show()
 
 (odds_goal_for-err_odds_goal_for)[~np.isnan(odds_goal_for-err_odds_goal_for)].max()
 
-
-# This chart suggests that odds of scoring are highest when the goalie is pulled before the 18.5 minute mark. Although the odds of scoring trend up as $t$ gets smaller, there's no statistically significant evidence for odds greater than 16%.
 
 from IPython.display import HTML
 HTML('<style>div.text_cell_render{font-size:130%;padding-top:50px;padding-bottom:50px}</style>')
