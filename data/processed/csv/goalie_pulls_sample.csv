@@ -1,5 +1,0 @@
-season,game_number,team_name,date,pull_period,pull_time,goal_for_time,goal_against_time,goal_for_timedelta,goal_against_timedelta,game_end_timedelta
-20032004,710,CHI,2004-01-21,3,0 days 00:19:44.000000000,,0 days 00:19:47.000000000,,0 days 00:00:03.000000000,
-20032004,205,MIN,2003-11-08,3,0 days 00:19:58.000000000,,,,,0 days 00:00:02.000000000
-20032004,1230,S.J,2004-04-04,3,0 days 00:18:39.000000000,0 days 00:19:40.000000000,,0 days 00:01:01.000000000,,
-20032004,655,PHX,2004-01-13,3,0 days 00:19:03.000000000,,0 days 00:19:25.000000000,,0 days 00:00:22.000000000,
