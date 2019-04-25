@@ -1,9 +1,6 @@
 #!/usr/bin/env python
 # coding: utf-8
 
-# In[1]:
-
-
 from IPython.display import HTML
 HTML('<style>div.text_cell_render{font-size:130%;}</style>')
 get_ipython().run_line_magic('load_ext', 'version_information')
@@ -15,9 +12,6 @@ get_ipython().run_line_magic('version_information', 'pandas')
 #  - Save raw HTML from nhl.com
 
 # ## Get Training Data
-
-# In[2]:
-
 
 import pandas as pd
 import numpy as np
@@ -34,9 +28,6 @@ from colorama import Fore, Style
 
 
 # ### Download HTML
-
-# In[3]:
-
 
 def random_wait(mu) -> float:
     ''' Positive stochastic var with average of mu '''
@@ -129,9 +120,6 @@ def download_game_range(
     print(f'Ending data pull at {datetime.datetime.now()}')
 
 
-# In[34]:
-
-
 # url_tempalte = 'http://www.nhl.com/scores/htmlreports/{:}/PL02{:04d}.HTM'
 # seasons = ['20032004']
 # games = list(range(1, 5000))
@@ -141,17 +129,11 @@ def download_game_range(
 
 #  - For 2003/2004 we got up to http://www.nhl.com/scores/htmlreports/20032004/PL021231.HTM
 
-# In[5]:
-
-
 # url_tempalte = 'http://www.nhl.com/scores/htmlreports/{:}/PL02{:04d}.HTM'
 # seasons = ['20052006']
 # games = list(range(1, 5000))
 
 # download_game_range(url_tempalte, seasons, games)
-
-
-# In[8]:
 
 
 # url_tempalte = 'http://www.nhl.com/scores/htmlreports/{:}/PL02{:04d}.HTM'
@@ -161,9 +143,6 @@ def download_game_range(
 # download_game_range(url_tempalte, seasons, games)
 
 
-# In[16]:
-
-
 url_tempalte = 'http://www.nhl.com/scores/htmlreports/{:}/PL02{:04d}.HTM'
 seasons = ['20032004']
 games = list(range(1, 3000))
@@ -171,13 +150,7 @@ games = list(range(1, 3000))
 download_game_range(url_tempalte, seasons, games, no_break=True)
 
 
-# In[ ]:
 
-
-
-
-
-# In[ ]:
 
 
 
@@ -186,17 +159,11 @@ download_game_range(url_tempalte, seasons, games, no_break=True)
 # ### Legacy format
 # Pull the old format games. 
 
-# In[18]:
-
-
 url_tempalte = 'http://www.nhl.com/scores/htmlreports/{:}/PL02{:04d}.HTM'
 seasons = ['20032004']
 games = list(range(1, 3000))
 
 download_game_range(url_tempalte, seasons, games, no_break=True)
-
-
-# In[20]:
 
 
 url_tempalte = 'http://www.nhl.com/scores/htmlreports/{:}/PL02{:04d}.HTM'
@@ -206,17 +173,11 @@ games = list(range(1, 3000))
 download_game_range(url_tempalte, seasons, games, no_break=True)
 
 
-# In[21]:
-
-
 url_tempalte = 'http://www.nhl.com/scores/htmlreports/{:}/PL02{:04d}.HTM'
 seasons = ['20052006']
 games = list(range(1, 3000))
 
 download_game_range(url_tempalte, seasons, games, no_break=True)
-
-
-# In[22]:
 
 
 url_tempalte = 'http://www.nhl.com/scores/htmlreports/{:}/PL02{:04d}.HTM'
@@ -227,9 +188,6 @@ download_game_range(url_tempalte, seasons, games, no_break=True)
 
 
 # We accidentaly saved all the 404 pages... not sure why as these should have been skipped. Let's clean them up
-
-# In[28]:
-
 
 def clean_folder_404s(season):
     f_pattern = '../../data/raw/html/{}/*.html'.format(season)
@@ -248,22 +206,13 @@ clean_folder_404s('20052006')
 clean_folder_404s('20062007')
 
 
-# In[ ]:
 
-
-
-
-
-# In[ ]:
 
 
 
 
 
 # ### Modern format
-
-# In[9]:
-
 
 url_tempalte = 'http://www.nhl.com/scores/htmlreports/{:}/PL02{:04d}.HTM'
 seasons = ['20072008', '20082009', '20092010',
@@ -275,8 +224,7 @@ games = list(range(1, 3000))
 download_game_range(url_tempalte, seasons, games)
 
 
-# In[ ]:
-
+# Pulled this data using `src/html_download/app.py`
 
 
 
