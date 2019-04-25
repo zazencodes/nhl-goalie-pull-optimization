@@ -11,7 +11,7 @@ get_ipython().run_line_magic('version_information', 'pandas')
 # 
 #  - Parse the goalie pull stats we need
 #  
-# ### This script is for the current format: *2007/2008* and later
+# ### This script is for the newest format: *2017/2018* and later (something changed this year)
 
 # Sample games:
 # 
@@ -169,7 +169,7 @@ def get_game_df(
 
 # ### Load data sample
 
-with open('../../data/raw/html/20072008/980.html', 'r') as f:
+with open('../../data/raw/html/20172018/980.html', 'r') as f:
     soup = BeautifulSoup(f.read(), 'lxml')
 
 
@@ -358,10 +358,155 @@ def get_game_df(
 df, team_info = get_game_df(soup)
 
 
-team_info
+soup.text[:1000]
 
 
-df
+# Parse the main table
+data = []
+for row in soup.find_all('tr', {'class': 'evenColor'}):
+    d = []
+    for i, row_data in enumerate(row.find_all('td')):
+        if 'class' in row_data.attrs:
+            classes = ' '.join(row_data.attrs['class'])
+            if 'bborder' not in classes:
+                continue
+        else:
+            continue
+            
+        if i == 3:
+            # Parse the time
+            row_data_text = ' '.join([str(s) for s in row_data.contents])
+
+        elif i >= 6:
+            # Parse the players on ice
+            row_data_text = ' '.join(re.findall('[a-zA-Z]+', row_data.text.strip()))
+
+        else:
+            # Standard parse
+            row_data_text = row_data.text.strip()
+
+        d.append(row_data_text)
+
+    print(d)
+        
+    if len(d) >= 8:
+        data.append(d[:8])
+
+
+def get_game_df(
+    soup,
+    local_html=True,
+) -> pd.DataFrame:
+    '''
+    Returns the parsed HTML stats table for some game and returns
+    a DataFrame.
+    
+    local_html : bool
+        Set True if using local HTML file. Otherwise set False
+        for requested HTML from nhl.com
+    '''
+
+    if not local_html:
+        raise NotImplementedError('Only local HTML supported')
+
+    # Parse the main table
+    data = []
+    for row in soup.find_all('tr', {'class': 'evenColor'}):
+        d = []
+        for i, row_data in enumerate(row.find_all('td')):
+            if 'class' in row_data.attrs:
+                classes = ' '.join(row_data.attrs['class'])
+                if 'bborder' not in classes:
+                    continue
+            else:
+                continue
+
+            if i == 3:
+                # Parse the time
+                row_data_text = ' '.join([str(s) for s in row_data.contents])
+
+            elif i >= 6:
+                # Parse the players on ice
+                row_data_text = ' '.join(re.findall('[a-zA-Z]+', row_data.text.strip()))
+
+            else:
+                # Standard parse
+                row_data_text = row_data.text.strip()
+                
+            d.append(row_data_text)
+
+        if len(d) >= 8:
+            data.append(d[:8])
+    
+    cols = ['#', 'per', 'type', 'time', 'event', 'description', 'visitor_on_ice', 'home_on_ice']
+    df = pd.DataFrame(data, columns=cols)
+    
+    good_rows = df['#'].apply(is_int)
+    df = df.loc[good_rows]
+    df['#'] = df['#'].astype(int)
+    df['per'] = df['per'].astype(int)
+    df['time'] = parse_time(df['time'])
+#     df['team'] = parse_team(df['description'])
+    
+    # Get the team info
+    team_names = []
+    for row_data in soup.find_all('td', {'class': 'heading + bborder'}):
+        if 'on ice' in row_data.text.lower():
+            team_names.append(row_data.text.split()[0])
+        if len(team_names) == 2:
+            break
+    if len(team_names) != 2:
+        team_names = ['', '']
+    team_info = {'visitor': team_names[0], 'home': team_names[1]}
+    
+    return df, team_info
+
+df, team_info = get_game_df(soup)
+
+
+(df['description'] + '.').str.split().apply(lambda x: x[0])
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 def goalie_pull_game_search(
@@ -500,11 +645,14 @@ get_game_meta(soup)
 
 
 
-# 
 
-# 
 
-# 
+
+
+
+
+
+
 
 def parse_game(
     soup: BeautifulSoup,
@@ -732,6 +880,15 @@ df_goalie_pull.to_csv('../data/csv/20032004_goalie_pulls_2019-02-13.csv', index=
 
 
 df_goalie_pull.to_pickle('../data/pkl/20032004_goalie_pulls_2019-02-13.pkl')
+
+
+
+
+
+
+
+
+
 
 
 
