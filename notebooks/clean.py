@@ -10,7 +10,12 @@ import click
     default='',
     help='File names to ignore (keep). Comma separated.'
 )
-def main(whitelist):
+@click.option(
+    '--ignore-archive',
+    is_flag=True,
+    help='Ignore files in archive directory'
+)
+def main(whitelist, ignore_archive):
     print('''
         Cleaning notebook files from archive, py and html folders. 
         Only keeping files that exist in src.
@@ -32,12 +37,13 @@ def main(whitelist):
     print('\n'.join(src_files_stripped))
     print()
 
-    print('Searching notebooks/archive ...')
-    files = glob.glob(os.path.join('archive', '*.ipynb'))
-    files_stripped = [strip_archive_filename(f) for f in files]
-    for f, path in zip(files_stripped, files):
-        if not any((f==src_f for src_f in src_files_stripped)):
-            dump.append(path)
+    if not ignore_archive:
+        print('Searching notebooks/archive ...')
+        files = glob.glob(os.path.join('archive', '*.ipynb'))
+        files_stripped = [strip_archive_filename(f) for f in files]
+        for f, path in zip(files_stripped, files):
+            if not any((f==src_f for src_f in src_files_stripped)):
+                dump.append(path)
 
     print('Searching notebooks/py ...')
     files = glob.glob(os.path.join('py', '*.py'))
