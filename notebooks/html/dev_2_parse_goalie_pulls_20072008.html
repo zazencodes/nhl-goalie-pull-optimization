@@ -13222,7 +13222,7 @@ file:///Users/alex/Documents/nhl-goalie-pull-optimization/data/raw/html/20072008
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[62]:</div>
+<div class="prompt input_prompt">In&nbsp;[&nbsp;]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">is_int</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
@@ -13287,7 +13287,7 @@ file:///Users/alex/Documents/nhl-goalie-pull-optimization/data/raw/html/20072008
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[59]:</div>
+<div class="prompt input_prompt">In&nbsp;[&nbsp;]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">get_game_df</span><span class="p">(</span>
@@ -13384,7 +13384,7 @@ file:///Users/alex/Documents/nhl-goalie-pull-optimization/data/raw/html/20072008
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[5]:</div>
+<div class="prompt input_prompt">In&nbsp;[&nbsp;]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="s1">&#39;../../data/raw/html/20072008/980.html&#39;</span><span class="p">,</span> <span class="s1">&#39;r&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
@@ -13398,43 +13398,13 @@ file:///Users/alex/Documents/nhl-goalie-pull-optimization/data/raw/html/20072008
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[6]:</div>
+<div class="prompt input_prompt">In&nbsp;[&nbsp;]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">df</span> <span class="o">=</span> <span class="n">get_game_df</span><span class="p">(</span><span class="n">soup</span><span class="p">)</span>
 </pre></div>
 
     </div>
-</div>
-</div>
-
-<div class="output_wrapper">
-<div class="output">
-
-
-<div class="output_area">
-
-    <div class="prompt"></div>
-
-
-<div class="output_subarea output_text output_error">
-<pre>
-<span class="ansi-red-fg">------------------------------------------------------------------------</span>
-<span class="ansi-red-fg">IndexError</span>                             Traceback (most recent call last)
-<span class="ansi-green-fg">&lt;ipython-input-6-09d72922ac9a&gt;</span> in <span class="ansi-cyan-fg">&lt;module&gt;</span>
-<span class="ansi-green-fg">----&gt; 1</span><span class="ansi-red-fg"> </span>df <span class="ansi-blue-fg">=</span> get_game_df<span class="ansi-blue-fg">(</span>soup<span class="ansi-blue-fg">)</span>
-
-<span class="ansi-green-fg">&lt;ipython-input-4-e785d8008ca5&gt;</span> in <span class="ansi-cyan-fg">get_game_df</span><span class="ansi-blue-fg">(soup, local_html)</span>
-<span class="ansi-green-intense-fg ansi-bold">     13</span> 
-<span class="ansi-green-intense-fg ansi-bold">     14</span>     <span class="ansi-red-fg"># Parse main table</span>
-<span class="ansi-green-fg">---&gt; 15</span><span class="ansi-red-fg">     </span>table <span class="ansi-blue-fg">=</span> soup<span class="ansi-blue-fg">.</span>find_all<span class="ansi-blue-fg">(</span><span class="ansi-blue-fg">&#39;pre&#39;</span><span class="ansi-blue-fg">)</span><span class="ansi-blue-fg">[</span><span class="ansi-cyan-fg">0</span><span class="ansi-blue-fg">]</span>
-<span class="ansi-green-intense-fg ansi-bold">     16</span>     raw_table <span class="ansi-blue-fg">=</span> table<span class="ansi-blue-fg">.</span>text
-<span class="ansi-green-intense-fg ansi-bold">     17</span> 
-
-<span class="ansi-red-fg">IndexError</span>: list index out of range</pre>
-</div>
-</div>
-
 </div>
 </div>
 
@@ -13449,7 +13419,7 @@ file:///Users/alex/Documents/nhl-goalie-pull-optimization/data/raw/html/20072008
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[19]:</div>
+<div class="prompt input_prompt">In&nbsp;[&nbsp;]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="nb">len</span><span class="p">(</span><span class="n">soup</span><span class="o">.</span><span class="n">find_all</span><span class="p">(</span><span class="s1">&#39;table&#39;</span><span class="p">))</span>
@@ -13459,30 +13429,10 @@ file:///Users/alex/Documents/nhl-goalie-pull-optimization/data/raw/html/20072008
 </div>
 </div>
 
-<div class="output_wrapper">
-<div class="output">
-
-
-<div class="output_area">
-
-    <div class="prompt output_prompt">Out[19]:</div>
-
-
-
-
-<div class="output_text output_subarea output_execute_result">
-<pre>4559</pre>
-</div>
-
-</div>
-
-</div>
-</div>
-
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[13]:</div>
+<div class="prompt input_prompt">In&nbsp;[&nbsp;]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">table</span> <span class="o">=</span> <span class="n">soup</span><span class="o">.</span><span class="n">find_all</span><span class="p">(</span><span class="s1">&#39;table&#39;</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
@@ -13496,7 +13446,7 @@ file:///Users/alex/Documents/nhl-goalie-pull-optimization/data/raw/html/20072008
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[18]:</div>
+<div class="prompt input_prompt">In&nbsp;[&nbsp;]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">table</span><span class="o">.</span><span class="n">find_all</span><span class="p">(</span><span class="s1">&#39;tr&#39;</span><span class="p">)[</span><span class="mi">400</span><span class="p">]</span>
@@ -13506,34 +13456,10 @@ file:///Users/alex/Documents/nhl-goalie-pull-optimization/data/raw/html/20072008
 </div>
 </div>
 
-<div class="output_wrapper">
-<div class="output">
-
-
-<div class="output_area">
-
-    <div class="prompt output_prompt">Out[18]:</div>
-
-
-
-
-<div class="output_text output_subarea output_execute_result">
-<pre>&lt;tr&gt;
-&lt;td align=&#34;center&#34;&gt;
-&lt;font style=&#34;cursor:hand;&#34; title=&#34;Center - MIKE FISHER&#34;&gt;12&lt;/font&gt;
-&lt;/td&gt;
-&lt;/tr&gt;</pre>
-</div>
-
-</div>
-
-</div>
-</div>
-
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[51]:</div>
+<div class="prompt input_prompt">In&nbsp;[&nbsp;]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="s1">&#39; &#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">table</span><span class="o">.</span><span class="n">attrs</span><span class="p">[</span><span class="s1">&#39;class&#39;</span><span class="p">])</span>
@@ -13543,30 +13469,10 @@ file:///Users/alex/Documents/nhl-goalie-pull-optimization/data/raw/html/20072008
 </div>
 </div>
 
-<div class="output_wrapper">
-<div class="output">
-
-
-<div class="output_area">
-
-    <div class="prompt output_prompt">Out[51]:</div>
-
-
-
-
-<div class="output_text output_subarea output_execute_result">
-<pre>&#39;tablewidth&#39;</pre>
-</div>
-
-</div>
-
-</div>
-</div>
-
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[96]:</div>
+<div class="prompt input_prompt">In&nbsp;[&nbsp;]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">team_names</span> <span class="o">=</span> <span class="p">[]</span>
@@ -13587,7 +13493,7 @@ file:///Users/alex/Documents/nhl-goalie-pull-optimization/data/raw/html/20072008
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[97]:</div>
+<div class="prompt input_prompt">In&nbsp;[&nbsp;]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">team_names</span>
@@ -13597,30 +13503,10 @@ file:///Users/alex/Documents/nhl-goalie-pull-optimization/data/raw/html/20072008
 </div>
 </div>
 
-<div class="output_wrapper">
-<div class="output">
-
-
-<div class="output_area">
-
-    <div class="prompt output_prompt">Out[97]:</div>
-
-
-
-
-<div class="output_text output_subarea output_execute_result">
-<pre>[&#39;PIT&#39;, &#39;OTT&#39;]</pre>
-</div>
-
-</div>
-
-</div>
-</div>
-
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[75]:</div>
+<div class="prompt input_prompt">In&nbsp;[&nbsp;]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">test</span><span class="p">():</span>
@@ -13660,7 +13546,7 @@ file:///Users/alex/Documents/nhl-goalie-pull-optimization/data/raw/html/20072008
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[87]:</div>
+<div class="prompt input_prompt">In&nbsp;[&nbsp;]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="nb">str</span><span class="p">(</span><span class="n">el</span><span class="o">.</span><span class="n">contents</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
@@ -13670,30 +13556,10 @@ file:///Users/alex/Documents/nhl-goalie-pull-optimization/data/raw/html/20072008
 </div>
 </div>
 
-<div class="output_wrapper">
-<div class="output">
-
-
-<div class="output_area">
-
-    <div class="prompt output_prompt">Out[87]:</div>
-
-
-
-
-<div class="output_text output_subarea output_execute_result">
-<pre>&#39;0:00&#39;</pre>
-</div>
-
-</div>
-
-</div>
-</div>
-
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[53]:</div>
+<div class="prompt input_prompt">In&nbsp;[&nbsp;]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">data</span> <span class="o">=</span> <span class="p">[]</span>
@@ -13725,7 +13591,7 @@ file:///Users/alex/Documents/nhl-goalie-pull-optimization/data/raw/html/20072008
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[55]:</div>
+<div class="prompt input_prompt">In&nbsp;[&nbsp;]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">data</span><span class="p">[:</span><span class="mi">3</span><span class="p">]</span>
@@ -13735,53 +13601,10 @@ file:///Users/alex/Documents/nhl-goalie-pull-optimization/data/raw/html/20072008
 </div>
 </div>
 
-<div class="output_wrapper">
-<div class="output">
-
-
-<div class="output_area">
-
-    <div class="prompt output_prompt">Out[55]:</div>
-
-
-
-
-<div class="output_text output_subarea output_execute_result">
-<pre>[[&#39;1&#39;,
-  &#39;1&#39;,
-  &#39;&#39;,
-  &#39;0:0020:00&#39;,
-  &#39;PSTR&#39;,
-  &#39;Period Start- Local time: 3:10 EST&#39;,
-  &#39;C R L D D G&#39;,
-  &#39;C R L D D G&#39;],
- [&#39;2&#39;,
-  &#39;1&#39;,
-  &#39;EV&#39;,
-  &#39;0:0020:00&#39;,
-  &#39;FAC&#39;,
-  &#39;PIT won Neu. Zone - PIT #71 MALKIN vs OTT #19 SPEZZA&#39;,
-  &#39;C R L D D G&#39;,
-  &#39;C R L D D G&#39;],
- [&#39;3&#39;,
-  &#39;1&#39;,
-  &#39;EV&#39;,
-  &#39;0:0619:54&#39;,
-  &#39;HIT&#39;,
-  &#39;OTT #15 HEATLEY HIT PIT #55 GONCHAR, Neu. Zone&#39;,
-  &#39;C R L D D G&#39;,
-  &#39;C R L D D G&#39;]]</pre>
-</div>
-
-</div>
-
-</div>
-</div>
-
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[106]:</div>
+<div class="prompt input_prompt">In&nbsp;[&nbsp;]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">parse_time</span><span class="p">(</span><span class="n">s</span><span class="p">):</span>
@@ -13812,7 +13635,7 @@ file:///Users/alex/Documents/nhl-goalie-pull-optimization/data/raw/html/20072008
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[107]:</div>
+<div class="prompt input_prompt">In&nbsp;[&nbsp;]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">get_game_df</span><span class="p">(</span>
@@ -13891,7 +13714,7 @@ file:///Users/alex/Documents/nhl-goalie-pull-optimization/data/raw/html/20072008
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[108]:</div>
+<div class="prompt input_prompt">In&nbsp;[&nbsp;]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">df</span><span class="p">,</span> <span class="n">team_info</span> <span class="o">=</span> <span class="n">get_game_df</span><span class="p">(</span><span class="n">soup</span><span class="p">)</span>
@@ -13904,7 +13727,7 @@ file:///Users/alex/Documents/nhl-goalie-pull-optimization/data/raw/html/20072008
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[109]:</div>
+<div class="prompt input_prompt">In&nbsp;[&nbsp;]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">team_info</span>
@@ -13914,30 +13737,10 @@ file:///Users/alex/Documents/nhl-goalie-pull-optimization/data/raw/html/20072008
 </div>
 </div>
 
-<div class="output_wrapper">
-<div class="output">
-
-
-<div class="output_area">
-
-    <div class="prompt output_prompt">Out[109]:</div>
-
-
-
-
-<div class="output_text output_subarea output_execute_result">
-<pre>{&#39;visitor&#39;: &#39;PIT&#39;, &#39;home&#39;: &#39;OTT&#39;}</pre>
-</div>
-
-</div>
-
-</div>
-</div>
-
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[110]:</div>
+<div class="prompt input_prompt">In&nbsp;[&nbsp;]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">df</span>
@@ -13947,794 +13750,10 @@ file:///Users/alex/Documents/nhl-goalie-pull-optimization/data/raw/html/20072008
 </div>
 </div>
 
-<div class="output_wrapper">
-<div class="output">
-
-
-<div class="output_area">
-
-    <div class="prompt output_prompt">Out[110]:</div>
-
-
-
-<div class="output_html rendered_html output_subarea output_execute_result">
-<div>
-<style scoped>
-    .dataframe tbody tr th:only-of-type {
-        vertical-align: middle;
-    }
-
-    .dataframe tbody tr th {
-        vertical-align: top;
-    }
-
-    .dataframe thead th {
-        text-align: right;
-    }
-</style>
-<table border="1" class="dataframe">
-  <thead>
-    <tr style="text-align: right;">
-      <th></th>
-      <th>#</th>
-      <th>per</th>
-      <th>type</th>
-      <th>time</th>
-      <th>event</th>
-      <th>description</th>
-      <th>visitor_on_ice</th>
-      <th>home_on_ice</th>
-      <th>team</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <th>0</th>
-      <td>1</td>
-      <td>1</td>
-      <td></td>
-      <td>00:00:00</td>
-      <td>PSTR</td>
-      <td>Period Start- Local time: 3:10 EST</td>
-      <td>C R L D D G</td>
-      <td>C R L D D G</td>
-      <td>Period</td>
-    </tr>
-    <tr>
-      <th>1</th>
-      <td>2</td>
-      <td>1</td>
-      <td>EV</td>
-      <td>00:00:00</td>
-      <td>FAC</td>
-      <td>PIT won Neu. Zone - PIT #71 MALKIN vs OTT #19 ...</td>
-      <td>C R L D D G</td>
-      <td>C R L D D G</td>
-      <td>PIT</td>
-    </tr>
-    <tr>
-      <th>2</th>
-      <td>3</td>
-      <td>1</td>
-      <td>EV</td>
-      <td>00:00:06</td>
-      <td>HIT</td>
-      <td>OTT #15 HEATLEY HIT PIT #55 GONCHAR, Neu. Zone</td>
-      <td>C R L D D G</td>
-      <td>C R L D D G</td>
-      <td>OTT</td>
-    </tr>
-    <tr>
-      <th>3</th>
-      <td>4</td>
-      <td>1</td>
-      <td>EV</td>
-      <td>00:00:22</td>
-      <td>MISS</td>
-      <td>OTT #24 VOLCHENKOV, Snap, Wide of Net, Off. Zo...</td>
-      <td>C R L D D G</td>
-      <td>C R L D D G</td>
-      <td>OTT</td>
-    </tr>
-    <tr>
-      <th>4</th>
-      <td>5</td>
-      <td>1</td>
-      <td>EV</td>
-      <td>00:00:27</td>
-      <td>PENL</td>
-      <td>PIT #55 GONCHAR Delaying Game-Puck over glass(...</td>
-      <td>C R L D D G</td>
-      <td>C R L D D G</td>
-      <td>PIT</td>
-    </tr>
-    <tr>
-      <th>5</th>
-      <td>6</td>
-      <td>1</td>
-      <td>PP</td>
-      <td>00:00:27</td>
-      <td>FAC</td>
-      <td>OTT won Off. Zone - PIT #11 STAAL vs OTT #19 S...</td>
-      <td>C L D D G</td>
-      <td>C R L L D G</td>
-      <td>OTT</td>
-    </tr>
-    <tr>
-      <th>6</th>
-      <td>7</td>
-      <td>1</td>
-      <td>PP</td>
-      <td>00:00:40</td>
-      <td>MISS</td>
-      <td>OTT #14 MESZAROS, Slap, Wide of Net, Off. Zone...</td>
-      <td>C L D D G</td>
-      <td>C R L L D G</td>
-      <td>OTT</td>
-    </tr>
-    <tr>
-      <th>7</th>
-      <td>8</td>
-      <td>1</td>
-      <td>PP</td>
-      <td>00:01:18</td>
-      <td>SHOT</td>
-      <td>OTT ONGOAL - 14 MESZAROS, Slap, Off. Zone, 61 ft.</td>
-      <td>C L D D G</td>
-      <td>C R L L D G</td>
-      <td>OTT</td>
-    </tr>
-    <tr>
-      <th>8</th>
-      <td>9</td>
-      <td>1</td>
-      <td></td>
-      <td>00:01:19</td>
-      <td>STOP</td>
-      <td>GOALIE STOPPED</td>
-      <td>C L D D G</td>
-      <td>C R L L D G</td>
-      <td>GOALIE</td>
-    </tr>
-    <tr>
-      <th>9</th>
-      <td>10</td>
-      <td>1</td>
-      <td>SH</td>
-      <td>00:01:19</td>
-      <td>FAC</td>
-      <td>PIT won Def. Zone - PIT #11 STAAL vs OTT #11 A...</td>
-      <td>C L D D G</td>
-      <td>C R L L D G</td>
-      <td>PIT</td>
-    </tr>
-    <tr>
-      <th>10</th>
-      <td>11</td>
-      <td>1</td>
-      <td>PP</td>
-      <td>00:02:04</td>
-      <td>MISS</td>
-      <td>OTT #12 FISHER, Slap, Wide of Net, Off. Zone, ...</td>
-      <td>C L D D G</td>
-      <td>C C R D D G</td>
-      <td>OTT</td>
-    </tr>
-    <tr>
-      <th>11</th>
-      <td>12</td>
-      <td>1</td>
-      <td>SH</td>
-      <td>00:02:13</td>
-      <td>BLOCK</td>
-      <td>OTT #6 REDDEN BLOCKED BY  PIT #71 MALKIN, Slap...</td>
-      <td>C L D D G</td>
-      <td>C C R D D G</td>
-      <td>OTT</td>
-    </tr>
-    <tr>
-      <th>12</th>
-      <td>13</td>
-      <td>1</td>
-      <td>EV</td>
-      <td>00:02:29</td>
-      <td>BLOCK</td>
-      <td>OTT #5 SCHUBERT BLOCKED BY  PIT #25 TALBOT, Wr...</td>
-      <td>C L D D D G</td>
-      <td>C C R D D G</td>
-      <td>OTT</td>
-    </tr>
-    <tr>
-      <th>13</th>
-      <td>14</td>
-      <td>1</td>
-      <td>EV</td>
-      <td>00:02:35</td>
-      <td>SHOT</td>
-      <td>OTT ONGOAL - 28 LAPOINTE, Tip-In, Off. Zone, 1...</td>
-      <td>C L D D D G</td>
-      <td>C C R D D G</td>
-      <td>OTT</td>
-    </tr>
-    <tr>
-      <th>14</th>
-      <td>15</td>
-      <td>1</td>
-      <td>EV</td>
-      <td>00:02:42</td>
-      <td>HIT</td>
-      <td>OTT #28 LAPOINTE HIT PIT #2 GILL, Off. Zone</td>
-      <td>C L D D D G</td>
-      <td>C C R D D G</td>
-      <td>OTT</td>
-    </tr>
-    <tr>
-      <th>15</th>
-      <td>16</td>
-      <td>1</td>
-      <td>EV</td>
-      <td>00:02:56</td>
-      <td>HIT</td>
-      <td>PIT #25 TALBOT HIT OTT #4 PHILLIPS, Off. Zone</td>
-      <td>C L L D D G</td>
-      <td>C C R D D G</td>
-      <td>PIT</td>
-    </tr>
-    <tr>
-      <th>16</th>
-      <td>17</td>
-      <td>1</td>
-      <td>EV</td>
-      <td>00:03:15</td>
-      <td>SHOT</td>
-      <td>OTT ONGOAL - 20 VERMETTE, Backhand, Off. Zone,...</td>
-      <td>C L L D D G</td>
-      <td>C C L D D G</td>
-      <td>OTT</td>
-    </tr>
-    <tr>
-      <th>17</th>
-      <td>18</td>
-      <td>1</td>
-      <td>EV</td>
-      <td>00:03:38</td>
-      <td>SHOT</td>
-      <td>PIT ONGOAL - 17 SYKORA, Slap, Off. Zone, 45 ft.</td>
-      <td>C R L D D G</td>
-      <td>C C L D D G</td>
-      <td>PIT</td>
-    </tr>
-    <tr>
-      <th>18</th>
-      <td>19</td>
-      <td>1</td>
-      <td>EV</td>
-      <td>00:03:55</td>
-      <td>TAKE</td>
-      <td>PIT TAKEAWAY - #55 GONCHAR, Def. Zone</td>
-      <td>C R L D D G</td>
-      <td>C C L D D G</td>
-      <td>PIT</td>
-    </tr>
-    <tr>
-      <th>19</th>
-      <td>20</td>
-      <td>1</td>
-      <td>EV</td>
-      <td>00:04:15</td>
-      <td>HIT</td>
-      <td>OTT #4 PHILLIPS HIT PIT #27 LARAQUE, Def. Zone</td>
-      <td>R L L D D G</td>
-      <td>C R L D D G</td>
-      <td>OTT</td>
-    </tr>
-    <tr>
-      <th>20</th>
-      <td>21</td>
-      <td>1</td>
-      <td>EV</td>
-      <td>00:04:20</td>
-      <td>SHOT</td>
-      <td>PIT ONGOAL - 39 MINARD, Wrist, Off. Zone, 39 ft.</td>
-      <td>R L L D D G</td>
-      <td>C R L D D G</td>
-      <td>PIT</td>
-    </tr>
-    <tr>
-      <th>21</th>
-      <td>22</td>
-      <td>1</td>
-      <td></td>
-      <td>00:04:21</td>
-      <td>STOP</td>
-      <td>GOALIE STOPPED</td>
-      <td>R L L D D G</td>
-      <td>C R L D D G</td>
-      <td>GOALIE</td>
-    </tr>
-    <tr>
-      <th>22</th>
-      <td>23</td>
-      <td>1</td>
-      <td>EV</td>
-      <td>00:04:21</td>
-      <td>FAC</td>
-      <td>OTT won Def. Zone - PIT #11 STAAL vs OTT #37 M...</td>
-      <td>C C L D D G</td>
-      <td>R L D D D G</td>
-      <td>OTT</td>
-    </tr>
-    <tr>
-      <th>23</th>
-      <td>24</td>
-      <td>1</td>
-      <td>EV</td>
-      <td>00:04:41</td>
-      <td>GIVE</td>
-      <td>OTT GIVEAWAY - #44 COMMODORE, Def. Zone</td>
-      <td>C C L D D G</td>
-      <td>R L D D D G</td>
-      <td>OTT</td>
-    </tr>
-    <tr>
-      <th>24</th>
-      <td>25</td>
-      <td>1</td>
-      <td>EV</td>
-      <td>00:04:46</td>
-      <td>SHOT</td>
-      <td>OTT ONGOAL - 5 SCHUBERT, Slap, Off. Zone, 58 ft.</td>
-      <td>C C L D D G</td>
-      <td>R L D D D G</td>
-      <td>OTT</td>
-    </tr>
-    <tr>
-      <th>25</th>
-      <td>26</td>
-      <td>1</td>
-      <td>EV</td>
-      <td>00:05:27</td>
-      <td>HIT</td>
-      <td>OTT #12 FISHER HIT PIT #25 TALBOT, Def. Zone</td>
-      <td>C R L D D G</td>
-      <td>C C R D D G</td>
-      <td>OTT</td>
-    </tr>
-    <tr>
-      <th>26</th>
-      <td>27</td>
-      <td>1</td>
-      <td>EV</td>
-      <td>00:05:36</td>
-      <td>SHOT</td>
-      <td>PIT ONGOAL - 37 RUUTU, Snap, Off. Zone, 54 ft.</td>
-      <td>C R L D D G</td>
-      <td>C C R D D G</td>
-      <td>PIT</td>
-    </tr>
-    <tr>
-      <th>27</th>
-      <td>28</td>
-      <td>1</td>
-      <td></td>
-      <td>00:05:37</td>
-      <td>STOP</td>
-      <td>GOALIE STOPPED</td>
-      <td>C R L D D G</td>
-      <td>C C R D D G</td>
-      <td>GOALIE</td>
-    </tr>
-    <tr>
-      <th>28</th>
-      <td>29</td>
-      <td>1</td>
-      <td>EV</td>
-      <td>00:05:37</td>
-      <td>FAC</td>
-      <td>OTT won Def. Zone - PIT #71 MALKIN vs OTT #19 ...</td>
-      <td>C R L D D G</td>
-      <td>C R L D D G</td>
-      <td>OTT</td>
-    </tr>
-    <tr>
-      <th>29</th>
-      <td>30</td>
-      <td>1</td>
-      <td>EV</td>
-      <td>00:05:53</td>
-      <td>BLOCK</td>
-      <td>OTT #4 PHILLIPS BLOCKED BY  PIT #5 SYDOR, Wris...</td>
-      <td>C R L D D G</td>
-      <td>C R L D D G</td>
-      <td>OTT</td>
-    </tr>
-    <tr>
-      <th>...</th>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-    </tr>
-    <tr>
-      <th>296</th>
-      <td>297</td>
-      <td>3</td>
-      <td>EV</td>
-      <td>00:14:36</td>
-      <td>FAC</td>
-      <td>OTT won Off. Zone - PIT #11 STAAL vs OTT #20 V...</td>
-      <td>C C L D D G</td>
-      <td>C C L D D G</td>
-      <td>OTT</td>
-    </tr>
-    <tr>
-      <th>297</th>
-      <td>298</td>
-      <td>3</td>
-      <td>EV</td>
-      <td>00:14:46</td>
-      <td>TAKE</td>
-      <td>OTT TAKEAWAY - #20 VERMETTE, Off. Zone</td>
-      <td>C C L D D G</td>
-      <td>C C L D D G</td>
-      <td>OTT</td>
-    </tr>
-    <tr>
-      <th>298</th>
-      <td>299</td>
-      <td>3</td>
-      <td></td>
-      <td>00:14:52</td>
-      <td>STOP</td>
-      <td>OFFSIDE</td>
-      <td>C C L D D G</td>
-      <td>C C L D D G</td>
-      <td>OFFSIDE</td>
-    </tr>
-    <tr>
-      <th>299</th>
-      <td>300</td>
-      <td>3</td>
-      <td>EV</td>
-      <td>00:14:52</td>
-      <td>FAC</td>
-      <td>PIT won Neu. Zone - PIT #71 MALKIN vs OTT #19 ...</td>
-      <td>C R L D D G</td>
-      <td>C R L D D G</td>
-      <td>PIT</td>
-    </tr>
-    <tr>
-      <th>300</th>
-      <td>301</td>
-      <td>3</td>
-      <td>EV</td>
-      <td>00:15:47</td>
-      <td>HIT</td>
-      <td>OTT #22 KELLY HIT PIT #55 GONCHAR, Off. Zone</td>
-      <td>C C L D D G</td>
-      <td>C C L D D G</td>
-      <td>OTT</td>
-    </tr>
-    <tr>
-      <th>301</th>
-      <td>302</td>
-      <td>3</td>
-      <td>EV</td>
-      <td>00:15:57</td>
-      <td>BLOCK</td>
-      <td>PIT #67 GOLIGOSKI BLOCKED BY  OTT #22 KELLY, W...</td>
-      <td>C C L D D G</td>
-      <td>C C L D D G</td>
-      <td>PIT</td>
-    </tr>
-    <tr>
-      <th>302</th>
-      <td>303</td>
-      <td>3</td>
-      <td>EV</td>
-      <td>00:16:07</td>
-      <td>MISS</td>
-      <td>PIT #5 SYDOR, Slap, Wide of Net, Off. Zone, 61...</td>
-      <td>C C L D D G</td>
-      <td>C C L D D G</td>
-      <td>PIT</td>
-    </tr>
-    <tr>
-      <th>303</th>
-      <td>304</td>
-      <td>3</td>
-      <td>EV</td>
-      <td>00:16:16</td>
-      <td>MISS</td>
-      <td>PIT #48 KENNEDY, Wrist, Over Net, Off. Zone, 2...</td>
-      <td>C C L D D G</td>
-      <td>C C L D D G</td>
-      <td>PIT</td>
-    </tr>
-    <tr>
-      <th>304</th>
-      <td>305</td>
-      <td>3</td>
-      <td></td>
-      <td>00:16:17</td>
-      <td>STOP</td>
-      <td>PUCK IN NETTING</td>
-      <td>C C L D D G</td>
-      <td>C C L D D G</td>
-      <td>PUCK</td>
-    </tr>
-    <tr>
-      <th>305</th>
-      <td>306</td>
-      <td>3</td>
-      <td>EV</td>
-      <td>00:16:17</td>
-      <td>FAC</td>
-      <td>PIT won Neu. Zone - PIT #25 TALBOT vs OTT #12 ...</td>
-      <td>C L L D D G</td>
-      <td>C C L D D G</td>
-      <td>PIT</td>
-    </tr>
-    <tr>
-      <th>306</th>
-      <td>307</td>
-      <td>3</td>
-      <td>EV</td>
-      <td>00:16:36</td>
-      <td>HIT</td>
-      <td>OTT #12 FISHER HIT PIT #25 TALBOT, Def. Zone</td>
-      <td>C L L D D G</td>
-      <td>C C L D D G</td>
-      <td>OTT</td>
-    </tr>
-    <tr>
-      <th>307</th>
-      <td>308</td>
-      <td>3</td>
-      <td>EV</td>
-      <td>00:16:39</td>
-      <td>SHOT</td>
-      <td>PIT ONGOAL - 36 JAMES, Wrist, Off. Zone, 17 ft.</td>
-      <td>C L L D D G</td>
-      <td>C C L D D G</td>
-      <td>PIT</td>
-    </tr>
-    <tr>
-      <th>308</th>
-      <td>309</td>
-      <td>3</td>
-      <td>EV</td>
-      <td>00:16:54</td>
-      <td>MISS</td>
-      <td>OTT #6 REDDEN, Slap, Wide of Net, Off. Zone, 6...</td>
-      <td>C L L D D G</td>
-      <td>C C L D D G</td>
-      <td>OTT</td>
-    </tr>
-    <tr>
-      <th>309</th>
-      <td>310</td>
-      <td>3</td>
-      <td>EV</td>
-      <td>00:17:31</td>
-      <td>SHOT</td>
-      <td>PIT ONGOAL - 12 MALONE, Wrist, Off. Zone, 26 ft.</td>
-      <td>C R L D D G</td>
-      <td>C R L D D G</td>
-      <td>PIT</td>
-    </tr>
-    <tr>
-      <th>310</th>
-      <td>311</td>
-      <td>3</td>
-      <td>EV</td>
-      <td>00:17:52</td>
-      <td>MISS</td>
-      <td>OTT #19 SPEZZA, Wrist, Over Net, Off. Zone, 21...</td>
-      <td>C R L D D G</td>
-      <td>C R L D D G</td>
-      <td>OTT</td>
-    </tr>
-    <tr>
-      <th>311</th>
-      <td>312</td>
-      <td>3</td>
-      <td>EV</td>
-      <td>00:18:02</td>
-      <td>BLOCK</td>
-      <td>OTT #11 ALFREDSSON BLOCKED BY  PIT #44 ORPIK, ...</td>
-      <td>C R L D D G</td>
-      <td>C R L D D G</td>
-      <td>OTT</td>
-    </tr>
-    <tr>
-      <th>312</th>
-      <td>313</td>
-      <td>3</td>
-      <td>EV</td>
-      <td>00:18:06</td>
-      <td>HIT</td>
-      <td>PIT #71 MALKIN HIT OTT #14 MESZAROS, Off. Zone</td>
-      <td>C R L D D G</td>
-      <td>C R L D D G</td>
-      <td>PIT</td>
-    </tr>
-    <tr>
-      <th>313</th>
-      <td>314</td>
-      <td>3</td>
-      <td>EV</td>
-      <td>00:18:41</td>
-      <td>SHOT</td>
-      <td>PIT ONGOAL - 48 KENNEDY, Snap, Off. Zone, 57 ft.</td>
-      <td>C C L D D G</td>
-      <td>C C L D D G</td>
-      <td>PIT</td>
-    </tr>
-    <tr>
-      <th>314</th>
-      <td>315</td>
-      <td>3</td>
-      <td>EV</td>
-      <td>00:18:43</td>
-      <td>SHOT</td>
-      <td>PIT ONGOAL - 11 STAAL, Wrist, Off. Zone, 11 ft.</td>
-      <td>C C L D D G</td>
-      <td>C C L D D G</td>
-      <td>PIT</td>
-    </tr>
-    <tr>
-      <th>315</th>
-      <td>316</td>
-      <td>3</td>
-      <td>EV</td>
-      <td>00:18:53</td>
-      <td>GIVE</td>
-      <td>OTT GIVEAWAY - #20 VERMETTE, Neu. Zone</td>
-      <td>C C L D D G</td>
-      <td>C C L D D G</td>
-      <td>OTT</td>
-    </tr>
-    <tr>
-      <th>316</th>
-      <td>317</td>
-      <td>3</td>
-      <td>EV</td>
-      <td>00:18:59</td>
-      <td>SHOT</td>
-      <td>PIT ONGOAL - 48 KENNEDY, Slap, Off. Zone, 26 ft.</td>
-      <td>C C L L D D</td>
-      <td>C C L D D G</td>
-      <td>PIT</td>
-    </tr>
-    <tr>
-      <th>317</th>
-      <td>318</td>
-      <td>3</td>
-      <td></td>
-      <td>00:19:00</td>
-      <td>STOP</td>
-      <td>PUCK IN NETTING,VISITOR TIMEOUT</td>
-      <td>C C L L D D</td>
-      <td>C C L D D G</td>
-      <td>PUCK</td>
-    </tr>
-    <tr>
-      <th>318</th>
-      <td>319</td>
-      <td>3</td>
-      <td>EV</td>
-      <td>00:19:00</td>
-      <td>FAC</td>
-      <td>OTT won Def. Zone - PIT #71 MALKIN vs OTT #12 ...</td>
-      <td>C R L L D D</td>
-      <td>C R L D D G</td>
-      <td>OTT</td>
-    </tr>
-    <tr>
-      <th>319</th>
-      <td>320</td>
-      <td>3</td>
-      <td>EV</td>
-      <td>00:19:06</td>
-      <td>HIT</td>
-      <td>OTT #12 FISHER HIT PIT #9 DUPUIS, Def. Zone</td>
-      <td>C R L L D D</td>
-      <td>C R L D D G</td>
-      <td>OTT</td>
-    </tr>
-    <tr>
-      <th>320</th>
-      <td>321</td>
-      <td>3</td>
-      <td>EV</td>
-      <td>00:19:14</td>
-      <td>HIT</td>
-      <td>OTT #12 FISHER HIT PIT #9 DUPUIS, Def. Zone</td>
-      <td>C R L L D D</td>
-      <td>C R L D D G</td>
-      <td>OTT</td>
-    </tr>
-    <tr>
-      <th>321</th>
-      <td>322</td>
-      <td>3</td>
-      <td>EV</td>
-      <td>00:19:35</td>
-      <td>MISS</td>
-      <td>PIT #71 MALKIN, Backhand, Wide of Net, Off. Zo...</td>
-      <td>C R L L D D</td>
-      <td>C R L D D G</td>
-      <td>PIT</td>
-    </tr>
-    <tr>
-      <th>322</th>
-      <td>323</td>
-      <td>3</td>
-      <td>EV</td>
-      <td>00:19:47</td>
-      <td>HIT</td>
-      <td>OTT #12 FISHER HIT PIT #71 MALKIN, Def. Zone</td>
-      <td>C R L L D D</td>
-      <td>C R L D D G</td>
-      <td>OTT</td>
-    </tr>
-    <tr>
-      <th>323</th>
-      <td>324</td>
-      <td>3</td>
-      <td>EV</td>
-      <td>00:19:55</td>
-      <td>BLOCK</td>
-      <td>PIT #55 GONCHAR BLOCKED BY  OTT #15 HEATLEY, W...</td>
-      <td>C R L L D D</td>
-      <td>C R L D D G</td>
-      <td>PIT</td>
-    </tr>
-    <tr>
-      <th>324</th>
-      <td>325</td>
-      <td>3</td>
-      <td></td>
-      <td>00:20:00</td>
-      <td>PEND</td>
-      <td>Period End- Local time: 5:40 EST</td>
-      <td>C R L L D D</td>
-      <td>C R L D D G</td>
-      <td>Period</td>
-    </tr>
-    <tr>
-      <th>325</th>
-      <td>326</td>
-      <td>3</td>
-      <td></td>
-      <td>00:20:00</td>
-      <td>GEND</td>
-      <td>Game End- Local time: 5:42 EST</td>
-      <td></td>
-      <td></td>
-      <td>Game</td>
-    </tr>
-  </tbody>
-</table>
-<p>326 rows × 9 columns</p>
-</div>
-</div>
-
-</div>
-
-</div>
-</div>
-
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[120]:</div>
+<div class="prompt input_prompt">In&nbsp;[&nbsp;]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">goalie_pull_game_search</span><span class="p">(</span>
@@ -14831,7 +13850,7 @@ file:///Users/alex/Documents/nhl-goalie-pull-optimization/data/raw/html/20072008
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[121]:</div>
+<div class="prompt input_prompt">In&nbsp;[&nbsp;]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">pulls</span> <span class="o">=</span> <span class="n">goalie_pull_game_search</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">team_info</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
@@ -14841,408 +13860,10 @@ file:///Users/alex/Documents/nhl-goalie-pull-optimization/data/raw/html/20072008
 </div>
 </div>
 
-<div class="output_wrapper">
-<div class="output">
-
-
-<div class="output_area">
-
-    <div class="prompt"></div>
-
-
-<div class="output_subarea output_stream output_stdout output_text">
-<pre>Looking at row 0, # = 1
-Looking at row 1, # = 2
-Looking at row 2, # = 3
-Looking at row 3, # = 4
-Looking at row 4, # = 5
-Looking at row 5, # = 6
-Looking at row 6, # = 7
-Looking at row 7, # = 8
-Looking at row 8, # = 9
-Looking at row 9, # = 10
-Looking at row 10, # = 11
-Looking at row 11, # = 12
-Looking at row 12, # = 13
-Looking at row 13, # = 14
-Looking at row 14, # = 15
-Looking at row 15, # = 16
-Looking at row 16, # = 17
-Looking at row 17, # = 18
-Looking at row 18, # = 19
-Looking at row 19, # = 20
-Looking at row 20, # = 21
-Looking at row 21, # = 22
-Looking at row 22, # = 23
-Looking at row 23, # = 24
-Looking at row 24, # = 25
-Looking at row 25, # = 26
-Looking at row 26, # = 27
-Looking at row 27, # = 28
-Looking at row 28, # = 29
-Looking at row 29, # = 30
-Looking at row 30, # = 31
-Looking at row 31, # = 32
-Looking at row 32, # = 33
-Looking at row 33, # = 34
-Looking at row 34, # = 35
-Looking at row 35, # = 36
-Looking at row 36, # = 37
-Looking at row 37, # = 38
-Looking at row 38, # = 39
-Looking at row 39, # = 40
-Looking at row 40, # = 41
-Looking at row 41, # = 42
-Looking at row 42, # = 43
-Looking at row 43, # = 44
-Looking at row 44, # = 45
-Looking at row 45, # = 46
-Looking at row 46, # = 47
-Looking at row 47, # = 48
-Looking at row 48, # = 49
-Looking at row 49, # = 50
-Looking at row 50, # = 51
-Looking at row 51, # = 52
-Looking at row 52, # = 53
-Looking at row 53, # = 54
-Looking at row 54, # = 55
-Looking at row 55, # = 56
-Looking at row 56, # = 57
-Looking at row 57, # = 58
-Looking at row 58, # = 59
-Looking at row 59, # = 60
-Looking at row 60, # = 61
-Looking at row 61, # = 62
-Looking at row 62, # = 63
-Looking at row 63, # = 64
-Looking at row 64, # = 65
-Looking at row 65, # = 66
-Looking at row 66, # = 67
-Looking at row 67, # = 68
-Looking at row 68, # = 69
-Looking at row 69, # = 70
-Looking at row 70, # = 71
-Looking at row 71, # = 72
-Looking at row 72, # = 73
-Looking at row 73, # = 74
-Looking at row 74, # = 75
-Looking at row 75, # = 76
-Looking at row 76, # = 77
-Looking at row 77, # = 78
-Looking at row 78, # = 79
-Looking at row 79, # = 80
-Looking at row 80, # = 81
-Looking at row 81, # = 82
-Looking at row 82, # = 83
-Looking at row 83, # = 84
-Looking at row 84, # = 85
-Looking at row 85, # = 86
-Looking at row 86, # = 87
-Looking at row 87, # = 88
-Looking at row 88, # = 89
-Looking at row 89, # = 90
-Looking at row 90, # = 91
-Looking at row 91, # = 92
-Looking at row 92, # = 93
-Looking at row 93, # = 94
-Looking at row 94, # = 95
-Looking at row 95, # = 96
-Looking at row 96, # = 97
-Looking at row 97, # = 98
-Looking at row 98, # = 99
-Looking at row 99, # = 100
-Looking at row 100, # = 101
-Looking at row 101, # = 102
-Looking at row 102, # = 103
-Looking at row 103, # = 104
-Looking at row 104, # = 105
-Looking at row 105, # = 106
-Looking at row 106, # = 107
-Looking at row 107, # = 108
-Looking at row 108, # = 109
-Looking at row 109, # = 110
-Looking at row 110, # = 111
-Looking at row 111, # = 112
-Looking at row 112, # = 113
-team, period, time = 
-{&#39;team_name&#39;: &#39;PIT&#39;, &#39;pull_period&#39;: 2, &#39;pull_time&#39;: Timedelta(&#39;0 days 00:10:00&#39;)}
-Searching for a goal or end of game
-Looking at row 113, # = 114
-Searching for a goal or end of game
-Looking at row 114, # = 115
-Searching for a goal or end of game
-Looking at row 115, # = 116
-Searching for a goal or end of game
-Looking at row 116, # = 117
-Searching for a goal or end of game
-Looking at row 117, # = 118
-Searching for a goal or end of game
-Looking at row 118, # = 119
-Searching for a goal or end of game
-Looking at row 119, # = 120
-Searching for a goal or end of game
-Found goal after a pull, setting goal against time as 0 days 00:01:30
-Goalie was back in the net
-Looking at row 120, # = 121
-Looking at row 121, # = 122
-Looking at row 122, # = 123
-Looking at row 123, # = 124
-Looking at row 124, # = 125
-Looking at row 125, # = 126
-Looking at row 126, # = 127
-Looking at row 127, # = 128
-Looking at row 128, # = 129
-Looking at row 129, # = 130
-Looking at row 130, # = 131
-Looking at row 131, # = 132
-Looking at row 132, # = 133
-Looking at row 133, # = 134
-Looking at row 134, # = 135
-Looking at row 135, # = 136
-Looking at row 136, # = 137
-Looking at row 137, # = 138
-Looking at row 138, # = 139
-Looking at row 139, # = 140
-Looking at row 140, # = 141
-Looking at row 141, # = 142
-Looking at row 142, # = 143
-Looking at row 143, # = 144
-Looking at row 144, # = 145
-Looking at row 145, # = 146
-Looking at row 146, # = 147
-Looking at row 147, # = 148
-Looking at row 148, # = 149
-Looking at row 149, # = 150
-Looking at row 150, # = 151
-Looking at row 151, # = 152
-Looking at row 152, # = 153
-Looking at row 153, # = 154
-Looking at row 154, # = 155
-Looking at row 155, # = 156
-Looking at row 156, # = 157
-Looking at row 157, # = 158
-Looking at row 158, # = 159
-Looking at row 159, # = 160
-Looking at row 160, # = 161
-Looking at row 161, # = 162
-Looking at row 162, # = 163
-Looking at row 163, # = 164
-Looking at row 164, # = 165
-Looking at row 165, # = 166
-Looking at row 166, # = 167
-Looking at row 167, # = 168
-Looking at row 168, # = 169
-Looking at row 169, # = 170
-Looking at row 170, # = 171
-Looking at row 171, # = 172
-Looking at row 172, # = 173
-Looking at row 173, # = 174
-Looking at row 174, # = 175
-Looking at row 175, # = 176
-Looking at row 176, # = 177
-Looking at row 177, # = 178
-Looking at row 178, # = 179
-Looking at row 179, # = 180
-Looking at row 180, # = 181
-Looking at row 181, # = 182
-Looking at row 182, # = 183
-Looking at row 183, # = 184
-Looking at row 184, # = 185
-Looking at row 185, # = 186
-Looking at row 186, # = 187
-Looking at row 187, # = 188
-Looking at row 188, # = 189
-Looking at row 189, # = 190
-Looking at row 190, # = 191
-Looking at row 191, # = 192
-Looking at row 192, # = 193
-Looking at row 193, # = 194
-Looking at row 194, # = 195
-Looking at row 195, # = 196
-Looking at row 196, # = 197
-Looking at row 197, # = 198
-Looking at row 198, # = 199
-Looking at row 199, # = 200
-Looking at row 200, # = 201
-Looking at row 201, # = 202
-Looking at row 202, # = 203
-Looking at row 203, # = 204
-Looking at row 204, # = 205
-Looking at row 205, # = 206
-Looking at row 206, # = 207
-Looking at row 207, # = 208
-Looking at row 208, # = 209
-Looking at row 209, # = 210
-Looking at row 210, # = 211
-Looking at row 211, # = 212
-Looking at row 212, # = 213
-Looking at row 213, # = 214
-Looking at row 214, # = 215
-Looking at row 215, # = 216
-Looking at row 216, # = 217
-Looking at row 217, # = 218
-Looking at row 218, # = 219
-Looking at row 219, # = 220
-Looking at row 220, # = 221
-Looking at row 221, # = 222
-Looking at row 222, # = 223
-Looking at row 223, # = 224
-Looking at row 224, # = 225
-Looking at row 225, # = 226
-Looking at row 226, # = 227
-Looking at row 227, # = 228
-Looking at row 228, # = 229
-Looking at row 229, # = 230
-Looking at row 230, # = 231
-Looking at row 231, # = 232
-Looking at row 232, # = 233
-Looking at row 233, # = 234
-Looking at row 234, # = 235
-Looking at row 235, # = 236
-Looking at row 236, # = 237
-Looking at row 237, # = 238
-Looking at row 238, # = 239
-Looking at row 239, # = 240
-Looking at row 240, # = 241
-Looking at row 241, # = 242
-Looking at row 242, # = 243
-Looking at row 243, # = 244
-Looking at row 244, # = 245
-Looking at row 245, # = 246
-Looking at row 246, # = 247
-Looking at row 247, # = 248
-Looking at row 248, # = 249
-Looking at row 249, # = 250
-Looking at row 250, # = 251
-Looking at row 251, # = 252
-Looking at row 252, # = 253
-Looking at row 253, # = 254
-Looking at row 254, # = 255
-Looking at row 255, # = 256
-Looking at row 256, # = 257
-Looking at row 257, # = 258
-Looking at row 258, # = 259
-Looking at row 259, # = 260
-Looking at row 260, # = 261
-Looking at row 261, # = 262
-Looking at row 262, # = 263
-Looking at row 263, # = 264
-Looking at row 264, # = 265
-team, period, time = 
-{&#39;team_name&#39;: &#39;OTT&#39;, &#39;pull_period&#39;: 3, &#39;pull_time&#39;: Timedelta(&#39;0 days 00:09:36&#39;)}
-Searching for a goal or end of game
-Looking at row 265, # = 266
-Searching for a goal or end of game
-Looking at row 266, # = 267
-Searching for a goal or end of game
-Looking at row 267, # = 268
-Searching for a goal or end of game
-Looking at row 268, # = 269
-Searching for a goal or end of game
-Looking at row 269, # = 270
-Searching for a goal or end of game
-Looking at row 270, # = 271
-Searching for a goal or end of game
-Looking at row 271, # = 272
-Searching for a goal or end of game
-Looking at row 272, # = 273
-Searching for a goal or end of game
-Looking at row 273, # = 274
-Searching for a goal or end of game
-Looking at row 274, # = 275
-Searching for a goal or end of game
-Looking at row 275, # = 276
-Searching for a goal or end of game
-Looking at row 276, # = 277
-Searching for a goal or end of game
-Looking at row 277, # = 278
-Searching for a goal or end of game
-Looking at row 278, # = 279
-Searching for a goal or end of game
-Looking at row 279, # = 280
-Searching for a goal or end of game
-Looking at row 280, # = 281
-Searching for a goal or end of game
-Looking at row 281, # = 282
-Searching for a goal or end of game
-Looking at row 282, # = 283
-Searching for a goal or end of game
-Looking at row 283, # = 284
-Searching for a goal or end of game
-Looking at row 284, # = 285
-Searching for a goal or end of game
-Looking at row 285, # = 286
-Searching for a goal or end of game
-Looking at row 286, # = 287
-Searching for a goal or end of game
-Looking at row 287, # = 288
-Searching for a goal or end of game
-Looking at row 288, # = 289
-Searching for a goal or end of game
-Looking at row 289, # = 290
-Searching for a goal or end of game
-Found goal after a pull, setting goal against time as 0 days 00:14:06
-Goalie was back in the net
-Looking at row 290, # = 291
-Looking at row 291, # = 292
-Looking at row 292, # = 293
-Looking at row 293, # = 294
-Looking at row 294, # = 295
-Looking at row 295, # = 296
-Looking at row 296, # = 297
-Looking at row 297, # = 298
-Looking at row 298, # = 299
-Looking at row 299, # = 300
-Looking at row 300, # = 301
-Looking at row 301, # = 302
-Looking at row 302, # = 303
-Looking at row 303, # = 304
-Looking at row 304, # = 305
-Looking at row 305, # = 306
-Looking at row 306, # = 307
-Looking at row 307, # = 308
-Looking at row 308, # = 309
-Looking at row 309, # = 310
-Looking at row 310, # = 311
-Looking at row 311, # = 312
-Looking at row 312, # = 313
-Looking at row 313, # = 314
-Looking at row 314, # = 315
-Looking at row 315, # = 316
-Looking at row 316, # = 317
-team, period, time = 
-{&#39;team_name&#39;: &#39;PIT&#39;, &#39;pull_period&#39;: 3, &#39;pull_time&#39;: Timedelta(&#39;0 days 00:18:56&#39;)}
-Searching for a goal or end of game
-Looking at row 317, # = 318
-Searching for a goal or end of game
-Looking at row 318, # = 319
-Searching for a goal or end of game
-Looking at row 319, # = 320
-Searching for a goal or end of game
-Looking at row 320, # = 321
-Searching for a goal or end of game
-Looking at row 321, # = 322
-Searching for a goal or end of game
-Looking at row 322, # = 323
-Searching for a goal or end of game
-Looking at row 323, # = 324
-Searching for a goal or end of game
-Looking at row 324, # = 325
-Searching for a goal or end of game
-Looking at row 325, # = 326
-<span class="ansi-red-fg">Game end with no goalie in net!</span>
-Searching for a goal or end of game
-</pre>
-</div>
-</div>
-
-</div>
-</div>
-
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[122]:</div>
+<div class="prompt input_prompt">In&nbsp;[&nbsp;]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">pulls</span>
@@ -15252,33 +13873,10 @@ Searching for a goal or end of game
 </div>
 </div>
 
-<div class="output_wrapper">
-<div class="output">
-
-
-<div class="output_area">
-
-    <div class="prompt output_prompt">Out[122]:</div>
-
-
-
-
-<div class="output_text output_subarea output_execute_result">
-<pre>[{&#39;team_name&#39;: &#39;PIT&#39;,
-  &#39;pull_period&#39;: 3,
-  &#39;pull_time&#39;: Timedelta(&#39;0 days 00:18:56&#39;),
-  &#39;game_end_time&#39;: Timedelta(&#39;0 days 00:20:00&#39;)}]</pre>
-</div>
-
-</div>
-
-</div>
-</div>
-
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[137]:</div>
+<div class="prompt input_prompt">In&nbsp;[&nbsp;]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">center_el</span> <span class="o">=</span> <span class="n">soup</span><span class="o">.</span><span class="n">find_all</span><span class="p">(</span><span class="s1">&#39;table&#39;</span><span class="p">,</span> <span class="p">{</span><span class="s1">&#39;id&#39;</span><span class="p">:</span> <span class="s1">&#39;GameInfo&#39;</span><span class="p">})[</span><span class="mi">0</span><span class="p">]</span>
@@ -15291,7 +13889,7 @@ Searching for a goal or end of game
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[144]:</div>
+<div class="prompt input_prompt">In&nbsp;[&nbsp;]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">center_el</span>
@@ -15301,55 +13899,10 @@ Searching for a goal or end of game
 </div>
 </div>
 
-<div class="output_wrapper">
-<div class="output">
-
-
-<div class="output_area">
-
-    <div class="prompt output_prompt">Out[144]:</div>
-
-
-
-
-<div class="output_text output_subarea output_execute_result">
-<pre>&lt;table align=&#34;center&#34; border=&#34;0&#34; cellpadding=&#34;0&#34; cellspacing=&#34;0&#34; id=&#34;GameInfo&#34;&gt;
-&lt;tr&gt;
-&lt;td align=&#34;center&#34; style=&#34;font-size: 14px;font-weight:bold&#34;&gt;Le Match en Résumé&lt;br/&gt;Play By Play&lt;/td&gt;
-&lt;/tr&gt;
-&lt;tr&gt;
-&lt;td align=&#34;center&#34; style=&#34;font-size: 14px;font-weight:bold&#34;&gt; &lt;/td&gt;
-&lt;/tr&gt;
-&lt;tr&gt;
-&lt;td align=&#34;center&#34; style=&#34;font-size: 10px;font-weight:bold&#34;&gt;Game&lt;/td&gt;
-&lt;/tr&gt;
-&lt;tr&gt;
-&lt;td align=&#34;center&#34; style=&#34;font-size: 10px;font-weight:bold&#34;&gt;Saturday, March 1, 2008&lt;/td&gt;
-&lt;/tr&gt;
-&lt;tr&gt;
-&lt;td align=&#34;center&#34; style=&#34;font-size: 10px;font-weight:bold&#34;&gt;Ass./Att. 20,153 @ Scotiabank Place&lt;/td&gt;
-&lt;/tr&gt;
-&lt;tr&gt;
-&lt;td align=&#34;center&#34; style=&#34;font-size: 10px;font-weight:bold&#34;&gt;Début/Start 3:10 EST; Fin/End 5:40 EST&lt;/td&gt;
-&lt;/tr&gt;
-&lt;tr&gt;
-&lt;td align=&#34;center&#34; style=&#34;font-size: 10px;font-weight:bold&#34;&gt;Match/Game 0980&lt;/td&gt;
-&lt;/tr&gt;
-&lt;tr&gt;
-&lt;td align=&#34;center&#34; style=&#34;font-size: 10px;font-weight:bold&#34;&gt;Final&lt;/td&gt;
-&lt;/tr&gt;
-&lt;/table&gt;</pre>
-</div>
-
-</div>
-
-</div>
-</div>
-
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[145]:</div>
+<div class="prompt input_prompt">In&nbsp;[&nbsp;]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">game_number</span> <span class="o">=</span> <span class="n">center_el</span><span class="o">.</span><span class="n">find_all</span><span class="p">(</span><span class="s1">&#39;tr&#39;</span><span class="p">)[</span><span class="mi">6</span><span class="p">]</span><span class="o">.</span><span class="n">text</span><span class="o">.</span><span class="n">split</span><span class="p">()[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">lstrip</span><span class="p">(</span><span class="s1">&#39;0&#39;</span><span class="p">)</span>
@@ -15362,7 +13915,7 @@ Searching for a goal or end of game
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[146]:</div>
+<div class="prompt input_prompt">In&nbsp;[&nbsp;]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">game_number</span>
@@ -15372,30 +13925,10 @@ Searching for a goal or end of game
 </div>
 </div>
 
-<div class="output_wrapper">
-<div class="output">
-
-
-<div class="output_area">
-
-    <div class="prompt output_prompt">Out[146]:</div>
-
-
-
-
-<div class="output_text output_subarea output_execute_result">
-<pre>&#39;980&#39;</pre>
-</div>
-
-</div>
-
-</div>
-</div>
-
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[155]:</div>
+<div class="prompt input_prompt">In&nbsp;[&nbsp;]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">date</span> <span class="o">=</span> <span class="n">center_el</span><span class="o">.</span><span class="n">find_all</span><span class="p">(</span><span class="s1">&#39;tr&#39;</span><span class="p">)[</span><span class="mi">3</span><span class="p">]</span><span class="o">.</span><span class="n">text</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
@@ -15408,7 +13941,7 @@ Searching for a goal or end of game
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[156]:</div>
+<div class="prompt input_prompt">In&nbsp;[&nbsp;]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">date</span>
@@ -15418,26 +13951,6 @@ Searching for a goal or end of game
 </div>
 </div>
 
-<div class="output_wrapper">
-<div class="output">
-
-
-<div class="output_area">
-
-    <div class="prompt output_prompt">Out[156]:</div>
-
-
-
-
-<div class="output_text output_subarea output_execute_result">
-<pre>&#39;Saturday, March 1, 2008&#39;</pre>
-</div>
-
-</div>
-
-</div>
-</div>
-
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
@@ -15467,7 +13980,7 @@ Searching for a goal or end of game
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[157]:</div>
+<div class="prompt input_prompt">In&nbsp;[&nbsp;]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">get_game_meta</span><span class="p">(</span><span class="n">soup</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
@@ -15490,26 +14003,6 @@ Searching for a goal or end of game
 </div>
 </div>
 
-<div class="output_wrapper">
-<div class="output">
-
-
-<div class="output_area">
-
-    <div class="prompt output_prompt">Out[157]:</div>
-
-
-
-
-<div class="output_text output_subarea output_execute_result">
-<pre>{&#39;game_number&#39;: &#39;980&#39;, &#39;date&#39;: &#39;Saturday, March 1, 2008&#39;}</pre>
-</div>
-
-</div>
-
-</div>
-</div>
-
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
@@ -15524,44 +14017,26 @@ Searching for a goal or end of game
 </div>
 
 </div>
-<div class="cell border-box-sizing code_cell rendered">
-<div class="input">
-<div class="prompt input_prompt">In&nbsp;[&nbsp;]:</div>
-<div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span> 
-</pre></div>
-
-    </div>
-</div>
-</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
 
 </div>
-<div class="cell border-box-sizing code_cell rendered">
-<div class="input">
-<div class="prompt input_prompt">In&nbsp;[&nbsp;]:</div>
-<div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span> 
-</pre></div>
-
-    </div>
 </div>
 </div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
 
 </div>
-<div class="cell border-box-sizing code_cell rendered">
-<div class="input">
-<div class="prompt input_prompt">In&nbsp;[27]:</div>
-<div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span> 
-</pre></div>
-
-    </div>
 </div>
 </div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
 
+</div>
+</div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
@@ -16311,10 +14786,10 @@ Searching for a goal or end of game
 
  
  
-<div id="2580a724-baab-4274-a72b-e531959ae370"></div>
+<div id="13b098bb-8698-4622-8f85-47686308f4ea"></div>
 <div class="output_subarea output_widget_view ">
 <script type="text/javascript">
-var element = $('#2580a724-baab-4274-a72b-e531959ae370');
+var element = $('#13b098bb-8698-4622-8f85-47686308f4ea');
 </script>
 <script type="application/vnd.jupyter.widget-view+json">
 {"model_id": "7c4e18d2eb8147398122c5d508eb0291", "version_major": 2, "version_minor": 0}
@@ -16802,10 +15277,10 @@ Testing mode - stopping script at True
 
  
  
-<div id="5e0fe242-8726-42c7-b668-1770ba43a98c"></div>
+<div id="6681ad8b-7c68-4a0c-bcb9-3e5404cfc928"></div>
 <div class="output_subarea output_widget_view ">
 <script type="text/javascript">
-var element = $('#5e0fe242-8726-42c7-b668-1770ba43a98c');
+var element = $('#6681ad8b-7c68-4a0c-bcb9-3e5404cfc928');
 </script>
 <script type="application/vnd.jupyter.widget-view+json">
 {"model_id": "1124f5b2cd484ae9aaf3f2452be73e38", "version_major": 2, "version_minor": 0}
@@ -28076,45 +26551,6 @@ Too early in game, not counting it
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">df_goalie_pull</span><span class="o">.</span><span class="n">to_pickle</span><span class="p">(</span><span class="s1">&#39;../data/pkl/20032004_goalie_pulls_2019-02-13.pkl&#39;</span><span class="p">)</span>
-</pre></div>
-
-    </div>
-</div>
-</div>
-
-</div>
-<div class="cell border-box-sizing code_cell rendered">
-<div class="input">
-<div class="prompt input_prompt">In&nbsp;[&nbsp;]:</div>
-<div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span> 
-</pre></div>
-
-    </div>
-</div>
-</div>
-
-</div>
-<div class="cell border-box-sizing code_cell rendered">
-<div class="input">
-<div class="prompt input_prompt">In&nbsp;[&nbsp;]:</div>
-<div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span> 
-</pre></div>
-
-    </div>
-</div>
-</div>
-
-</div>
-<div class="cell border-box-sizing code_cell rendered">
-<div class="input">
-<div class="prompt input_prompt">In&nbsp;[&nbsp;]:</div>
-<div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span> 
 </pre></div>
 
     </div>

@@ -171,24 +171,43 @@ def goalie_pull_game_search(
     out = []
     pull_threshold = datetime.timedelta(minutes=15)
 
-    o = {}
     prev_row = None
     prev_row_players = ['', '']
     pull_team = ''
     pull_switch = False
     goal_switch = False
+    o = {}
     
-    i_final_row = game_df.index[-1]
+    # Break once we hit the final row of the 3rd period
+    i_final_row = game_df[game_df.per == 3].index[-1]
 
     for i, row in game_df.iterrows():
         if verbose:
             print(f'Looking at row {i}, # = {row["#"]}')
         if prev_row is None:
             prev_row = row.copy()
+        if i == i_final_row:
+            # Check if game ended 5 on 6
+            if o:
+                print(Fore.RED + f'Game end with no goalie in net!' + Style.RESET_ALL)
+                o['game_end_time'] = row.time
+                out.append(o.copy())
+                break
+        if row.per != 3:
+            if verbose:
+                print('Not in 3rd period, skipping row')
+            continue
                  
         visitor_g_pull = 'G' not in row.visitor_on_ice
         home_g_pull = 'G' not in row.home_on_ice
-        if visitor_g_pull or home_g_pull:
+        candidate_row = all((row.visitor_on_ice.strip(),
+                             row.home_on_ice.strip()))
+        if not any((visitor_g_pull, home_g_pull)):
+            # No goalie is pulled. Set switch off
+            pull_switch = False
+            o = {}
+                  
+        if (visitor_g_pull or home_g_pull) and candidate_row:
             if not pull_switch:
                 # The goalie was just pulled
                 pull_switch = True
@@ -204,17 +223,11 @@ def goalie_pull_game_search(
                 o['pull_time'] = (row.time + prev_row.time) / 2
                 if verbose:
                     print(f'team, period, time = \n{o}')
-
-        if i == i_final_row:
-            # Check if game ended 5 on 6
-            if o:
-                print(Fore.RED + f'Game end with no goalie in net!' + Style.RESET_ALL)
-                o['game_end_time'] = row.time
-                out.append(o.copy())
                   
         # Search for an event (goal for / against / end of game)
         if pull_switch:
-            print('Searching for a goal or end of game')
+            if verbose:
+                print('Searching for a goal or end of game')
             if row.event.lower() == 'goal':
                 print(f'Found goal after a pull, setting goal against time as {row.time}')
                 if row.team == o['team_name']:
@@ -298,7 +311,7 @@ def parse_game(
     visitor_goalie_pull_idx = ~(game_df.visitor_on_ice.str.contains('G'))
     home_goalie_pull_idx = ~(game_df.home_on_ice.str.contains('G'))
     if not (visitor_goalie_pull_idx.sum() + home_goalie_pull_idx.sum()):
-        return []    
+        return []
     
     # For each goalie pull, determine the outcome
     game_5on6_data = goalie_pull_game_search(
@@ -351,6 +364,7 @@ def make_final_df(
 def parse_game_range(
     seasons: list,
     test: bool = False,
+    verbose: bool = False
 ) -> pd.DataFrame:
     '''
     Parse every game for a given season.
@@ -382,7 +396,8 @@ def parse_game_range(
     data = []
     for season in seasons:        
         search_string = os.path.join(root_data_path, season, '*.html')
-        html_files = glob.glob(search_string)
+        html_files = sorted(glob.glob(search_string),
+                            key=lambda x: int(re.match(r'(\d+)', os.path.split(x)[-1]).group(1)))
         print(f'Found {len(html_files)} files')
         i = 0
         for file in tqdm_notebook(html_files):
@@ -404,7 +419,7 @@ def parse_game_range(
                 continue
             
             try:
-                d = parse_game(soup, cols, season)
+                d = parse_game(soup, cols, season, verbose)
                 if not d:
                     continue
             except Exception as e:
@@ -418,7 +433,7 @@ def parse_game_range(
     return df
 
 
-def test_parse_game_range(season, game_number):
+def test_parse_game_range(season, game_number, verbose=True):
     '''
     Parse a specific game with verbose output.
     '''
@@ -450,7 +465,7 @@ def test_parse_game_range(season, game_number):
             raise e
 
     try:
-        d = parse_game(soup, cols, season, verbose=True)
+        d = parse_game(soup, cols, season, verbose)
         if not d:
             print('No return from parse_game')
     except Exception as e:
@@ -462,7 +477,10 @@ def test_parse_game_range(season, game_number):
     return df
 
 
-test_parse_game_range('20072008', 980)
+test_parse_game_range('20092010', 219)
+
+
+test_parse_game_range('20092010', 219, verbose=False)
 
 
 seasons = ['20072008']
@@ -470,32 +488,7 @@ seasons = ['20072008']
 data, df_goalie_pull = parse_game_range(seasons, test=True)
 
 
-test_parse_game_range('20172018', 980)
-
-
-seasons = ['20072008', '20082009', '20092010',
-           '20102011', '20112012', '20122013',
-           '20132014', '20142015', '20152016',
-          '20162017']
-
-dfs = []
-for season in seasons:
-    df_goalie_pull = parse_game_range([season])
-    dfs.append(df_goalie_pull)
-    df_goalie_pull.to_csv('../../data/processed/csv/{}_goalie_pulls_2019-04-22.csv'.format(season),
-                          index=False)
-    df_goalie_pull.to_pickle('../../data/processed/pkl/{}_goalie_pulls_2019-04-22.pkl'.format(season))
-
-
-seasons = ['20172018', '20182019']
-
-dfs = []
-for season in seasons:
-    df_goalie_pull = parse_game_range([season])
-    dfs.append(df_goalie_pull)
-    df_goalie_pull.to_csv('../../data/processed/csv/{}_goalie_pulls_2019-04-23.csv'.format(season),
-                          index=False)
-    df_goalie_pull.to_pickle('../../data/processed/pkl/{}_goalie_pulls_2019-04-23.pkl'.format(season))
+get_ipython().run_cell_magic('time', '', "\nseasons = ['20072008', '20082009', '20092010',\n           '20102011', '20112012', '20122013',\n           '20132014', '20142015', '20152016',\n          '20162017', '20172018', '20182019']\n\ndfs = []\nfor season in seasons:\n    df_goalie_pull = parse_game_range([season])\n    dfs.append(df_goalie_pull)\n    df_goalie_pull.to_csv('../../data/processed/csv/{}_goalie_pulls_2019-04-25.csv'.format(season),\n                          index=False)\n    df_goalie_pull.to_pickle('../../data/processed/pkl/{}_goalie_pulls_2019-04-25.pkl'.format(season))")
 
 
 
