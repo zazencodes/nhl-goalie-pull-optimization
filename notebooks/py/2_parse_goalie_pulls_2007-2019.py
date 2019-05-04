@@ -410,9 +410,13 @@ def parse_game_range(
             
             print(f'Processing file {file}')
             try:
+                if season in ('20072008', '20082009',):
+                    parser = 'html.parser'
+                else:
+                    parser = 'lxml'
                 with open(file, 'r') as f:
                     page_text = f.read()
-                    soup = BeautifulSoup(page_text, 'lxml')
+                    soup = BeautifulSoup(page_text, parser)
             except Exception as e:
                 print(f'Unable to read/parse file {file}')
                 print(str(e))
@@ -477,7 +481,7 @@ def test_parse_game_range(season, game_number, verbose=True):
     return df
 
 
-test_parse_game_range('20092010', 219)
+test_parse_game_range('20072008', 20)
 
 
 test_parse_game_range('20092010', 219, verbose=False)
@@ -491,19 +495,55 @@ data, df_goalie_pull = parse_game_range(seasons, test=True)
 get_ipython().run_cell_magic('time', '', "\nseasons = ['20072008', '20082009', '20092010',\n           '20102011', '20112012', '20122013',\n           '20132014', '20142015', '20152016',\n          '20162017', '20172018', '20182019']\n\ndfs = []\nfor season in seasons:\n    df_goalie_pull = parse_game_range([season])\n    dfs.append(df_goalie_pull)\n    df_goalie_pull.to_csv('../../data/processed/csv/{}_goalie_pulls_2019-04-25.csv'.format(season),\n                          index=False)\n    df_goalie_pull.to_pickle('../../data/processed/pkl/{}_goalie_pulls_2019-04-25.pkl'.format(season))")
 
 
+get_ipython().run_cell_magic('time', '', "\nseasons = ['20072008', '20082009',]\n\ndfs = []\nfor season in seasons:\n    df_goalie_pull = parse_game_range([season])\n    dfs.append(df_goalie_pull)\n    df_goalie_pull.to_csv('../../data/processed/csv/{}_goalie_pulls_2019-04-25.csv'.format(season),\n                          index=False)\n    df_goalie_pull.to_pickle('../../data/processed/pkl/{}_goalie_pulls_2019-04-25.pkl'.format(season))")
 
 
 
 
 
+# ## Test / debug
+
+# There was some issues parsing the table for 2007-2009. Here we run through all the files to make sure they parse OK
+
+ERRORS = []
+
+seasons = ['20072008', '20082009', '20092010',
+           '20102011', '20112012', '20122013',
+           '20132014', '20142015', '20152016',
+          '20162017', '20172018', '20182019']
+root_data_path = '../../data/raw/html'
+
+lengths = []
+for season in seasons:
+    print(f'Processing season {season}')
+    search_string = os.path.join(root_data_path, season, '*.html')
+    html_files = sorted(glob.glob(search_string),
+                        key=lambda x: int(re.match(r'(\d+)', os.path.split(x)[-1]).group(1)))
+    print(f'Found {len(html_files)} files. Parsing...')
+    for file in html_files:
+        try:
+            if season in ('20072008', '20082009',):
+                parser = 'html.parser'
+            else:
+                parser = 'lxml'
+            with open(file, 'r') as f:
+                page_text = f.read()
+                soup = BeautifulSoup(page_text, parser)
+                df, _ = get_game_df(soup)
+                lengths.append([season, file, '', len(df)])
+
+        except Exception as e:
+            print('WARNING: error raised\n{}'.format(e))
+            ERRORS.append([season, file, str(e), float('nan')])
+            
+df = pd.DataFrame(lengths, columns=['season', 'file', 'error', 'length'])
 
 
+ERRORS
 
 
-
-
-
-
+get_ipython().run_line_magic('matplotlib', 'inline')
+df.dropna().length.plot.hist()
 
 
 
