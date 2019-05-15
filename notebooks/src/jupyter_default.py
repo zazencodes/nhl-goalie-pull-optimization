@@ -32,8 +32,11 @@ plt.rc('axes', titlesize=BIGGER_SIZE)
 def savefig(plt, name):
     plt.savefig(f'../../figures/{name}.png', bbox_inches='tight', dpi=300)
 
-%load_ext version_information
+%reload_ext autoreload
+%autoreload 2
+    
+%reload_ext version_information
 %version_information pandas, numpy
 
 from IPython.display import HTML
-HTML('<style>div.text_cell_render{font-size:130%;}</style>')
+HTML('<style>div.text_cell_render{font-size:130%;padding-top:50px;padding-bottom:50px}</style>')

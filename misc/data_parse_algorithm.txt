@@ -1,0 +1,21 @@
+pulls = []
+for season in seasons:
+  for game in season.games:
+    goal_scan = False
+    for row in game.game_sheet_rows:
+       # Look for goalie pull
+       if row.is_goalie_pull:
+         goal_scan = True
+		 pulled_goalie = row.pulled_goalie
+		 pulled_time = row.time
+	   if goal_scan:
+	     # There has been a pull, scanning for a goal
+		 if row.is_goal:
+		   if pulled_goalie not in row.players_on_ice:
+		     # We have found an empty net goal
+			 pulls.append({
+			   "season_game": [season, game],
+			   "pulled_time": pulled_time,
+			   "goal_time": goal_time
+			 })
+
