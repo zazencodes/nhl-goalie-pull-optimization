@@ -148,6 +148,9 @@ plt.ylabel('Total Goalie Pulls')
 savefig('goalie_pulls_by_season')
 
 
+print([lab.get_text() for lab in ax.get_xticklabels()])
+
+
 fig, ax = plt.subplots()
 iterables = zip(['orange', 'red', 'green'],
                 ['no_goals', 'goal_against', 'goal_for'])
@@ -156,22 +159,31 @@ axes = []
 for c, label in iterables:
     m = df.label==label
     s = df[m].groupby('season').size().sort_index(ascending=True).rename(label).reset_index()
-    axes.append(s.plot(marker='o', lw=0, ax=ax, ms=10, color=c, label=label))
+    s.loc[s.season == '20122013', label] = float('nan')
+    s.plot(marker='o', lw=0, ax=ax, ms=10, color=c, label=label)
     plt.legend()
 
-ax.set_xticklabels(s.season.tolist());
+# ax.set_xticklabels(s.season.tolist());
 ax.set_ylim(0, 600)
 plt.ylabel('Total Counts')
+
+# Assign tick names
+label_map = {str(i): s for i, s in enumerate(s.season.tolist())}
+fig.canvas.draw()
+labels = [lab.get_text() for lab in ax.get_xticklabels()]
+ax.set_xticklabels([label_map.get(lab, '') for lab in labels])
+
 savefig('goalie_pull_outcomes_by_season')
 
 
 col = 'pull_time'
-(df[col].astype('timedelta64[s]') / 60)    .plot.hist(bins=50,
+(df[col].astype('timedelta64[s]') / 60)    .plot.hist(bins=100,
                color='b',
                histtype='stepfilled')
 plt.xlabel('Time elapsed in 3rd period (minutes)')
 plt.yticks([])
-savefig(plt, 'goalie_pull_game_times_hist')
+plt.xlim(14, 20)
+savefig('goalie_pull_game_times_hist')
 
 
 # We're interested in knowing about the outcome, given the pull time. This way we can look at the odds of scoring as a function of game time elapsed.
@@ -190,38 +202,41 @@ iterables = zip(['orange', 'red', 'green'],
 for c, label in iterables:
     (df[df.label==label]['pull_time_seconds']
          .plot.hist(bins=60,
-                    alpha=0.6,
+                    alpha=0.5,
                     color=c,
                     histtype='stepfilled',
                     label=label))
 
 plt.xlabel('Time elapsed in 3rd period (minutes)')
 plt.yticks([])
+plt.xlim(14, 20)
 plt.legend()
 
-savefig(plt, 'goalie_pull_outcomes_game_times_hist')
+savefig('goalie_pull_outcomes_game_times_hist')
 del df['pull_time_seconds']
 
 
 cols = ['goal_for_time', 'goal_against_time']
-(df[cols].astype('timedelta64[s]') / 60)    .plot.hist(bins=50,
+(df[cols].astype('timedelta64[s]') / 60)    .plot.hist(bins=100,
                alpha=0.5,
                color=['green', 'red'],
                histtype='stepfilled')
 plt.xlabel('Time elapsed in 3rd period (minutes)')
 plt.yticks([])
-savefig(plt, '5_on_6_goals')
+plt.xlim(14, 20)
+savefig('5_on_6_goals')
 
 
 cols = ['goal_for_time', 'goal_against_time']
-(df[cols].astype('timedelta64[s]') / 60)    .plot.hist(bins=50,
+(df[cols].astype('timedelta64[s]') / 60)    .plot.hist(bins=100,
                alpha=0.5,
                density='normed',
                color=['green', 'red'],
                histtype='stepfilled')
 plt.xlabel('Time elapsed in 3rd period (minutes)')
 plt.yticks([])
-savefig(plt, '5_on_6_goals_normed')
+plt.xlim(14, 20)
+savefig('5_on_6_goals_normed')
 
 
 print('Number of goals found:')
@@ -240,7 +255,7 @@ cols = ['game_end_timedelta', 'goal_against_timedelta', 'goal_for_timedelta', ]
                histtype='stepfilled')
 plt.xlabel('Time since goalie pull (minutes)')
 plt.yticks([])
-savefig(plt, '5_on_6_goalie_pull_outcomes')
+# savefig('5_on_6_goalie_pull_outcomes')
 
 
 cols = ['goal_against_timedelta', 'goal_for_timedelta', ]
@@ -249,7 +264,7 @@ cols = ['goal_against_timedelta', 'goal_for_timedelta', ]
                histtype='stepfilled')
 plt.xlabel('Time since goalie pull (minutes)')
 plt.yticks([])
-savefig(plt, '5_on_6_goalie_pull_goal_timedeltas')
+# savefig('5_on_6_goalie_pull_goal_timedeltas')
 
 
 cols = ['goal_against_timedelta', 'goal_for_timedelta', ]
@@ -259,7 +274,7 @@ cols = ['goal_against_timedelta', 'goal_for_timedelta', ]
                histtype='stepfilled')
 plt.xlabel('Time since goalie pull (minutes)')
 plt.yticks([])
-savefig(plt, '5_on_6_goalie_pull_goal_timedeltas_normed')
+# savefig('5_on_6_goalie_pull_goal_timedeltas_normed')
 
 
 # The mean/median number of seconds until a goal (after pulling the goalie)
@@ -273,7 +288,7 @@ savefig(plt, '5_on_6_goalie_pull_goal_timedeltas_normed')
 (df['game_end_timedelta'].astype('timedelta64[s]') / 60).plot.hist(bins=50, color='b', histtype='stepfilled')
 plt.xlabel('Time since goalie pull (minutes)')
 plt.yticks([])
-savefig(plt, '5_on_6_game_end_timedeltas')
+# savefig('5_on_6_game_end_timedeltas')
 
 
 
