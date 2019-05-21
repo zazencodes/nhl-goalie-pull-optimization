@@ -296,6 +296,7 @@ cols = ['goal_for_time', 'goal_against_time']
                color=['green', 'red'],
                histtype='stepfilled')
 plt.xlabel('Time elapsed in 3rd period (minutes)')
+plt.ylabel('Frequency (normed)')
 plt.yticks([])
 plt.xlim(14, 20)
 savefig('5_on_6_goals_normed')
