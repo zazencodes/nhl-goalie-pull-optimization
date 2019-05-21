@@ -138,10 +138,24 @@ import inspect
 print(inspect.getsource(savefig))
 
 
+s
+
+
+s = (s.append({'season': '20042005', 'counts': 0}, ignore_index=True)
+    .sort_values('season', ascending=True))
+
+
 fig, ax = plt.subplots()
+
+# Calculate number of pulls per season
 s = df.groupby('season').size().sort_index(ascending=True).rename('counts').reset_index()
+
+# Add data for the missing season
+s = (s.append({'season': '20042005', 'counts': 0}, ignore_index=True)
+    .sort_values('season', ascending=True).reset_index(drop=True))
+
 s.plot(marker='o', lw=0, ax=ax, color='b', ms=10)
-# ax.set_ylim(600, 1100)
+ax.set_ylim(600, 1000)
 plt.legend([])
 plt.ylabel('Total Goalie Pulls')
 
@@ -154,6 +168,44 @@ ax.set_xticklabels([label_map.get(lab, '') for lab in labels])
 savefig('goalie_pulls_by_season')
 
 
+# Plot goalie pulls per season
+
+games_per_season = {}
+for folder in sorted(glob.glob('../../data/raw/html/*')):
+    files = glob.glob(os.path.join(folder, '*.html'))
+    print(folder, len(files))
+    games_per_season[os.path.split(folder)[-1]] = len(files)
+
+
+s['counts_per_game'] = s.season.map(games_per_season)
+
+fig, ax = plt.subplots()
+
+# Calculate number of pulls per season
+s = df.groupby('season').size().sort_index(ascending=True).rename('counts').reset_index()
+
+# Add data for the missing season
+s = (s.append({'season': '20042005', 'counts': 0}, ignore_index=True)
+    .sort_values('season', ascending=True).reset_index(drop=True))
+
+# Convert to counts per game
+s['games'] = s['season'].apply(lambda x: games_per_season.get(x, 0))
+s['counts'] = (s['counts'] / s['games']).fillna(0)
+
+s.plot(marker='o', lw=0, ax=ax, color='b', ms=10)
+ax.set_ylim(0.5, 0.8)
+plt.legend([])
+plt.ylabel('Average Goalie Pulls Per Game')
+
+# Assign tick names
+label_map = {str(i): s for i, s in enumerate(s.season.tolist())}
+fig.canvas.draw()
+labels = [lab.get_text() for lab in ax.get_xticklabels()]
+ax.set_xticklabels([label_map.get(lab, '') for lab in labels])
+
+savefig('goalie_pulls_per_game_by_season')
+
+
 fig, ax = plt.subplots()
 iterables = zip(['orange', 'red', 'green'],
                 ['no_goals', 'goal_against', 'goal_for'])
@@ -161,13 +213,20 @@ iterables = zip(['orange', 'red', 'green'],
 axes = []
 for c, label in iterables:
     m = df.label==label
+    
+    # Calculate the counts
     s = df[m].groupby('season').size().sort_index(ascending=True).rename(label).reset_index()
-    s.loc[s.season == '20122013', label] = float('nan')
+    
+    # Add data for the missing season
+    s = (s.append({'season': '20042005', label: -999}, ignore_index=True)
+        .sort_values('season', ascending=True).reset_index(drop=True))
+    
+    s.loc[s.season == '20122013', label] = -999
     s.plot(marker='o', lw=0, ax=ax, ms=10, color=c, label=label)
     plt.legend()
 
 # ax.set_xticklabels(s.season.tolist());
-ax.set_ylim(0, 600)
+ax.set_ylim(0, 550)
 plt.ylabel('Total Counts')
 
 # Assign tick names
