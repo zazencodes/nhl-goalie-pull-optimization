@@ -140,15 +140,18 @@ print(inspect.getsource(savefig))
 
 fig, ax = plt.subplots()
 s = df.groupby('season').size().sort_index(ascending=True).rename('counts').reset_index()
-ax = s.plot(marker='o', lw=0, ax=ax, color='b', ms=10)
-ax.set_xticklabels(s.season.tolist());
+s.plot(marker='o', lw=0, ax=ax, color='b', ms=10)
 # ax.set_ylim(600, 1100)
 plt.legend([])
 plt.ylabel('Total Goalie Pulls')
+
+# Assign tick names
+label_map = {str(i): s for i, s in enumerate(s.season.tolist())}
+fig.canvas.draw()
+labels = [lab.get_text() for lab in ax.get_xticklabels()]
+ax.set_xticklabels([label_map.get(lab, '') for lab in labels])
+
 savefig('goalie_pulls_by_season')
-
-
-print([lab.get_text() for lab in ax.get_xticklabels()])
 
 
 fig, ax = plt.subplots()
