@@ -957,6 +957,8 @@ f't=17 odds of scoring (low) = {(odds_goal_for-err_odds_goal_for)[x == 17][0]}'
 
 # This chart suggests that odds of scoring are highest (~22%) when the goalie is pulled at the 17 minute mark.
 
+# ## TODO: rerun cells below with updated data...
+
 # ## Model 2 - Time since goalie pull
 # 
 # The work thus far has been to model the outcomes as a function of "time 
