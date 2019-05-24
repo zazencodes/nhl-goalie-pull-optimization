@@ -33,7 +33,7 @@ plt.rc('ytick', labelsize=SMALL_SIZE)
 plt.rc('legend', fontsize=MEDIUM_SIZE)
 plt.rc('axes', titlesize=BIGGER_SIZE)
 
-def savefig(plt, name):
+def savefig(name):
     plt.savefig(f'../../figures/{name}.png', bbox_inches='tight', dpi=300)
 
 get_ipython().run_line_magic('load_ext', 'version_information')
@@ -52,7 +52,7 @@ get_ipython().run_line_magic('version_information', 'pandas, numpy')
 # 
 # where $t$ is the time metric and $\alpha$ & $\beta$ are solved for with MCMC.
 # 
-# Based on a set of goalie pull observations $X$ from 2003-2007 NHL games, we'll solve for the posterior distribution $P_t(y|X)$, the probability of the outcome $y$, given the observations. This is done computationally using markov chain monte carlo and the `pymc3` library.
+# Based on a set of goalie pull observations $X$ from 2003-2019 NHL games, we'll solve for the posterior distribution $P_t(y|X)$, the probability of the outcome $y$, given the observations. This is done computationally using markov chain monte carlo and the `pymc3` library.
 # 
 # The outcomes we're interested in are $y = \big\{\mathrm{goal\;for}, \mathrm{goal\;against}, \mathrm{no\;goal}\big\}$. 
 # 
@@ -74,7 +74,7 @@ def load_data():
     files = glob.glob('../../data/processed/pkl/*.pkl')
     files = sorted(files)
     print(files)
-    return pd.concat((pd.read_pickle(f) for f in files))
+    return pd.concat((pd.read_pickle(f) for f in files), sort=False, ignore_index=True)
 
 def clean_df(df):
     _df = df.copy()
@@ -139,7 +139,7 @@ masks = [
 training_samples = load_training_samples(df, features, masks)
 
 
-# We actuall want to fit the mirror version of the possion (about the y-axis). In order to do this with PyMC3, we will transform the data.
+# We actuall want to fit the mirror version of the Gamma distributioin (about the y-axis). In order to do this with PyMC3, we will transform the data.
 
 MAX_TIME_SECONDS = 20*60
 training_samples[0] = MAX_TIME_SECONDS - training_samples[0]
@@ -314,9 +314,10 @@ x, y_goal_for, y_goal_against, y_no_goal = gamma_posterior(
 )
 
 # Rescale height by arbitrary amount to fit chart
-scale_frac = 0.7
+scale_frac = 0.5
 y_goal_for = y_goal_for / y_goal_for.max() * scale_frac
 y_goal_against = y_goal_against / y_goal_against.max() * scale_frac
+scale_frac = 0.65
 y_no_goal = y_no_goal / y_no_goal.max() * scale_frac
 
 plt.plot(x, y_goal_for, label=r'$P(\rm{goal\;for})$', color='green', lw=LW)
@@ -330,37 +331,41 @@ plt.ylabel('Counts')
 plt.xlabel('Time elapsed in 3rd period (minutes)')
 plt.legend()
 
-savefig(plt, 'time_elapsed_gamma_mcmc_samples')
+savefig('time_elapsed_gamma_mcmc_samples')
 
 plt.show()
 
 
-plt.plot(trace['alpha_goal_for']/60, label='mu_goal_for', color='green')
-plt.plot(trace['alpha_goal_against']/60, label='mu_goal_against', color='red')
-plt.plot(trace['alpha_no_goal']/60, label='mu_no_goal', color='orange')
-plt.ylabel('$\mu$ (minutes)')
+fig = pm.traceplot(trace);
+# savefig('timesince_traceplot_gamma_mcmc')
+
+
+plt.plot(trace['alpha_goal_for']/60, label='alpha_goal_for', color='green')
+plt.plot(trace['alpha_goal_against']/60, label='alpha_goal_against', color='red')
+plt.plot(trace['alpha_no_goal']/60, label='alpha_no_goal', color='orange')
+plt.ylabel(r'$\alpha$')
 plt.xlabel('MCMC step')
 
 plt.axvline(N_burn, color='black', lw=2, label='Burn threshold')
 
 plt.legend()
 
-savefig(plt, 'time_elapsed_gamma_alpha_steps')
+savefig('time_elapsed_gamma_alpha_steps')
 
 plt.show()
 
 
-plt.plot(trace['beta_goal_for']/60, label='mu_goal_for', color='green')
-plt.plot(trace['beta_goal_against']/60, label='mu_goal_against', color='red')
-plt.plot(trace['beta_no_goal']/60, label='mu_no_goal', color='orange')
-plt.ylabel('$\mu$ (minutes)')
+plt.plot(trace['beta_goal_for']/60, label='beta_goal_for', color='green')
+plt.plot(trace['beta_goal_against']/60, label='beta_goal_against', color='red')
+plt.plot(trace['beta_no_goal']/60, label='beta_no_goal', color='orange')
+plt.ylabel(r'$\beta$')
 plt.xlabel('MCMC step')
 
 plt.axvline(N_burn, color='black', lw=2, label='Burn threshold')
 
 plt.legend()
 
-savefig(plt, 'time_elapsed_gamma_beta_steps')
+savefig('time_elapsed_gamma_beta_steps')
 
 plt.show()
 
@@ -368,44 +373,44 @@ plt.show()
 ALPHA = 0.6
 
 plt.hist(burned_trace['alpha_goal_for']/60, bins=50,
-         color='green', label='mu_goal_for',
+         color='green', label='alpha_goal_for',
          histtype='stepfilled', alpha=ALPHA)
 
 plt.hist(burned_trace['alpha_goal_against']/60, bins=50,
-         color='red', label='mu_goal_against',
+         color='red', label='alpha_goal_against',
          histtype='stepfilled', alpha=ALPHA)
 
 plt.hist(burned_trace['alpha_no_goal']/60, bins=50,
-         color='orange', label='mu_no_goal',
+         color='orange', label='alpha_no_goal',
          histtype='stepfilled', alpha=ALPHA)
 
 plt.ylabel('MCMC counts')
-plt.xlabel('$\mu$ (minutes)')
+plt.xlabel(r'$\alpha$')
 plt.legend()
 
-savefig(plt, 'time_elapsed_gamma_alpha_samples')
+savefig('time_elapsed_gamma_alpha_samples')
 plt.show()
 
 
 ALPHA = 0.6
 
 plt.hist(burned_trace['beta_goal_for']/60, bins=50,
-         color='green', label='mu_goal_for',
+         color='green', label='beta_goal_for',
          histtype='stepfilled', alpha=ALPHA)
 
 plt.hist(burned_trace['beta_goal_against']/60, bins=50,
-         color='red', label='mu_goal_against',
+         color='red', label='beta_goal_against',
          histtype='stepfilled', alpha=ALPHA)
 
 plt.hist(burned_trace['beta_no_goal']/60, bins=50,
-         color='orange', label='mu_no_goal',
+         color='orange', label='beta_no_goal',
          histtype='stepfilled', alpha=ALPHA)
 
 plt.ylabel('MCMC counts')
-plt.xlabel('$\mu$ (minutes)')
+plt.xlabel(r'$\beta$')
 plt.legend()
 
-savefig(plt, 'time_elapsed_gamma_beta_samples')
+savefig('time_elapsed_gamma_beta_samples')
 plt.show()
 
 
@@ -446,7 +451,7 @@ y_no_goal = y_no_goal * mcmc_normalizing_factors[2]
 cutoff_renormed_factor = 2 - (y_goal_for.sum() + y_goal_against.sum() + y_no_goal.sum())
 model_normalizing_factors = mcmc_normalizing_factors * cutoff_renormed_factor
 
-print(f'Poisson normalizing factors =\n{model_normalizing_factors}')
+print(f'Posterior distribution normalizing factors =\n{model_normalizing_factors}')
 
 
 # Here's what the properly weighted samlpes look like:
@@ -485,14 +490,14 @@ plt.yticks([])
 plt.xlabel('Time elapsed in 3rd period (minutes)')
 plt.legend();
 
-savefig(plt, 'time_elapsed_normed_gamma_mcmc_samples')
+savefig('time_elapsed_gamma_normed_mcmc_samples')
 
 plt.show()
 
 
 # ### Normalized Posteriors
 # 
-# Re-normalize for cutoff Poisson distributions
+# Re-normalize for cutoff Gamma distributions
 
 import inspect
 print(inspect.getsource(gamma_posterior))
@@ -516,7 +521,7 @@ plt.ylabel('Posterior probability')
 plt.xlabel('Time elapsed in 3rd period (minutes)')
 plt.legend()
 
-savefig(plt, 'time_elapsed_normed_poisson')
+savefig('time_elapsed_gamma_normed')
 
 plt.show()
 
@@ -548,24 +553,30 @@ print(f'Time of max posterior probability =\n{t_remaining}')
 # #### TODO: update notes below
 # 
 # Notes:
-#  - From normalizing factors, we can see ~12% chance of scoring when pulling the goalie on average.
-#  - Probability of scoring peaks at 18.55 mins (1:27 remaining), with other probabilties following close after (01:20 for goal against and 01:07 for no goals)
+#  - From normalizing factors, we can see ~13% chance of scoring when pulling the goalie (on average for all times).
+#  - Probability of scoring peaks at 1:24 remaining, with other probabilties following after (01:19 for goal against and 0:41 for no goals).
 #  
 # From now on we'll work from the distributions as our source of truth. These are hard coded below to help with reproducibility.
 
-# TODO: remove this cell (or update it)
+# TODO: make sure this cell is consistent with results above
 
-# model_normlizing_factors = [
-#     0.1292882,
-#     0.26528024,
-#     0.62489297,
-# ]
+model_normlizing_factors = [
+    0.13426188,
+    0.33529572,
+    0.53282942,
+]
 
-# mu_mcmc = [
-#     1113.8279468130681,
-#     1120.1830172722719,
-#     1133.9420018554083
-# ]
+alpha_mcmc = [
+    4.531123375736662,
+    3.8721902695471737,
+    2.363131801253015,
+]
+
+beta_mcmc = [
+    0.04206451410487348,
+    0.03657903397618263,
+    0.03320030344291979,
+]
 
 
 # ### Cumulative sum
@@ -590,7 +601,7 @@ plt.legend()
 ax = plt.gca()
 ax.yaxis.tick_right()
 
-savefig(plt, 'time_elapsed_gamma_cdf')
+savefig('time_elapsed_gamma_cdf')
 
 plt.show()
 
@@ -621,17 +632,13 @@ plt.plot(x, alpha, lw=LW)
 plt.ylabel('$c(t)$')
 # plt.yticks([])
 plt.xlabel('Time elapsed in 3rd period (minutes)')
-
-# savefig(plt, 'time_elapsed_poisson_cdf')
-
 plt.show()
 
 
-from scipy.stats import poisson
 ALPHA = 0.6
 LW = 3 
 
-''' Plot the poisson distributions '''
+''' Plot the gamma distributions '''
 x, y_goal_for, y_goal_against, y_no_goal = gamma_posterior(
     alpha_mcmc,
     beta_mcmc,
@@ -657,7 +664,7 @@ plt.xlabel('Time elapsed in 3rd period (minutes)')
 plt.legend()
 
 # Plotting below with error bar
-# savefig(plt, 'time_elapsed_outcome_chance_timeseries')
+savefig('time_elapsed_gamma_outcome_likelihoods')
 
 plt.show()
 
@@ -668,15 +675,17 @@ plt.show()
 # 
 # Note how there are very few samples to draw conclusions from for the low and high times.
 # 
-# e.g. less than 17
+# e.g. less than 3 minutes:
 
-np.sum(training_samples[0] < 17*60) + np.sum(training_samples[1] < 17*60) + np.sum(training_samples[2] < 17*60)
+np.sum(training_samples[0] < 3*60) + np.sum(training_samples[1] < 3*60) + np.sum(training_samples[2] < 3*60)
 
 
-# more than 17
+# compared to more than 3 minutes:
 
-np.sum(training_samples[0] > 17*60) + np.sum(training_samples[1] > 17*60) + np.sum(training_samples[2] > 17*60)
+np.sum(training_samples[0] > 3*60) + np.sum(training_samples[1] > 3*60) + np.sum(training_samples[2] > 3*60)
 
+
+# Only about 5% are over 3 minutes.
 
 # We can show this uncertainty visually using error bars. Starting with the parameter ($\alpha$ and $\beta$) MCMC samples...
 
@@ -693,10 +702,14 @@ plt.hist(burned_trace['beta_no_goal'])
 # We can use the uncertainty on $\alpha$ and $\beta$ to calculate that for $P$:
 # 
 # $$
-# \sigma_P = \sqrt{ \big [ \frac{\partial P}{\partial \alpha} \;\sigma_{\alpha} \big ]^{2} + \big [ \frac{\partial P}{\partial \beta} \;\sigma_{\beta} \big ]^{2} }
+# \sigma_P = \sqrt{ \big ( \frac{\partial P}{\partial \alpha} \;\sigma_{\alpha} \big )^{2} + \big ( \frac{\partial P}{\partial \beta} \;\sigma_{\beta} \big )^{2} }
 # $$
 # 
-# where $\sigma_{\mu}$ is the standard deviation of the $\mu$ samples.
+# where $\sigma_{\mu}$ is the standard deviation of the $\mu$ samples. We are interested in the standard error of the mean:
+# 
+# $$
+# \sigma_{\bar{P}} = \frac{\sigma_P}{\sqrt{N_{samples}}}
+# $$
 
 alpha_mcmc_std = [
     burned_trace['alpha_goal_for'].std(),
@@ -718,27 +731,32 @@ alpha_mcmc_std
 beta_mcmc_std
 
 
+num_samples = len(burned_trace)
+
+
+num_samples
+
+
 model_normalizing_factors
 
 
 from scipy.misc import derivative
 from scipy.stats import gamma
-from tqdm import tqdm_notebook
 
-def calc_posteror_error(alpha, beta, alpha_std, beta_std, step=1e-8):
+def calc_posteror_error(alpha, beta, alpha_std, beta_std, num_samples, step=1e-8):
     x = gamma_posterior()[0] * 60 # convert back into seconds (discrete)
     err = np.sqrt(
         alpha_std * np.power(np.array([
                         derivative(lambda _alpha: gamma.pdf(int(t), _alpha, scale=1/beta),
                                     alpha, dx=step)
-                        for t in tqdm_notebook(x)
+                        for t in x
                     ]), 2)
         + beta_std * np.power(np.array([
                         derivative(lambda _beta: gamma.pdf(int(t), alpha, scale=1/_beta),
                                     beta, dx=step)
-                        for t in tqdm_notebook(x)
+                        for t in x
                     ]), 2)
-    )
+    ) / np.sqrt(num_samples)
     # Flip error due to gamma transformation
     err = err[::-1]
     return err
@@ -754,11 +772,13 @@ def calc_posteror_error(alpha, beta, alpha_std, beta_std, step=1e-8):
 # 
 # for each line respectively.
 
-ALPHA = 0.6
-ALPHA_LIGHT = 0.3
+# Plotting with error bands
+
+ALPHA = 1
+ALPHA_LIGHT = 0.2
 LW = 3
 
-''' Plot the poisson distributions '''
+''' Plot the gamma distributions '''
 x, y_goal_for, y_goal_against, y_no_goal = gamma_posterior(
     alpha_mcmc,
     beta_mcmc,
@@ -774,14 +794,17 @@ c = np.power(
 y_goal_for = c * y_goal_for
 y_goal_against = c * y_goal_against
 y_no_goal = c * y_no_goal
-plt.plot(x, y_goal_for, label=r'goal for', color='green', lw=LW)
-plt.plot(x, y_goal_against, label=r'goal against', color='red', lw=LW)
-plt.plot(x, y_no_goal, label=r'no goal', color='orange', lw=LW)
+
+max_index = np.where(y_goal_for == y_goal_for[~(np.isnan(y_goal_for))].max())[0][0]
+plt.axvline(x[max_index], label='goal for max likelihood', color='black', lw=2, alpha=0.5)
+plt.plot(x, y_goal_for, label=r'goal for', color='green', lw=LW, alpha=ALPHA)
+plt.plot(x, y_goal_against, label=r'goal against', color='red', lw=LW, alpha=ALPHA)
+plt.plot(x, y_no_goal, label=r'no goal', color='orange', lw=LW, alpha=ALPHA)
 
 ''' Plot the errors '''
-err_p_goal_for = c * calc_posteror_error(alpha_mcmc[0], beta_mcmc[0], alpha_mcmc_std[0], beta_mcmc_std[0])
-err_p_goal_against = c * calc_posteror_error(alpha_mcmc[1], beta_mcmc[1], alpha_mcmc_std[1], beta_mcmc_std[1])
-err_p_no_goal = c * calc_posteror_error(alpha_mcmc[2], beta_mcmc[2], alpha_mcmc_std[2], beta_mcmc_std[2])
+err_p_goal_for = c * calc_posteror_error(alpha_mcmc[0], beta_mcmc[0], alpha_mcmc_std[0], beta_mcmc_std[0], num_samples=num_samples)
+err_p_goal_against = c * calc_posteror_error(alpha_mcmc[1], beta_mcmc[1], alpha_mcmc_std[1], beta_mcmc_std[1], num_samples=num_samples)
+err_p_no_goal = c * calc_posteror_error(alpha_mcmc[2], beta_mcmc[2], alpha_mcmc_std[2], beta_mcmc_std[2], num_samples=num_samples)
 plt.fill_between(x, y_goal_for-err_p_goal_for, y_goal_for+err_p_goal_for,
                  color='green', alpha=ALPHA_LIGHT)
 plt.fill_between(x, y_goal_against-err_p_goal_against, y_goal_against+err_p_goal_against,
@@ -792,11 +815,62 @@ plt.fill_between(x, y_no_goal-err_p_no_goal, y_no_goal+err_p_no_goal,
 plt.ylabel('Chance of outcome')
 # plt.yticks([])
 plt.xlabel('Time elapsed in 3rd period (minutes)')
-plt.xlim(17, 20)
+plt.xlim(15.7, 20)
 plt.ylim(0, 1)
 plt.legend()
 
-savefig(plt, 'time_elapsed_outcome_chances_gamma')
+savefig('time_elapsed_gamma_outcome_likelihoods_error_bars')
+
+plt.show()
+
+
+# Plotting with dotted lines for error bars
+
+ALPHA = 0.8
+ALPHA_LIGHT = 0.3
+LW = 3
+
+''' Plot the gamma distributions '''
+x, y_goal_for, y_goal_against, y_no_goal = gamma_posterior(
+    alpha_mcmc,
+    beta_mcmc,
+    norm_factors=model_normalizing_factors
+)
+
+# Alpha has same shape as x, y above
+c = np.power(
+    np.sum([y_goal_for, y_goal_against, y_no_goal], axis=0),
+    -1
+)
+
+y_goal_for = c * y_goal_for
+y_goal_against = c * y_goal_against
+y_no_goal = c * y_no_goal
+plt.plot(x, y_goal_for, label=r'goal for', color='green', lw=LW, alpha=ALPHA)
+plt.plot(x, y_goal_against, label=r'goal against', color='red', lw=LW, alpha=ALPHA)
+plt.plot(x, y_no_goal, label=r'no goal', color='orange', lw=LW, alpha=ALPHA)
+
+''' Plot the errors '''
+err_p_goal_for = c * calc_posteror_error(alpha_mcmc[0], beta_mcmc[0], alpha_mcmc_std[0], beta_mcmc_std[0], num_samples=num_samples)
+err_p_goal_against = c * calc_posteror_error(alpha_mcmc[1], beta_mcmc[1], alpha_mcmc_std[1], beta_mcmc_std[1], num_samples=num_samples)
+err_p_no_goal = c * calc_posteror_error(alpha_mcmc[2], beta_mcmc[2], alpha_mcmc_std[2], beta_mcmc_std[2], num_samples=num_samples)
+
+
+plt.plot(x, y_goal_for + err_p_goal_for, color='green', ls='--', lw=LW, alpha=ALPHA_LIGHT)
+plt.plot(x, y_goal_against + err_p_goal_against, color='red', ls='--', lw=LW, alpha=ALPHA_LIGHT)
+plt.plot(x, y_no_goal + err_p_no_goal, color='orange', ls='--', lw=LW, alpha=ALPHA_LIGHT)
+plt.plot(x, y_goal_for - err_p_goal_for, color='green', ls='--', lw=LW, alpha=ALPHA_LIGHT)
+plt.plot(x, y_goal_against - err_p_goal_against, color='red', ls='--', lw=LW, alpha=ALPHA_LIGHT)
+plt.plot(x, y_no_goal - err_p_no_goal, color='orange', lw=LW, ls='--', alpha=ALPHA_LIGHT)
+
+plt.ylabel('Chance of outcome')
+# plt.yticks([])
+plt.xlabel('Time elapsed in 3rd period (minutes)')
+plt.xlim(15.1, 20)
+plt.ylim(0, 1)
+plt.legend()
+
+# savefig('time_elapsed_gamma_outcome_likelihoods_error_bars')
 
 plt.show()
 
@@ -806,8 +880,28 @@ plt.show()
 # ### Odds of scoring a goal
 # Let's go into odds-space and look at the chance of scoring a goal, compared to either outcome. We want to maximze this.
 
-ALPHA = 0.6
-ALPHA_LIGHT = 0.3
+from scipy.misc import derivative
+from scipy.stats import gamma
+
+def calc_posteror_odds_error(alpha_mcmc, beta_mcmc, alpha_mcmc_std, beta_mcmc_std, num_samples,
+                             y_goal_for, y_goal_against, y_no_goal):
+    err_p_goal_for = calc_posteror_error(alpha_mcmc[0], beta_mcmc[0], alpha_mcmc_std[0], beta_mcmc_std[0], num_samples=num_samples)
+    err_p_goal_against = calc_posteror_error(alpha_mcmc[1], beta_mcmc[1], alpha_mcmc_std[1], beta_mcmc_std[1], num_samples=num_samples)
+    err_p_no_goal = calc_posteror_error(alpha_mcmc[2], beta_mcmc[2], alpha_mcmc_std[2], beta_mcmc_std[2], num_samples=num_samples)
+
+    # Adjust for odds ratio calculation
+    err_odds_goal_for = (
+        np.power(err_p_goal_for / y_goal_for, 2)
+        + np.power(err_p_goal_against / y_goal_against, 2)
+        + np.power(err_p_no_goal / y_no_goal, 2)
+    )
+    err_odds_goal_for = odds_goal_for * np.sqrt(err_odds_goal_for)
+    
+    return err_odds_goal_for
+
+
+ALPHA = 0.8
+ALPHA_LIGHT = 0.2
 LW = 3
 
 ''' Odds ratio '''
@@ -821,43 +915,47 @@ x, y_goal_for, y_goal_against, y_no_goal = gamma_posterior(
 odds_goal_for = y_goal_for / (y_goal_against + y_no_goal)
 
 ''' Error bars '''
-
-err_p_goal_for = calc_posteror_error(alpha_mcmc[0], beta_mcmc[0], alpha_mcmc_std[0], beta_mcmc_std[0])
-err_p_goal_against = calc_posteror_error(alpha_mcmc[1], beta_mcmc[1], alpha_mcmc_std[1], beta_mcmc_std[1])
-err_p_no_goal = calc_posteror_error(alpha_mcmc[2], beta_mcmc[2], alpha_mcmc_std[2], beta_mcmc_std[2])
-err_odds_goal_for = (
-    np.power(err_p_goal_for / y_goal_for, 2)
-    + np.power(err_p_goal_against / y_goal_against, 2)
-    + np.power(err_p_no_goal / y_no_goal, 2)
-)
-err_odds_goal_for = odds_goal_for * np.sqrt(err_odds_goal_for)
+err_odds_goal_for = calc_posteror_odds_error(alpha_mcmc, beta_mcmc, alpha_mcmc_std, beta_mcmc_std, num_samples,
+                                             y_goal_for, y_goal_against, y_no_goal)
 
 ''' Plots '''
 
 plt.plot(x, odds_goal_for,
-         label=r'$odds(\;\frac{\mathrm{goal\;for}}{\mathrm{loss}}\;)$',
+         label=r'$odds(\mathrm{goal\;for})$',
          color='green', lw=LW, alpha=ALPHA)
 plt.fill_between(x, odds_goal_for-err_odds_goal_for, odds_goal_for+err_odds_goal_for,
                  color='green', lw=LW, alpha=ALPHA_LIGHT)
+
+max_index = np.where(odds_goal_for == odds_goal_for[~(np.isnan(odds_goal_for))].max())[0][0]
+plt.axvline(x[max_index], label='max likelihood', color='black', lw=2, alpha=0.5)
 
 plt.ylabel('Odds of success')
 # plt.yticks([])
 plt.xlabel('Time elapsed in 3rd period (minutes)')
 
-plt.xlim(17, 20)
-plt.ylim(0, 1)
+plt.xlim(15.1, 19.8)
+plt.ylim(0, 0.4)
 
 plt.legend()
 
-savefig(plt, 'time_elapsed_gamma_odds_goal_for')
+savefig('time_elapsed_gamma_odds_goal_for')
 
 plt.show()
 
 
-(odds_goal_for-err_odds_goal_for)[~np.isnan(odds_goal_for-err_odds_goal_for)].max()
+f'best odds of scoring = {(odds_goal_for-err_odds_goal_for)[~np.isnan(odds_goal_for-err_odds_goal_for)].max()}'
 
 
-# This chart suggests that odds of scoring are highest when the goalie is pulled before the 18.5 minute mark. Although the odds of scoring trend up as $t$ gets smaller, there's no statistically significant evidence for odds greater than 16%.
+f't=17 odds of scoring (high) = {(odds_goal_for+err_odds_goal_for)[x == 17][0]}'
+
+
+f't=17 odds of scoring = {(odds_goal_for)[x == 17][0]}'
+
+
+f't=17 odds of scoring (low) = {(odds_goal_for-err_odds_goal_for)[x == 17][0]}'
+
+
+# This chart suggests that odds of scoring are highest (~22%) when the goalie is pulled at the 17 minute mark.
 
 # ## Model 2 - Time since goalie pull
 # 
