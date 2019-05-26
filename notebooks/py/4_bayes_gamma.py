@@ -606,6 +606,15 @@ savefig('time_elapsed_gamma_cdf')
 plt.show()
 
 
+mean_posteriors = [
+    y_goal_for.sum(),
+    y_goal_against.sum(),
+    y_no_goal.sum(),
+]
+
+print(f'Time of max posterior probabilities =\n{mean_posteriors}')
+
+
 # The end of game values have been normalized sum up to one, but this ratio changes over time. We can visualize this with the risk-reward ratio (see below).
 # 
 # ### Re-normalize
@@ -876,6 +885,8 @@ plt.show()
 
 
 # We can't say anything conclusive due to huge errors on low times, but we are much more confident on late game predictions
+
+# Alternatively, we could use the uncertainty on the P samples as the error. Hopefully this will fix the strange error bars we are seeing above (i.e. where the error approaches zero around t=17).
 
 # ### Odds of scoring a goal
 # Let's go into odds-space and look at the chance of scoring a goal, compared to either outcome. We want to maximze this.

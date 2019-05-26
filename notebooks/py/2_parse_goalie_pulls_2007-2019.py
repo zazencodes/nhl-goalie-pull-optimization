@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+
 # coding: utf-8
 
 from IPython.display import HTML
@@ -498,9 +498,6 @@ get_ipython().run_cell_magic('time', '', "\nseasons = ['20072008', '20082009', '
 get_ipython().run_cell_magic('time', '', "\nseasons = ['20072008', '20082009',]\n\ndfs = []\nfor season in seasons:\n    df_goalie_pull = parse_game_range([season])\n    dfs.append(df_goalie_pull)\n    df_goalie_pull.to_csv('../../data/processed/csv/{}_goalie_pulls_2019-04-25.csv'.format(season),\n                          index=False)\n    df_goalie_pull.to_pickle('../../data/processed/pkl/{}_goalie_pulls_2019-04-25.pkl'.format(season))")
 
 
-
-
-
 # ## Test / debug
 
 # There was some issues parsing the table for 2007-2009. Here we run through all the files to make sure they parse OK
@@ -544,13 +541,4 @@ ERRORS
 
 get_ipython().run_line_magic('matplotlib', 'inline')
 df.dropna().length.plot.hist()
-
-
-
-
-
-
-
-
-
 

@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+
 # coding: utf-8
 
 from IPython.display import HTML
@@ -134,17 +134,6 @@ savefig('goalie_pulls_2003-2019')
 df.groupby('season').size().sort_index(ascending=True).rename('counts').reset_index()
 
 
-import inspect
-print(inspect.getsource(savefig))
-
-
-s
-
-
-s = (s.append({'season': '20042005', 'counts': 0}, ignore_index=True)
-    .sort_values('season', ascending=True))
-
-
 fig, ax = plt.subplots()
 
 # Calculate number of pulls per season
@@ -236,6 +225,24 @@ labels = [lab.get_text() for lab in ax.get_xticklabels()]
 ax.set_xticklabels([label_map.get(lab, '') for lab in labels])
 
 savefig('goalie_pull_outcomes_by_season')
+
+
+# Plot average pull time by season
+
+df['pull_time_remaining'] = (
+    df_['pull_time']
+    .apply(lambda x: datetime.timedelta(seconds=60*20) - x)
+    .astype('timedelta64[s]')
+) / 60
+sns.boxplot(x='season', y='pull_time_remaining', data=df, color='b')
+plt.ylabel('Time Remaining when Goalie Pulled (minutes)')
+plt.xlabel('Season')
+plt.xticks(rotation=45)
+plt.ylim(-0.1, 4)
+savefig('goalie_pull_times_by_season')
+
+
+df.groupby('season').pull_time_remaining.mean()
 
 
 col = 'pull_time'
@@ -354,37 +361,7 @@ plt.yticks([])
 # savefig('5_on_6_game_end_timedeltas')
 
 
-
-
-
-
-
-
-
-
-
-
-
-
 # ### Rough work
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 # ## Bugs
 
@@ -607,15 +584,6 @@ label_map = {str(i): season for i, season in enumerate(df.groupby('season').size
 # ax.set_xticklabels(ticks)
 
 
-
-
-
-
-
-
-
-
-
 fig, ax = plt.subplots()
 iterables = zip(['orange', 'red', 'green'],
                 ['no_goals', 'goal_against', 'goal_for'])
@@ -667,7 +635,4 @@ label_map
 
 
 ax.set_xticklabels([t.get_text() for t in ax.get_xticklabels()])
-
-
-
 
