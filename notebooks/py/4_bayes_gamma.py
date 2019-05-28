@@ -663,11 +663,15 @@ alpha = np.power(
 y_goal_for = alpha * y_goal_for
 y_goal_against = alpha * y_goal_against
 y_no_goal = alpha * y_no_goal
-plt.plot(x, y_goal_for, label=r'$c \cdot P(\mathrm{goal\;for}\;|\;X)$', color='green', lw=LW)
-plt.plot(x, y_goal_against, label=r'$c \cdot P(\mathrm{goal\;against}\;|\;X)$', color='red', lw=LW)
-plt.plot(x, y_no_goal, label=r'$c \cdot P(\mathrm{no\;goal}\;|\;X)$', color='orange', lw=LW)
 
-plt.ylabel('Chance of outcome at time $t$')
+max_index = np.where(y_goal_for == y_goal_for[~(np.isnan(y_goal_for))].max())[0][0]
+plt.axvline(x[max_index], label='goal for max likelihood', color='black', lw=2, alpha=0.5)
+
+plt.plot(x, y_goal_for, label='goal for', color='green', lw=LW)
+plt.plot(x, y_goal_against, label='goal against', color='red', lw=LW)
+plt.plot(x, y_no_goal, label='no goal', color='orange', lw=LW)
+
+plt.ylabel('Chance of outcome')
 # plt.yticks([])
 plt.xlabel('Time elapsed in 3rd period (minutes)')
 plt.legend()
@@ -886,8 +890,6 @@ plt.show()
 
 # We can't say anything conclusive due to huge errors on low times, but we are much more confident on late game predictions
 
-# Alternatively, we could use the uncertainty on the P samples as the error. Hopefully this will fix the strange error bars we are seeing above (i.e. where the error approaches zero around t=17).
-
 # ### Odds of scoring a goal
 # Let's go into odds-space and look at the chance of scoring a goal, compared to either outcome. We want to maximze this.
 
@@ -964,6 +966,9 @@ f't=17 odds of scoring = {(odds_goal_for)[x == 17][0]}'
 
 
 f't=17 odds of scoring (low) = {(odds_goal_for-err_odds_goal_for)[x == 17][0]}'
+
+
+0.26119 - 0.303633
 
 
 # This chart suggests that odds of scoring are highest (~22%) when the goalie is pulled at the 17 minute mark.
