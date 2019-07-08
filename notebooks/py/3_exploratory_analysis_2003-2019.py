@@ -1,4 +1,4 @@
-
+#!/usr/bin/env python
 # coding: utf-8
 
 from IPython.display import HTML
@@ -33,8 +33,18 @@ import seaborn as sns
 get_ipython().run_line_magic('config', "InlineBackend.figure_format='retina'")
 sns.set() # Revert to matplotlib defaults
 plt.rcParams['figure.figsize'] = (12, 8)
-plt.rcParams['axes.labelpad'] = 10
-plt.style.use('ggplot')
+plt.style.use('fivethirtyeight')
+plt.rcParams['grid.alpha'] = 0.2
+plt.rcParams['axes.labelpad'] = 20
+plt.rcParams['ytick.labelsize'] = 14
+plt.rcParams['xtick.labelsize'] = 14
+plt.rcParams['axes.labelsize'] = 16
+plt.rcParams['axes.facecolor'] = 'white'
+plt.rcParams['figure.facecolor'] = 'white'
+plt.rcParams['xtick.major.pad'] = 15
+plt.rcParams['xtick.minor.pad'] = 15
+plt.rcParams['ytick.major.pad'] = 10
+plt.rcParams['ytick.minor.pad'] = 10
 
 def savefig(name):
     plt.savefig(f'../../figures/{name}.png', bbox_inches='tight', dpi=300)
@@ -122,12 +132,22 @@ df.isnull().sum() / df.shape[0]
 df.columns
 
 
-plt.ylabel('Goalie Pulls')
-plt.yticks([])
 df.date.hist(
     color='b',
     bins=500,
     histtype='stepfilled')
+
+ax = plt.gca()
+ax.set_yticklabels([])
+
+plt.text(x='2003', y=78,
+    s='Goalie Pull Frequency by Date',
+    fontsize=24, color='grey', weight='bold')
+
+plt.text(x='2014-06', y=78,
+    s='ChordAnalytics.ca  /  Source: NHL.com',
+    fontsize=14, color='grey', style='italic')
+
 savefig('goalie_pulls_2003-2019')
 
 
@@ -153,6 +173,19 @@ label_map = {str(i): s for i, s in enumerate(s.season.tolist())}
 fig.canvas.draw()
 labels = [lab.get_text() for lab in ax.get_xticklabels()]
 ax.set_xticklabels([label_map.get(lab, '') for lab in labels])
+
+plt.text(x=-0.8, y=1032,
+    s='Goalie Pulls by Season',
+    fontsize=24, color='grey', weight='bold')
+
+plt.text(x=-0.8, y=1015,
+    s='Goalie pulls have been trending up in the last 10 years.',
+    fontsize=14, color='grey', style='italic')
+
+plt.text(x=10.2, y=1015,
+    s='ChordAnalytics.ca  /  Source: NHL.com',
+    fontsize=14, color='grey', style='italic')
+
 
 savefig('goalie_pulls_by_season')
 
@@ -192,26 +225,47 @@ fig.canvas.draw()
 labels = [lab.get_text() for lab in ax.get_xticklabels()]
 ax.set_xticklabels([label_map.get(lab, '') for lab in labels])
 
+plt.text(x=-0.8, y=0.823,
+    s='Goalie Pulls by Season',
+    fontsize=24, color='grey', weight='bold')
+
+plt.text(x=-0.8, y=0.81,
+    s='Goalie pulls have been trending up in the last 10 years.',
+    fontsize=14, color='grey', style='italic')
+
+plt.text(x=10.2, y=0.81,
+    s='ChordAnalytics.ca  /  Source: NHL.com',
+    fontsize=14, color='grey', style='italic')
+
+
 savefig('goalie_pulls_per_game_by_season')
 
 
 fig, ax = plt.subplots()
-iterables = zip(['orange', 'red', 'green'],
-                ['no_goals', 'goal_against', 'goal_for'])
+iterables = zip(['green', 'orange', 'red'],
+                ['goal_for', 'no_goals', 'goal_against'])
+
+legend_map = {
+    'no_goals': 'No Goals',
+    'goal_against': 'Goal Against',
+    'goal_for': 'Goal For'
+}
 
 axes = []
 for c, label in iterables:
     m = df.label==label
     
     # Calculate the counts
-    s = df[m].groupby('season').size().sort_index(ascending=True).rename(label).reset_index()
+    s = (df[m].groupby('season').size()
+         .sort_index(ascending=True)
+         .rename(legend_map[label]).reset_index())
     
     # Add data for the missing season
-    s = (s.append({'season': '20042005', label: -999}, ignore_index=True)
+    s = (s.append({'season': '20042005', legend_map[label]: -999}, ignore_index=True)
         .sort_values('season', ascending=True).reset_index(drop=True))
     
-    s.loc[s.season == '20122013', label] = -999
-    s.plot(marker='o', lw=0, ax=ax, ms=10, color=c, label=label)
+    s.loc[s.season == '20122013', legend_map[label]] = -999
+    s.plot(marker='o', lw=0, ax=ax, ms=10, color=c, label=legend_map[label])
     plt.legend()
 
 # ax.set_xticklabels(s.season.tolist());
@@ -224,13 +278,26 @@ fig.canvas.draw()
 labels = [lab.get_text() for lab in ax.get_xticklabels()]
 ax.set_xticklabels([label_map.get(lab, '') for lab in labels])
 
+plt.text(x=-0.8, y=608,
+    s='Goalie Pull Outcomes',
+    fontsize=24, color='grey', weight='bold')
+
+plt.text(x=-0.8, y=567,
+    s='Good outcomes (green dots) have been on the rise, but the\nbad outcomes (red dots) are rising much faster, doubling in the last 10 years.',
+    fontsize=14, color='grey', style='italic')
+
+plt.text(x=10.2, y=566,
+    s='ChordAnalytics.ca  /  Source: NHL.com',
+    fontsize=14, color='grey', style='italic')
+
+
 savefig('goalie_pull_outcomes_by_season')
 
 
 # Plot average pull time by season
 
 df['pull_time_remaining'] = (
-    df_['pull_time']
+    df['pull_time']
     .apply(lambda x: datetime.timedelta(seconds=60*20) - x)
     .astype('timedelta64[s]')
 ) / 60
@@ -239,6 +306,20 @@ plt.ylabel('Time Remaining when Goalie Pulled (minutes)')
 plt.xlabel('Season')
 plt.xticks(rotation=45)
 plt.ylim(-0.1, 4)
+
+plt.text(x=-0.5, y=4.29,
+    s='Goalie Pull Times',
+    fontsize=24, color='grey', weight='bold')
+
+plt.text(x=-0.5, y=4.13,
+    s='Goalies are being pulled earlier in the 3rd period in recent years.',
+    fontsize=14, color='grey', style='italic')
+
+plt.text(x=9.5, y=4.13,
+    s='ChordAnalytics.ca  /  Source: NHL.com',
+    fontsize=14, color='grey', style='italic')
+
+
 savefig('goalie_pull_times_by_season')
 
 
@@ -250,8 +331,23 @@ col = 'pull_time'
                color='b',
                histtype='stepfilled')
 plt.xlabel('Time elapsed in 3rd period (minutes)')
-plt.yticks([])
+ax = plt.gca()
+ax.set_yticklabels([])
 plt.xlim(14, 20)
+
+plt.text(x=14, y=1043,
+    s='Goalie Pull Time Distribution',
+    fontsize=24, color='grey', weight='bold')
+
+plt.text(x=14, y=976,
+    s='Goalie pulls start gradually ramping up\nafter the 16 minute mark in the 3rd period.',
+    fontsize=14, color='grey', style='italic')
+
+plt.text(x=18, y=971,
+    s='ChordAnalytics.ca  /  Source: NHL.com',
+    fontsize=14, color='grey', style='italic')
+
+
 savefig('goalie_pull_game_times_hist')
 
 
@@ -265,21 +361,43 @@ df.head()
 
 df['pull_time_seconds'] = df['pull_time'].astype('timedelta64[s]') / 60
 
-iterables = zip(['orange', 'red', 'green'],
-                ['no_goals', 'goal_against', 'goal_for'])
+fig, ax = plt.subplots()
+iterables = zip(['green', 'orange', 'red'],
+                [3, 2, 1],
+                ['goal_for', 'no_goals', 'goal_against'])
 
-for c, label in iterables:
+legend_map = {
+    'no_goals': 'No Goals',
+    'goal_against': 'Goal Against',
+    'goal_for': 'Goal For'
+}
+
+for c, z, label in iterables:
     (df[df.label==label]['pull_time_seconds']
          .plot.hist(bins=60,
                     alpha=0.5,
                     color=c,
                     histtype='stepfilled',
-                    label=label))
+                    label=legend_map[label],
+                    zorder=z))
 
 plt.xlabel('Time elapsed in 3rd period (minutes)')
 plt.yticks([])
 plt.xlim(14, 20)
 plt.legend()
+
+plt.text(x=14, y=609,
+    s='Goalie Pull Time Distribution',
+    fontsize=24, color='grey', weight='bold')
+
+plt.text(x=14, y=567,
+    s='Late goalie pulls tend to be no-goal outcomes (yellow bars).\nGoal outcomes (green and red bars) are similarly distributed to each other.',
+    fontsize=14, color='grey', style='italic')
+
+plt.text(x=18, y=565,
+    s='ChordAnalytics.ca  /  Source: NHL.com',
+    fontsize=14, color='grey', style='italic')
+
 
 savefig('goalie_pull_outcomes_game_times_hist')
 del df['pull_time_seconds']
@@ -297,7 +415,16 @@ savefig('5_on_6_goals')
 
 
 cols = ['goal_for_time', 'goal_against_time']
-(df[cols].astype('timedelta64[s]') / 60)    .plot.hist(bins=100,
+
+legend_map = {
+    'goal_for_time': 'Goal For Time',
+    'goal_against_time': 'Goal Against Time',
+}
+
+(df[cols]
+    .rename(columns=legend_map)
+    .astype('timedelta64[s]') / 60)\
+    .plot.hist(bins=100,
                alpha=0.5,
                density='normed',
                color=['green', 'red'],
@@ -306,6 +433,20 @@ plt.xlabel('Time elapsed in 3rd period (minutes)')
 plt.ylabel('Frequency (normed)')
 plt.yticks([])
 plt.xlim(14, 20)
+
+plt.text(x=14, y=1.108,
+    s='Goalie Pull Time Distribution',
+    fontsize=24, color='grey', weight='bold')
+
+plt.text(x=14, y=1.035,
+    s='Following a goalie pull, goals for (green bars)\ntend to occur slightly earlier than goals against (red bars).',
+    fontsize=14, color='grey', style='italic')
+
+plt.text(x=18, y=1.035,
+    s='ChordAnalytics.ca  /  Source: NHL.com',
+    fontsize=14, color='grey', style='italic')
+
+
 savefig('5_on_6_goals_normed')
 
 
@@ -361,7 +502,37 @@ plt.yticks([])
 # savefig('5_on_6_game_end_timedeltas')
 
 
+
+
+
+
+
+
+
+
+
+
+
+
 # ### Rough work
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 # ## Bugs
 
@@ -584,6 +755,15 @@ label_map = {str(i): season for i, season in enumerate(df.groupby('season').size
 # ax.set_xticklabels(ticks)
 
 
+
+
+
+
+
+
+
+
+
 fig, ax = plt.subplots()
 iterables = zip(['orange', 'red', 'green'],
                 ['no_goals', 'goal_against', 'goal_for'])
@@ -635,4 +815,7 @@ label_map
 
 
 ax.set_xticklabels([t.get_text() for t in ax.get_xticklabels()])
+
+
+
 

@@ -22,7 +22,7 @@ sns.set() # Revert to matplotlib defaults
 plt.rcParams['figure.figsize'] = (12, 8)
 plt.rcParams['axes.labelpad'] = 20
 plt.rcParams['legend.fancybox'] = True
-plt.style.use('ggplot')
+plt.style.use('fivethirtyeight')
 
 SMALL_SIZE, MEDIUM_SIZE, BIGGER_SIZE = 14, 16, 20
 plt.rc('font', size=SMALL_SIZE)
@@ -32,6 +32,15 @@ plt.rc('xtick', labelsize=SMALL_SIZE)
 plt.rc('ytick', labelsize=SMALL_SIZE)
 plt.rc('legend', fontsize=MEDIUM_SIZE)
 plt.rc('axes', titlesize=BIGGER_SIZE)
+
+plt.rcParams['grid.alpha'] = 0.2
+plt.rcParams['axes.labelpad'] = 10
+plt.rcParams['axes.facecolor'] = 'white'
+plt.rcParams['figure.facecolor'] = 'white'
+plt.rcParams['xtick.major.pad'] = 15
+plt.rcParams['xtick.minor.pad'] = 15
+plt.rcParams['ytick.major.pad'] = 10
+plt.rcParams['ytick.minor.pad'] = 10
 
 def savefig(name):
     plt.savefig(f'../../figures/{name}.png', bbox_inches='tight', dpi=300)
@@ -245,6 +254,36 @@ N_burn = 10000
 burned_trace = trace[N_burn:]
 
 
+# ### Save / Load the model
+# 
+# Note: using pickle on untrusted files is dangerous. Use at your own risk. No warranty as per licence.
+
+SAVE_MODEL = True
+LOAD_MODEL = True
+MODEL_PATH = ('../../models/gamma_mcmc_{}.pymc3.pkl'
+    .format(datetime.datetime.now().strftime('%Y-%m-%d'))
+)
+TRACE_PATH = ('../../models/gamma_mcmc_trace_{}.pymc3.dat'
+    .format(datetime.datetime.now().strftime('%Y-%m-%d'))
+)
+
+import pickle
+
+if SAVE_MODEL:
+    with open(MODEL_PATH, 'wb') as f:
+        pickle.dump({'model': model, 'trace': trace}, f)
+
+if LOAD_MODEL:
+    with open(MODEL_PATH, 'rb') as f:
+        data = pickle.load(f)
+        
+    model = data['model']
+    trace = data['trace']
+    del data
+
+
+# ### MCMC Samples
+
 from typing import Tuple
 from scipy.stats import gamma
 
@@ -276,8 +315,6 @@ def gamma_posterior(
 
     return x, y_goal_for, y_goal_against, y_no_goal
 
-
-# ### MCMC Samples
 
 ALPHA = 0.6
 LW = 3
@@ -327,9 +364,24 @@ plt.plot(x, y_no_goal, label=r'$P(\rm{no\;goal})$', color='orange', lw=LW)
 ''' Clean up the chart '''
 
 plt.ylabel('Counts')
-# plt.yticks([])
+ax = plt.gca()
+ax.set_yticklabels([])
+
 plt.xlabel('Time elapsed in 3rd period (minutes)')
 plt.legend()
+
+plt.text(x=11.6, y=0.75,
+    s='Goalie Pull Outcome Models',
+    fontsize=24, color='grey', weight='bold')
+
+plt.text(x=11.6, y=0.705,
+    s='MCMC gamma posterior models and samples\nfor the three possilbe goalie pull outcomes.',
+    fontsize=14, color='grey', style='italic')
+
+plt.text(x=17.5, y=0.7,
+    s='ChordAnalytics.ca  /  Source: NHL.com',
+    fontsize=14, color='grey', style='italic')
+
 
 savefig('time_elapsed_gamma_mcmc_samples')
 
@@ -337,12 +389,12 @@ plt.show()
 
 
 fig = pm.traceplot(trace);
-# savefig('timesince_traceplot_gamma_mcmc')
+savefig('time_elapsed_gamma_mcmc_traceplot')
 
 
-plt.plot(trace['alpha_goal_for']/60, label='alpha_goal_for', color='green')
-plt.plot(trace['alpha_goal_against']/60, label='alpha_goal_against', color='red')
-plt.plot(trace['alpha_no_goal']/60, label='alpha_no_goal', color='orange')
+plt.plot(trace['alpha_goal_for']/60, label='Goal For', color='green', lw=1)
+plt.plot(trace['alpha_goal_against']/60, label='Goal Against', color='red', lw=1)
+plt.plot(trace['alpha_no_goal']/60, label='No Goal', color='orange', lw=1)
 plt.ylabel(r'$\alpha$')
 plt.xlabel('MCMC step')
 
@@ -350,20 +402,46 @@ plt.axvline(N_burn, color='black', lw=2, label='Burn threshold')
 
 plt.legend()
 
+plt.text(x=-3700, y=0.103,
+    s='Alpha MCMC Samples',
+    fontsize=24, color='grey', weight='bold')
+
+plt.text(x=-3700, y=0.1005,
+    s='MCMC trace for the gamma model alpha parameter.',
+    fontsize=14, color='grey', style='italic')
+
+plt.text(x=49500, y=0.1005,
+    s='ChordAnalytics.ca  /  Source: NHL.com',
+    fontsize=14, color='grey', style='italic')
+
+
 savefig('time_elapsed_gamma_alpha_steps')
 
 plt.show()
 
 
-plt.plot(trace['beta_goal_for']/60, label='beta_goal_for', color='green')
-plt.plot(trace['beta_goal_against']/60, label='beta_goal_against', color='red')
-plt.plot(trace['beta_no_goal']/60, label='beta_no_goal', color='orange')
+plt.plot(trace['beta_goal_for']/60, label='Goal For', color='green', lw=1)
+plt.plot(trace['beta_goal_against']/60, label='Goal Against', color='red', lw=1)
+plt.plot(trace['beta_no_goal']/60, label='No Goal', color='orange', lw=1)
 plt.ylabel(r'$\beta$')
 plt.xlabel('MCMC step')
 
 plt.axvline(N_burn, color='black', lw=2, label='Burn threshold')
 
 plt.legend()
+
+plt.text(x=-3700, y=0.000936,
+    s='Beta MCMC Samples',
+    fontsize=24, color='grey', weight='bold')
+
+plt.text(x=-3700, y=0.00092,
+    s='MCMC trace for the gamma model beta parameter.',
+    fontsize=14, color='grey', style='italic')
+
+plt.text(x=49500, y=0.00092,
+    s='ChordAnalytics.ca  /  Source: NHL.com',
+    fontsize=14, color='grey', style='italic')
+
 
 savefig('time_elapsed_gamma_beta_steps')
 
@@ -485,10 +563,28 @@ plt.hist(np.random.choice(
          color='orange', label='p_no_goal samples',
          histtype='stepfilled', alpha=ALPHA)
 
-plt.ylabel('Sampled frequency (normed)')
-plt.yticks([])
+plt.ylabel('Counts (normed)')
+
+plt.ylim(0, 1400)
+plt.xlim(12.5, 20.5)
+
+ax = plt.gca()
+ax.set_yticklabels([])
+
 plt.xlabel('Time elapsed in 3rd period (minutes)')
-plt.legend();
+plt.legend()
+
+plt.text(x=12.5, y=1550,
+    s='Goalie Pull Outcome Models (Normed)',
+    fontsize=24, color='grey', weight='bold')
+
+plt.text(x=12.5, y=1450,
+    s='Normalized MCMC gamma posterior samples.\nBar heights reflect the relative probability of each outcome at time t.',
+    fontsize=14, color='grey', style='italic')
+
+plt.text(x=17.9, y=1440,
+    s='ChordAnalytics.ca  /  Source: NHL.com',
+    fontsize=14, color='grey', style='italic')
 
 savefig('time_elapsed_gamma_normed_mcmc_samples')
 
@@ -517,9 +613,23 @@ plt.plot(x, y_goal_against, label=r'$P(\mathrm{goal\;against}\;|\;X)$', color='r
 plt.plot(x, y_no_goal, label=r'$P(\mathrm{no\;goal}\;|\;X)$', color='orange', lw=LW)
 
 plt.ylabel('Posterior probability')
-# plt.yticks([])
+ax = plt.gca()
+ax.set_yticklabels([])
 plt.xlabel('Time elapsed in 3rd period (minutes)')
 plt.legend()
+
+plt.text(x=14.78, y=0.00671,
+    s='Goalie Pull Outcome Models (Normed)',
+    fontsize=24, color='grey', weight='bold')
+
+plt.text(x=14.78, y=0.00625,
+    s='Normalized MCMC gamma posterior models.\nLine heights reflect the relative probability of each outcome at time $t$.',
+    fontsize=14, color='grey', style='italic')
+
+plt.text(x=18.48, y=0.00625,
+    s='ChordAnalytics.ca  /  Source: NHL.com',
+    fontsize=14, color='grey', style='italic')
+
 
 savefig('time_elapsed_gamma_normed')
 
@@ -550,33 +660,18 @@ print(f'Time of max posterior probability =\n{t_remaining}')
 
 # Great, now we have properly normalized probabilties.
 # 
-# #### TODO: update notes below
+# #### Note: comments below may apply to previous models
 # 
-# Notes:
 #  - From normalizing factors, we can see ~13% chance of scoring when pulling the goalie (on average for all times).
 #  - Probability of scoring peaks at 1:24 remaining, with other probabilties following after (01:19 for goal against and 0:41 for no goals).
 #  
 # From now on we'll work from the distributions as our source of truth. These are hard coded below to help with reproducibility.
 
-# TODO: make sure this cell is consistent with results above
+# Note: make sure this cell is consistent with results above
 
-model_normlizing_factors = [
-    0.13426188,
-    0.33529572,
-    0.53282942,
-]
-
-alpha_mcmc = [
-    4.531123375736662,
-    3.8721902695471737,
-    2.363131801253015,
-]
-
-beta_mcmc = [
-    0.04206451410487348,
-    0.03657903397618263,
-    0.03320030344291979,
-]
+model_normlizing_factors = [0.13425752, 0.33528483, 0.53281211]
+alpha_mcmc = [4.535463169388722, 3.8818129700995634, 2.3765137077097944]
+beta_mcmc = [0.0420821857715431, 0.03668029689191766, 0.033411186867245306]
 
 
 # ### Cumulative sum
@@ -594,12 +689,24 @@ plt.plot(x, np.cumsum(y_goal_against)[::-1], label=r'$cumsum [ P(\mathrm{goal\;a
 plt.plot(x, np.cumsum(y_no_goal)[::-1], label=r'$cumsum [ P(\mathrm{no\;goal}\;|\;X) ]$', color='orange', lw=LW)
 
 plt.ylabel('Posterior CDF')
-# plt.yticks([])
 plt.xlabel('Time elapsed in 3rd period (minutes)')
 plt.legend()
 
 ax = plt.gca()
 ax.yaxis.tick_right()
+
+plt.text(x=14.78, y=0.62,
+    s='Goalie Pull Outcome Model CDF',
+    fontsize=24, color='grey', weight='bold')
+
+plt.text(x=14.78, y=0.58,
+    s='Cumulative sum of posterior outcome probabilities. Line heights on far right side\nsum to 1 and represent the average probability of each outcome.',
+    fontsize=14, color='grey', style='italic')
+
+plt.text(x=18.48, y=0.57,
+    s='ChordAnalytics.ca  /  Source: NHL.com',
+    fontsize=14, color='grey', style='italic')
+
 
 savefig('time_elapsed_gamma_cdf')
 
@@ -665,16 +772,28 @@ y_goal_against = alpha * y_goal_against
 y_no_goal = alpha * y_no_goal
 
 max_index = np.where(y_goal_for == y_goal_for[~(np.isnan(y_goal_for))].max())[0][0]
-plt.axvline(x[max_index], label='goal for max likelihood', color='black', lw=2, alpha=0.5)
+plt.axvline(x[max_index], label='Goal For Max Likelihood', color='black', lw=2, alpha=0.5)
 
-plt.plot(x, y_goal_for, label='goal for', color='green', lw=LW)
-plt.plot(x, y_goal_against, label='goal against', color='red', lw=LW)
-plt.plot(x, y_no_goal, label='no goal', color='orange', lw=LW)
+plt.plot(x, y_goal_for, label='Goal For', color='green', lw=LW)
+plt.plot(x, y_goal_against, label='Goal Against', color='red', lw=LW)
+plt.plot(x, y_no_goal, label='No Goal', color='orange', lw=LW)
 
 plt.ylabel('Chance of outcome')
 # plt.yticks([])
 plt.xlabel('Time elapsed in 3rd period (minutes)')
 plt.legend()
+
+plt.text(x=14.78, y=1.18,
+    s='Goalie Pull Outcome Probabilities',
+    fontsize=24, color='grey', weight='bold')
+
+plt.text(x=14.78, y=1.1,
+    s='The chance of each outcome if pulling the goalie at time $t$.\nThe point of maximum Goal For likelihood is marked with a vertical black line.',
+    fontsize=14, color='grey', style='italic')
+
+plt.text(x=18.48, y=1.1,
+    s='ChordAnalytics.ca  /  Source: NHL.com',
+    fontsize=14, color='grey', style='italic')
 
 # Plotting below with error bar
 savefig('time_elapsed_gamma_outcome_likelihoods')
@@ -684,8 +803,6 @@ plt.show()
 
 # ### Adding error bars
 
-# #### TODO: update notes for gamma
-# 
 # Note how there are very few samples to draw conclusions from for the low and high times.
 # 
 # e.g. less than 3 minutes:
@@ -696,6 +813,9 @@ np.sum(training_samples[0] < 3*60) + np.sum(training_samples[1] < 3*60) + np.sum
 # compared to more than 3 minutes:
 
 np.sum(training_samples[0] > 3*60) + np.sum(training_samples[1] > 3*60) + np.sum(training_samples[2] > 3*60)
+
+
+566 / 11000 * 100
 
 
 # Only about 5% are over 3 minutes.
@@ -809,10 +929,10 @@ y_goal_against = c * y_goal_against
 y_no_goal = c * y_no_goal
 
 max_index = np.where(y_goal_for == y_goal_for[~(np.isnan(y_goal_for))].max())[0][0]
-plt.axvline(x[max_index], label='goal for max likelihood', color='black', lw=2, alpha=0.5)
-plt.plot(x, y_goal_for, label=r'goal for', color='green', lw=LW, alpha=ALPHA)
-plt.plot(x, y_goal_against, label=r'goal against', color='red', lw=LW, alpha=ALPHA)
-plt.plot(x, y_no_goal, label=r'no goal', color='orange', lw=LW, alpha=ALPHA)
+plt.axvline(x[max_index], label='Goal For Max Likelihood', color='black', lw=2, alpha=0.5)
+plt.plot(x, y_goal_for, label=r'Goal For', color='green', lw=LW, alpha=ALPHA)
+plt.plot(x, y_goal_against, label=r'Goal Against', color='red', lw=LW, alpha=ALPHA)
+plt.plot(x, y_no_goal, label=r'No Goal', color='orange', lw=LW, alpha=ALPHA)
 
 ''' Plot the errors '''
 err_p_goal_for = c * calc_posteror_error(alpha_mcmc[0], beta_mcmc[0], alpha_mcmc_std[0], beta_mcmc_std[0], num_samples=num_samples)
@@ -831,6 +951,19 @@ plt.xlabel('Time elapsed in 3rd period (minutes)')
 plt.xlim(15.7, 20)
 plt.ylim(0, 1)
 plt.legend()
+
+plt.text(x=15.67, y=1.12,
+    s='Goalie Pull Outcome Probabilities',
+    fontsize=24, color='grey', weight='bold')
+
+plt.text(x=15.67, y=1.05,
+    s='The chance of each outcome if pulling the goalie at time $t$. Error bands\nrepresent statistical uncertainty, which is dominant for early times.',
+    fontsize=14, color='grey', style='italic')
+
+plt.text(x=18.6, y=1.05,
+    s='ChordAnalytics.ca  /  Source: NHL.com',
+    fontsize=14, color='grey', style='italic')
+
 
 savefig('time_elapsed_gamma_outcome_likelihoods_error_bars')
 
@@ -940,7 +1073,7 @@ plt.fill_between(x, odds_goal_for-err_odds_goal_for, odds_goal_for+err_odds_goal
                  color='green', lw=LW, alpha=ALPHA_LIGHT)
 
 max_index = np.where(odds_goal_for == odds_goal_for[~(np.isnan(odds_goal_for))].max())[0][0]
-plt.axvline(x[max_index], label='max likelihood', color='black', lw=2, alpha=0.5)
+plt.axvline(x[max_index], label='Max Likelihood', color='black', lw=2, alpha=0.5)
 
 plt.ylabel('Odds of success')
 # plt.yticks([])
@@ -950,6 +1083,19 @@ plt.xlim(15.1, 19.8)
 plt.ylim(0, 0.4)
 
 plt.legend()
+
+plt.text(x=15.1, y=0.447,
+    s='Goalie Pull Scoring Odds',
+    fontsize=24, color='grey', weight='bold')
+
+plt.text(x=15.1, y=0.42,
+    s='The chance of scoring if pulling the goalie at time $t$. Error bands\nrepresent statistical uncertainty, which is dominant for early times.',
+    fontsize=14, color='grey', style='italic')
+
+plt.text(x=18.23, y=0.42,
+    s='ChordAnalytics.ca  /  Source: NHL.com',
+    fontsize=14, color='grey', style='italic')
+
 
 savefig('time_elapsed_gamma_odds_goal_for')
 
