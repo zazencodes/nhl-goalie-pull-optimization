@@ -37,6 +37,7 @@ plt.rcParams['grid.alpha'] = 0.2
 plt.rcParams['axes.labelpad'] = 10
 plt.rcParams['axes.facecolor'] = 'white'
 plt.rcParams['figure.facecolor'] = 'white'
+plt.rcParams['savefig.facecolor'] = 'white'
 plt.rcParams['xtick.major.pad'] = 15
 plt.rcParams['xtick.minor.pad'] = 15
 plt.rcParams['ytick.major.pad'] = 10
@@ -372,15 +373,15 @@ plt.legend()
 
 plt.text(x=11.6, y=0.75,
     s='Goalie Pull Outcome Models',
-    fontsize=24, color='grey', weight='bold')
+    fontsize=24, color='black', weight='bold')
 
 plt.text(x=11.6, y=0.705,
     s='MCMC gamma posterior models and samples\nfor the three possilbe goalie pull outcomes.',
-    fontsize=14, color='grey', style='italic')
+    fontsize=14, color='black', style='italic')
 
 plt.text(x=17.5, y=0.7,
     s='ChordAnalytics.ca  /  Source: NHL.com',
-    fontsize=14, color='grey', style='italic')
+    fontsize=14, color='black', style='italic')
 
 
 savefig('time_elapsed_gamma_mcmc_samples')
@@ -404,15 +405,15 @@ plt.legend()
 
 plt.text(x=-3700, y=0.103,
     s='Alpha MCMC Samples',
-    fontsize=24, color='grey', weight='bold')
+    fontsize=24, color='black', weight='bold')
 
 plt.text(x=-3700, y=0.1005,
     s='MCMC trace for the gamma model alpha parameter.',
-    fontsize=14, color='grey', style='italic')
+    fontsize=14, color='black', style='italic')
 
 plt.text(x=49500, y=0.1005,
     s='ChordAnalytics.ca  /  Source: NHL.com',
-    fontsize=14, color='grey', style='italic')
+    fontsize=14, color='black', style='italic')
 
 
 savefig('time_elapsed_gamma_alpha_steps')
@@ -432,15 +433,15 @@ plt.legend()
 
 plt.text(x=-3700, y=0.000936,
     s='Beta MCMC Samples',
-    fontsize=24, color='grey', weight='bold')
+    fontsize=24, color='black', weight='bold')
 
 plt.text(x=-3700, y=0.00092,
     s='MCMC trace for the gamma model beta parameter.',
-    fontsize=14, color='grey', style='italic')
+    fontsize=14, color='black', style='italic')
 
 plt.text(x=49500, y=0.00092,
     s='ChordAnalytics.ca  /  Source: NHL.com',
-    fontsize=14, color='grey', style='italic')
+    fontsize=14, color='black', style='italic')
 
 
 savefig('time_elapsed_gamma_beta_steps')
@@ -576,15 +577,15 @@ plt.legend()
 
 plt.text(x=12.5, y=1550,
     s='Goalie Pull Outcome Models (Normed)',
-    fontsize=24, color='grey', weight='bold')
+    fontsize=24, color='black', weight='bold')
 
 plt.text(x=12.5, y=1450,
     s='Normalized MCMC gamma posterior samples.\nBar heights reflect the relative probability of each outcome at time t.',
-    fontsize=14, color='grey', style='italic')
+    fontsize=14, color='black', style='italic')
 
 plt.text(x=17.9, y=1440,
     s='ChordAnalytics.ca  /  Source: NHL.com',
-    fontsize=14, color='grey', style='italic')
+    fontsize=14, color='black', style='italic')
 
 savefig('time_elapsed_gamma_normed_mcmc_samples')
 
@@ -618,17 +619,17 @@ ax.set_yticklabels([])
 plt.xlabel('Time elapsed in 3rd period (minutes)')
 plt.legend()
 
-plt.text(x=14.78, y=0.00671,
+plt.text(x=14.78, y=0.00672,
     s='Goalie Pull Outcome Models (Normed)',
-    fontsize=24, color='grey', weight='bold')
+    fontsize=24, color='black', weight='bold')
 
 plt.text(x=14.78, y=0.00625,
     s='Normalized MCMC gamma posterior models.\nLine heights reflect the relative probability of each outcome at time $t$.',
-    fontsize=14, color='grey', style='italic')
+    fontsize=14, color='black', style='italic')
 
 plt.text(x=18.48, y=0.00625,
     s='ChordAnalytics.ca  /  Source: NHL.com',
-    fontsize=14, color='grey', style='italic')
+    fontsize=14, color='black', style='italic')
 
 
 savefig('time_elapsed_gamma_normed')
@@ -695,17 +696,17 @@ plt.legend()
 ax = plt.gca()
 ax.yaxis.tick_right()
 
-plt.text(x=14.78, y=0.62,
+plt.text(x=14.78, y=0.623,
     s='Goalie Pull Outcome Model CDF',
-    fontsize=24, color='grey', weight='bold')
+    fontsize=24, color='black', weight='bold')
 
 plt.text(x=14.78, y=0.58,
     s='Cumulative sum of posterior outcome probabilities. Line heights on far right side\nsum to 1 and represent the average probability of each outcome.',
-    fontsize=14, color='grey', style='italic')
+    fontsize=14, color='black', style='italic')
 
 plt.text(x=18.48, y=0.57,
     s='ChordAnalytics.ca  /  Source: NHL.com',
-    fontsize=14, color='grey', style='italic')
+    fontsize=14, color='black', style='italic')
 
 
 savefig('time_elapsed_gamma_cdf')
@@ -785,15 +786,15 @@ plt.legend()
 
 plt.text(x=14.78, y=1.18,
     s='Goalie Pull Outcome Probabilities',
-    fontsize=24, color='grey', weight='bold')
+    fontsize=24, color='black', weight='bold')
 
 plt.text(x=14.78, y=1.1,
     s='The chance of each outcome if pulling the goalie at time $t$.\nThe point of maximum Goal For likelihood is marked with a vertical black line.',
-    fontsize=14, color='grey', style='italic')
+    fontsize=14, color='black', style='italic')
 
 plt.text(x=18.48, y=1.1,
     s='ChordAnalytics.ca  /  Source: NHL.com',
-    fontsize=14, color='grey', style='italic')
+    fontsize=14, color='black', style='italic')
 
 # Plotting below with error bar
 savefig('time_elapsed_gamma_outcome_likelihoods')
@@ -954,15 +955,15 @@ plt.legend()
 
 plt.text(x=15.67, y=1.12,
     s='Goalie Pull Outcome Probabilities',
-    fontsize=24, color='grey', weight='bold')
+    fontsize=24, color='black', weight='bold')
 
 plt.text(x=15.67, y=1.05,
     s='The chance of each outcome if pulling the goalie at time $t$. Error bands\nrepresent statistical uncertainty, which is dominant for early times.',
-    fontsize=14, color='grey', style='italic')
+    fontsize=14, color='black', style='italic')
 
 plt.text(x=18.6, y=1.05,
     s='ChordAnalytics.ca  /  Source: NHL.com',
-    fontsize=14, color='grey', style='italic')
+    fontsize=14, color='black', style='italic')
 
 
 savefig('time_elapsed_gamma_outcome_likelihoods_error_bars')
@@ -1084,17 +1085,17 @@ plt.ylim(0, 0.4)
 
 plt.legend()
 
-plt.text(x=15.1, y=0.447,
+plt.text(x=15.1, y=0.449,
     s='Goalie Pull Scoring Odds',
-    fontsize=24, color='grey', weight='bold')
+    fontsize=24, color='black', weight='bold')
 
 plt.text(x=15.1, y=0.42,
     s='The chance of scoring if pulling the goalie at time $t$. Error bands\nrepresent statistical uncertainty, which is dominant for early times.',
-    fontsize=14, color='grey', style='italic')
+    fontsize=14, color='black', style='italic')
 
 plt.text(x=18.23, y=0.42,
     s='ChordAnalytics.ca  /  Source: NHL.com',
-    fontsize=14, color='grey', style='italic')
+    fontsize=14, color='black', style='italic')
 
 
 savefig('time_elapsed_gamma_odds_goal_for')
