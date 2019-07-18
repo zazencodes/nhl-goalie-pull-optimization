@@ -72,6 +72,9 @@ get_ipython().run_line_magic('version_information', 'pandas, numpy')
 #  - **t = Time elapsed** e.g. if there's 3 minutes left, what is the chance that pulling the goalie will result in a goal for?
 #  - **t = Time since goalie pull** e.g. after the goalie has been pulled for 1 minute, what is the chance of getting a goal?
 
+HALF_SPACE = u'\u2000'
+
+
 import pymc3 as pm
 
 
@@ -379,8 +382,8 @@ plt.text(x=11.6, y=0.705,
     s='MCMC gamma posterior models and samples\nfor the three possilbe goalie pull outcomes.',
     fontsize=14, color='black', style='italic')
 
-plt.text(x=17.5, y=0.7,
-    s='ChordAnalytics.ca  /  Source: NHL.com',
+plt.text(x=18.6, y=0.705,
+    s=HALF_SPACE+'        ChordAnalytics.ca\nTraining Data: NHL.com',
     fontsize=14, color='black', style='italic')
 
 
@@ -411,8 +414,8 @@ plt.text(x=-3700, y=0.1005,
     s='MCMC trace for the gamma model alpha parameter.',
     fontsize=14, color='black', style='italic')
 
-plt.text(x=49500, y=0.1005,
-    s='ChordAnalytics.ca  /  Source: NHL.com',
+plt.text(x=59500, y=0.1005,
+    s=HALF_SPACE+'        ChordAnalytics.ca\nTraining Data: NHL.com',
     fontsize=14, color='black', style='italic')
 
 
@@ -439,8 +442,9 @@ plt.text(x=-3700, y=0.00092,
     s='MCMC trace for the gamma model beta parameter.',
     fontsize=14, color='black', style='italic')
 
-plt.text(x=49500, y=0.00092,
-    s='ChordAnalytics.ca  /  Source: NHL.com',
+
+plt.text(x=59500, y=0.00092,
+    s=HALF_SPACE+'        ChordAnalytics.ca\nTraining Data: NHL.com',
     fontsize=14, color='black', style='italic')
 
 
@@ -583,8 +587,8 @@ plt.text(x=12.5, y=1450,
     s='Normalized MCMC gamma posterior samples.\nBar heights reflect the relative probability of each outcome at time t.',
     fontsize=14, color='black', style='italic')
 
-plt.text(x=17.9, y=1440,
-    s='ChordAnalytics.ca  /  Source: NHL.com',
+plt.text(x=18.86, y=1440,
+    s=HALF_SPACE+'        ChordAnalytics.ca\nTraining Data: NHL.com',
     fontsize=14, color='black', style='italic')
 
 savefig('time_elapsed_gamma_normed_mcmc_samples')
@@ -627,8 +631,8 @@ plt.text(x=14.78, y=0.00625,
     s='Normalized MCMC gamma posterior models.\nLine heights reflect the relative probability of each outcome at time $t$.',
     fontsize=14, color='black', style='italic')
 
-plt.text(x=18.48, y=0.00625,
-    s='ChordAnalytics.ca  /  Source: NHL.com',
+plt.text(x=19.13, y=0.00625,
+    s=HALF_SPACE+'        ChordAnalytics.ca\nTraining Data: NHL.com',
     fontsize=14, color='black', style='italic')
 
 
@@ -704,8 +708,8 @@ plt.text(x=14.78, y=0.58,
     s='Cumulative sum of posterior outcome probabilities. Line heights on far right side\nsum to 1 and represent the average probability of each outcome.',
     fontsize=14, color='black', style='italic')
 
-plt.text(x=18.48, y=0.57,
-    s='ChordAnalytics.ca  /  Source: NHL.com',
+plt.text(x=19.13, y=0.57,
+    s=HALF_SPACE+'        ChordAnalytics.ca\nTraining Data: NHL.com',
     fontsize=14, color='black', style='italic')
 
 
@@ -792,8 +796,8 @@ plt.text(x=14.78, y=1.1,
     s='The chance of each outcome if pulling the goalie at time $t$.\nThe point of maximum Goal For likelihood is marked with a vertical black line.',
     fontsize=14, color='black', style='italic')
 
-plt.text(x=18.48, y=1.1,
-    s='ChordAnalytics.ca  /  Source: NHL.com',
+plt.text(x=19.13, y=1.1,
+    s=HALF_SPACE+'        ChordAnalytics.ca\nTraining Data: NHL.com',
     fontsize=14, color='black', style='italic')
 
 # Plotting below with error bar
@@ -961,8 +965,8 @@ plt.text(x=15.67, y=1.05,
     s='The chance of each outcome if pulling the goalie at time $t$. Error bands\nrepresent statistical uncertainty, which is dominant for early times.',
     fontsize=14, color='black', style='italic')
 
-plt.text(x=18.6, y=1.05,
-    s='ChordAnalytics.ca  /  Source: NHL.com',
+plt.text(x=19.13, y=1.05,
+    s=HALF_SPACE+'        ChordAnalytics.ca\nTraining Data: NHL.com',
     fontsize=14, color='black', style='italic')
 
 
@@ -1093,8 +1097,8 @@ plt.text(x=15.1, y=0.42,
     s='The chance of scoring if pulling the goalie at time $t$. Error bands\nrepresent statistical uncertainty, which is dominant for early times.',
     fontsize=14, color='black', style='italic')
 
-plt.text(x=18.23, y=0.42,
-    s='ChordAnalytics.ca  /  Source: NHL.com',
+plt.text(x=18.82, y=0.42,
+    s=HALF_SPACE+'        ChordAnalytics.ca\nTraining Data: NHL.com',
     fontsize=14, color='black', style='italic')
 
 

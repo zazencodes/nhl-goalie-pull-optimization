@@ -276,7 +276,12 @@ plt.ylabel('Total Counts')
 label_map = {str(i): s for i, s in enumerate(s.season.tolist())}
 fig.canvas.draw()
 labels = [lab.get_text() for lab in ax.get_xticklabels()]
-ax.set_xticklabels([label_map.get(lab, '') for lab in labels])
+season_label = lambda x: '{}/{}'.format(x[:4], x[4:])
+
+ax.set_xticklabels(
+    [season_label(label_map.get(lab, ''))
+    for lab in labels]
+)
 
 plt.text(x=-0.8, y=608,
     s='Goalie Pull Outcomes',
