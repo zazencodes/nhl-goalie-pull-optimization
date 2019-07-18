@@ -1,26 +1,25 @@
 # NHL Goalie-Pull-Time Optimization
 
-We seek out the optimal goalie pull times by looking at historical data and modeling the odds of scoring as a function of the time when goalie was pulled in the 3rd period. In doing so we look for insight into the question "when is the right time to pull your goalie?"
-
+Using historical NHL goalie pulls data, we model the probability of scoring goals for and having goals scored against. We then solve for the optimal goalie pull time as the maximum liklihood of the scoring odds ratio.
 
 ## Blog post: <TODO insert link> 
 
 ## Source code
 
-The notebooks have been saved as `.py` and `.html` files in addition to the normal `.ipynb` files. The notebooks can be found in `notbooks/src`. These are labelled as follows:
- 1. Save raw HTML from https://www.nhl.com
- 2. Parse the goalie pull stats
- 3. Exploratory analysis
- 4. Maximize the odds of scoring as function of goalie-pull time:
+The source code consists of jupyter notebooks, which have been saved as `.py` and `.html` files in addition to the normal `.ipynb` file. The notebooks can be found in `notbooks/src` and are labelled as follows:
+ **1.** Saving raw HTML from https://www.nhl.com/ 
+ **2.** Parsing goalie pull statistics.
+ **3.** Exploring the data.
+ **4.** Modeling with pymc3.
+
+We model the following conditional probabilities as a function of time elapsed in the 3rd period:
 ```
 P ( Goal For     | Goalie Pulled ; t )
 P ( Goal Against | Goalie Pulled ; t )
 P ( No Goal      | Goalie Pulled ; t )
 ```
 
-We determine the risk-reward of pulling a goalie as a function of the time remaining in the game. For instance, if there's 3 minutes left, what is the chance that pulling the goalie will result in a goal for? What is the probability it will result in a goal against?
-
-
+We determine the risk-reward of pulling a goalie as a function of the time remaining in the game. For instance, if there's 3 minutes left, what is the chance that pulling the goalie will result in a goal for? What is the chance it will result in a goal against?
 
 ## Project Tree
 
@@ -51,7 +50,6 @@ We determine the risk-reward of pulling a goalie as a function of the time remai
 │                         generated with `pip freeze > requirements.txt`
 │
 └── src                <- Source code for use in this project.
-
 ```
 
 
