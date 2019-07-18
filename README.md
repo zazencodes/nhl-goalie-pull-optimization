@@ -7,10 +7,13 @@ Using historical NHL goalie pulls data, we model the probability of scoring goal
 ## Source code
 
 The source code consists of jupyter notebooks, which have been saved as `.py` and `.html` files in addition to the normal `.ipynb` file. The notebooks can be found in `notbooks/src` and are labelled as follows:
- **1.** Saving raw HTML from https://www.nhl.com/ 
- **2.** Parsing goalie pull statistics.
- **3.** Exploring the data.
- **4.** Modeling with pymc3.
+
+Notebook Number | Description
+--- | ---
+**1** | Saving raw HTML from nhl.com
+**2** | Parsing goalie pull statistics
+**3** | Exploring the data
+**4** | Modeling with pymc3
 
 We model the following conditional probabilities as a function of time elapsed in the 3rd period:
 ```
