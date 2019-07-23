@@ -20,7 +20,6 @@ import seaborn as sns
 get_ipython().run_line_magic('config', "InlineBackend.figure_format='retina'")
 sns.set() # Revert to matplotlib defaults
 plt.rcParams['figure.figsize'] = (12, 8)
-plt.rcParams['axes.labelpad'] = 20
 plt.rcParams['legend.fancybox'] = True
 plt.style.use('fivethirtyeight')
 
@@ -35,6 +34,7 @@ plt.rc('axes', titlesize=BIGGER_SIZE)
 
 plt.rcParams['grid.alpha'] = 0.2
 plt.rcParams['axes.labelpad'] = 10
+plt.rcParams['axes.labelpad'] = 20
 plt.rcParams['axes.facecolor'] = 'white'
 plt.rcParams['figure.facecolor'] = 'white'
 plt.rcParams['savefig.facecolor'] = 'white'

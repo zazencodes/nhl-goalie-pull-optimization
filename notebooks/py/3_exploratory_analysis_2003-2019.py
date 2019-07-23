@@ -33,18 +33,44 @@ import seaborn as sns
 get_ipython().run_line_magic('config', "InlineBackend.figure_format='retina'")
 sns.set() # Revert to matplotlib defaults
 plt.rcParams['figure.figsize'] = (12, 8)
+plt.rcParams['legend.fancybox'] = True
 plt.style.use('fivethirtyeight')
+
+SMALL_SIZE, MEDIUM_SIZE, BIGGER_SIZE = 14, 16, 20
+plt.rc('font', size=SMALL_SIZE)
+plt.rc('axes', titlesize=SMALL_SIZE)
+plt.rc('axes', labelsize=MEDIUM_SIZE)
+plt.rc('xtick', labelsize=SMALL_SIZE)
+plt.rc('ytick', labelsize=SMALL_SIZE)
+plt.rc('legend', fontsize=MEDIUM_SIZE)
+plt.rc('axes', titlesize=BIGGER_SIZE)
+
 plt.rcParams['grid.alpha'] = 0.2
+plt.rcParams['axes.labelpad'] = 10
 plt.rcParams['axes.labelpad'] = 20
-plt.rcParams['ytick.labelsize'] = 14
-plt.rcParams['xtick.labelsize'] = 14
-plt.rcParams['axes.labelsize'] = 16
 plt.rcParams['axes.facecolor'] = 'white'
 plt.rcParams['figure.facecolor'] = 'white'
+plt.rcParams['savefig.facecolor'] = 'white'
 plt.rcParams['xtick.major.pad'] = 15
 plt.rcParams['xtick.minor.pad'] = 15
 plt.rcParams['ytick.major.pad'] = 10
 plt.rcParams['ytick.minor.pad'] = 10
+
+# %config InlineBackend.figure_format='retina'
+# sns.set() # Revert to matplotlib defaults
+# plt.rcParams['figure.figsize'] = (12, 8)
+# plt.style.use('fivethirtyeight')
+# plt.rcParams['grid.alpha'] = 0.2
+# plt.rcParams['axes.labelpad'] = 20
+# plt.rcParams['ytick.labelsize'] = 14
+# plt.rcParams['xtick.labelsize'] = 14
+# plt.rcParams['axes.labelsize'] = 16
+# plt.rcParams['axes.facecolor'] = 'white'
+# plt.rcParams['figure.facecolor'] = 'white'
+# plt.rcParams['xtick.major.pad'] = 15
+# plt.rcParams['xtick.minor.pad'] = 15
+# plt.rcParams['ytick.major.pad'] = 10
+# plt.rcParams['ytick.minor.pad'] = 10
 
 def savefig(name):
     plt.savefig(f'../../figures/{name}.png', bbox_inches='tight', dpi=300)
@@ -172,7 +198,12 @@ plt.ylabel('Total Goalie Pulls')
 label_map = {str(i): s for i, s in enumerate(s.season.tolist())}
 fig.canvas.draw()
 labels = [lab.get_text() for lab in ax.get_xticklabels()]
-ax.set_xticklabels([label_map.get(lab, '') for lab in labels])
+season_label = lambda x: '{}/{}'.format(x[:4], x[4:])
+
+ax.set_xticklabels(
+    [season_label(label_map.get(lab, ''))
+    for lab in labels]
+)
 
 plt.text(x=-0.8, y=1032,
     s='Goalie Pulls by Season',
@@ -223,7 +254,13 @@ plt.ylabel('Average Goalie Pulls Per Game')
 label_map = {str(i): s for i, s in enumerate(s.season.tolist())}
 fig.canvas.draw()
 labels = [lab.get_text() for lab in ax.get_xticklabels()]
-ax.set_xticklabels([label_map.get(lab, '') for lab in labels])
+season_label = lambda x: '{}/{}'.format(x[:4], x[4:])
+
+ax.set_xticklabels(
+    [season_label(label_map.get(lab, ''))
+    for lab in labels]
+)
+
 
 plt.text(x=-0.8, y=0.823,
     s='Goalie Pulls by Season',
