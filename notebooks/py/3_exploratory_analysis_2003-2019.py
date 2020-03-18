@@ -9,6 +9,10 @@ get_ipython().run_line_magic('load_ext', 'version_information')
 get_ipython().run_line_magic('version_information', 'pandas')
 
 
+get_ipython().run_line_magic('load_ext', 'watermark')
+get_ipython().run_line_magic('watermark', '-a "Alex Galea"  -v -p matplotlib,seaborn,pandas')
+
+
 # # Goalie Pull Bayes Optimize
 # 
 #  - Exploratory analysis
@@ -35,6 +39,7 @@ sns.set() # Revert to matplotlib defaults
 plt.rcParams['figure.figsize'] = (12, 8)
 plt.rcParams['legend.fancybox'] = True
 plt.style.use('fivethirtyeight')
+plt.rcParams['font.family'] = 'Marion'
 
 SMALL_SIZE, MEDIUM_SIZE, BIGGER_SIZE = 14, 16, 20
 plt.rc('font', size=SMALL_SIZE)
@@ -167,12 +172,12 @@ ax = plt.gca()
 ax.set_yticklabels([])
 
 plt.text(x='2003', y=78,
-    s='Goalie Pull Frequency by Date',
-    fontsize=24, color='grey', weight='bold')
+    s='Goalie Pulls by Date',
+    fontsize=24, color='black', weight='bold')
 
-plt.text(x='2014-06', y=78,
-    s='ChordAnalytics.ca  /  Source: NHL.com',
-    fontsize=14, color='grey', style='italic')
+plt.text(x='2015-07', y=78,
+    s='alexgalea.ca  /  Source: NHL.com',
+    fontsize=14, color='black', style='italic')
 
 savefig('goalie_pulls_2003-2019')
 
@@ -205,16 +210,16 @@ ax.set_xticklabels(
     for lab in labels]
 )
 
-plt.text(x=-0.8, y=1032,
+plt.text(x=-0.05, y=1032,
     s='Goalie Pulls by Season',
     fontsize=24, color='black', weight='bold')
 
-plt.text(x=-0.8, y=1015,
+plt.text(x=-0.05, y=1015,
     s='Goalie pulls have been trending up in the last 10 years.',
     fontsize=14, color='black', style='italic')
 
-plt.text(x=10.2, y=1015,
-    s='ChordAnalytics.ca  /  Source: NHL.com',
+plt.text(x=11.2, y=1015,
+    s='alexgalea.ca  /  Source: NHL.com',
     fontsize=14, color='black', style='italic')
 
 
@@ -262,16 +267,16 @@ ax.set_xticklabels(
 )
 
 
-plt.text(x=-0.8, y=0.823,
+plt.text(x=-0.05, y=0.823,
     s='Goalie Pulls by Season',
     fontsize=24, color='black', weight='bold')
 
-plt.text(x=-0.8, y=0.81,
+plt.text(x=-0.05, y=0.81,
     s='Goalie pulls have been trending up in the last 10 years.',
     fontsize=14, color='black', style='italic')
 
-plt.text(x=10.2, y=0.81,
-    s='ChordAnalytics.ca  /  Source: NHL.com',
+plt.text(x=11.1, y=0.81,
+    s='alexgalea.ca  /  Source: NHL.com',
     fontsize=14, color='black', style='italic')
 
 
@@ -320,16 +325,16 @@ ax.set_xticklabels(
     for lab in labels]
 )
 
-plt.text(x=-0.8, y=608,
+plt.text(x=-0.05, y=608,
     s='Goalie Pull Outcomes',
     fontsize=24, color='black', weight='bold')
 
-plt.text(x=-0.8, y=567,
+plt.text(x=-0.05, y=567,
     s='Good outcomes (green dots) have been on the rise, but the\nbad outcomes (red dots) are rising much faster, doubling in the last 10 years.',
     fontsize=14, color='black', style='italic')
 
-plt.text(x=10.2, y=566,
-    s='ChordAnalytics.ca  /  Source: NHL.com',
+plt.text(x=11.1, y=566,
+    s='alexgalea.ca  /  Source: NHL.com',
     fontsize=14, color='black', style='italic')
 
 
@@ -357,8 +362,8 @@ plt.text(x=-0.5, y=4.13,
     s='Goalies are being pulled earlier in the 3rd period in recent years.',
     fontsize=14, color='black', style='italic')
 
-plt.text(x=9.5, y=4.13,
-    s='ChordAnalytics.ca  /  Source: NHL.com',
+plt.text(x=10.5, y=4.13,
+    s='alexgalea.ca  /  Source: NHL.com',
     fontsize=14, color='black', style='italic')
 
 
@@ -385,8 +390,8 @@ plt.text(x=14, y=976,
     s='Goalie pulls start gradually ramping up\nafter the 16 minute mark in the 3rd period.',
     fontsize=14, color='black', style='italic')
 
-plt.text(x=18, y=971,
-    s='ChordAnalytics.ca  /  Source: NHL.com',
+plt.text(x=18.4, y=971,
+    s='alexgalea.ca  /  Source: NHL.com',
     fontsize=14, color='black', style='italic')
 
 
