@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+
 # coding: utf-8
 
 from IPython.display import HTML
@@ -79,6 +79,13 @@ plt.rcParams['ytick.minor.pad'] = 10
 
 def savefig(name):
     plt.savefig(f'../../figures/{name}.png', bbox_inches='tight', dpi=300)
+
+
+# To debug UserWarning: findfont: Font family [‘Marion’] not found.
+
+# import matplotlib.font_manager
+# matplotlib.font_manager.findSystemFonts(fontpaths=None, fontext='ttf')
+# matplotlib.font_manager._rebuild()
 
 
 ls ../../data/processed/
@@ -176,7 +183,7 @@ plt.text(x='2003', y=78,
     fontsize=24, color='black', weight='bold')
 
 plt.text(x='2015-07', y=78,
-    s='alexgalea.ca  /  Source: NHL.com',
+    s='alexgalea.ca  |  Source: NHL.com',
     fontsize=14, color='black', style='italic')
 
 savefig('goalie_pulls_2003-2019')
@@ -210,16 +217,16 @@ ax.set_xticklabels(
     for lab in labels]
 )
 
-plt.text(x=-0.05, y=1032,
+plt.text(x=-0.7, y=1032,
     s='Goalie Pulls by Season',
     fontsize=24, color='black', weight='bold')
 
-plt.text(x=-0.05, y=1015,
+plt.text(x=-0.7, y=1015,
     s='Goalie pulls have been trending up in the last 10 years.',
     fontsize=14, color='black', style='italic')
 
-plt.text(x=11.2, y=1015,
-    s='alexgalea.ca  /  Source: NHL.com',
+plt.text(x=14.1, y=1015,
+    s='alexgalea.ca',
     fontsize=14, color='black', style='italic')
 
 
@@ -276,7 +283,7 @@ plt.text(x=-0.05, y=0.81,
     fontsize=14, color='black', style='italic')
 
 plt.text(x=11.1, y=0.81,
-    s='alexgalea.ca  /  Source: NHL.com',
+    s='alexgalea.ca  |  Source: NHL.com',
     fontsize=14, color='black', style='italic')
 
 
@@ -325,16 +332,16 @@ ax.set_xticklabels(
     for lab in labels]
 )
 
-plt.text(x=-0.05, y=608,
+plt.text(x=-0.7, y=608,
     s='Goalie Pull Outcomes',
     fontsize=24, color='black', weight='bold')
 
-plt.text(x=-0.05, y=567,
+plt.text(x=-0.7, y=567,
     s='Good outcomes (green dots) have been on the rise, but the\nbad outcomes (red dots) are rising much faster, doubling in the last 10 years.',
     fontsize=14, color='black', style='italic')
 
-plt.text(x=11.1, y=566,
-    s='alexgalea.ca  /  Source: NHL.com',
+plt.text(x=14.1, y=566,
+    s='alexgalea.ca',
     fontsize=14, color='black', style='italic')
 
 
@@ -362,8 +369,8 @@ plt.text(x=-0.5, y=4.13,
     s='Goalies are being pulled earlier in the 3rd period in recent years.',
     fontsize=14, color='black', style='italic')
 
-plt.text(x=10.5, y=4.13,
-    s='alexgalea.ca  /  Source: NHL.com',
+plt.text(x=13.1, y=4.13,
+    s='alexgalea.ca',
     fontsize=14, color='black', style='italic')
 
 
@@ -390,8 +397,8 @@ plt.text(x=14, y=976,
     s='Goalie pulls start gradually ramping up\nafter the 16 minute mark in the 3rd period.',
     fontsize=14, color='black', style='italic')
 
-plt.text(x=18.4, y=971,
-    s='alexgalea.ca  /  Source: NHL.com',
+plt.text(x=19.4, y=971,
+    s='alexgalea.ca',
     fontsize=14, color='black', style='italic')
 
 
@@ -441,8 +448,8 @@ plt.text(x=14, y=567,
     s='Late goalie pulls tend to be no-goal outcomes (yellow bars).\nGoal outcomes (green and red bars) are similarly distributed to each other.',
     fontsize=14, color='black', style='italic')
 
-plt.text(x=18, y=565,
-    s='ChordAnalytics.ca  /  Source: NHL.com',
+plt.text(x=19.4, y=565,
+    s='alexgalea.ca',
     fontsize=14, color='black', style='italic')
 
 
@@ -489,8 +496,8 @@ plt.text(x=14, y=1.035,
     s='Following a goalie pull, goals for (green bars)\ntend to occur slightly earlier than goals against (red bars).',
     fontsize=14, color='black', style='italic')
 
-plt.text(x=18, y=1.035,
-    s='ChordAnalytics.ca  /  Source: NHL.com',
+plt.text(x=19.4, y=1.035,
+    s='alexgalea.ca',
     fontsize=14, color='black', style='italic')
 
 
@@ -549,37 +556,7 @@ plt.yticks([])
 # savefig('5_on_6_game_end_timedeltas')
 
 
-
-
-
-
-
-
-
-
-
-
-
-
 # ### Rough work
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 # ## Bugs
 
@@ -802,15 +779,6 @@ label_map = {str(i): season for i, season in enumerate(df.groupby('season').size
 # ax.set_xticklabels(ticks)
 
 
-
-
-
-
-
-
-
-
-
 fig, ax = plt.subplots()
 iterables = zip(['orange', 'red', 'green'],
                 ['no_goals', 'goal_against', 'goal_for'])
@@ -862,7 +830,4 @@ label_map
 
 
 ax.set_xticklabels([t.get_text() for t in ax.get_xticklabels()])
-
-
-
 
