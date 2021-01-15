@@ -182,8 +182,8 @@ plt.text(x='2003', y=78,
     s='Goalie Pulls by Date',
     fontsize=24, color='black', weight='bold')
 
-plt.text(x='2015-07', y=78,
-    s='alexgalea.ca  |  Source: NHL.com',
+plt.text(x='2018-5', y=78,
+    s='alexgalea.ca',
     fontsize=14, color='black', style='italic')
 
 savefig('goalie_pulls_2003-2019')

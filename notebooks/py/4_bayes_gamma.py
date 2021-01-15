@@ -260,10 +260,6 @@ model, trace = bayes_model(training_samples)
 model
 
 
-N_burn = 10000
-burned_trace = trace[N_burn:]
-
-
 # ### Save / Load the model
 # 
 # Note: using pickle on untrusted files is dangerous. Use at your own risk. No warranty as per licence.
@@ -283,6 +279,8 @@ if SAVE_MODEL:
     with open(MODEL_PATH, 'wb') as f:
         pickle.dump({'model': model, 'trace': trace}, f)
 
+MODEL_PATH = "../../models/gamma_mcmc_2019-07-07.pymc3.pkl"
+
 if LOAD_MODEL:
     with open(MODEL_PATH, 'rb') as f:
         data = pickle.load(f)
@@ -293,6 +291,10 @@ if LOAD_MODEL:
 
 
 # ### MCMC Samples
+
+N_burn = 10000
+burned_trace = trace[N_burn:]
+
 
 from typing import Tuple
 from scipy.stats import gamma
@@ -380,17 +382,17 @@ ax.set_yticklabels([])
 plt.xlabel('Time elapsed in 3rd period (minutes)')
 plt.legend()
 
-plt.text(x=12.45, y=0.770,
+plt.text(x=11.6, y=0.770,
     s='Goalie Pull Outcome Models',
     fontsize=24, color='black', weight='bold')
 
-plt.text(x=12.45, y=0.71,
+plt.text(x=11.6, y=0.71,
     s='MCMC gamma posterior models and samples\nfor the three possilbe goalie pull outcomes.',
     fontsize=14, color='black', style='italic')
 
-plt.text(x=18.65, y=0.71,
-    s=HALF_SPACE+'                alexgalea.ca\nTraining Data: NHL.com',
-    fontsize=14, color='#B0B0B0', style='italic')
+plt.text(x=19.5, y=0.71,
+    s='alexgalea.ca',
+    fontsize=14, color='black', style='italic')
 
 
 savefig('time_elapsed_gamma_mcmc_samples')
@@ -412,7 +414,7 @@ plt.axvline(N_burn, color='black', lw=2, label='Burn threshold')
 
 plt.legend()
 
-offset = 0.005
+offset = 0.00
 plt.text(x=-3700, y=0.103-offset,
     s='Alpha MCMC Samples',
     fontsize=24, color='black', weight='bold')
@@ -421,9 +423,9 @@ plt.text(x=-3700, y=0.1005-offset,
     s='MCMC trace for the gamma model alpha parameter.',
     fontsize=14, color='black', style='italic')
 
-plt.text(x=58300, y=0.1005-offset,
-    s=HALF_SPACE+'                alexgalea.ca\nTraining Data: NHL.com',
-    fontsize=14, color='#B0B0B0', style='italic')
+plt.text(x=68000, y=0.1005-offset,
+    s='alexgalea.ca',
+    fontsize=14, color='black', style='italic')
 
 
 savefig('time_elapsed_gamma_alpha_steps')
@@ -441,7 +443,7 @@ plt.axvline(N_burn, color='black', lw=2, label='Burn threshold')
 
 plt.legend()
 
-offset = 0.00003
+offset = 0.0000
 plt.text(x=-3700, y=0.000936-offset,
     s='Beta MCMC Samples',
     fontsize=24, color='black', weight='bold')
@@ -451,9 +453,9 @@ plt.text(x=-3700, y=0.00092-offset,
     fontsize=14, color='black', style='italic')
 
 
-plt.text(x=58300, y=0.00092-offset,
-    s=HALF_SPACE+'                alexgalea.ca\nTraining Data: NHL.com',
-    fontsize=14, color='#B0B0B0', style='italic')
+plt.text(x=68000, y=0.00092-offset,
+    s='alexgalea.ca',
+    fontsize=14, color='black', style='italic')
 
 
 savefig('time_elapsed_gamma_beta_steps')
@@ -595,9 +597,9 @@ plt.text(x=12.5, y=1450,
     s='Normalized MCMC gamma posterior samples.\nBar heights reflect the relative probability of each outcome at time t.',
     fontsize=14, color='black', style='italic')
 
-plt.text(x=18.75, y=1440,
-    s=HALF_SPACE+'                alexgalea.ca\nTraining Data: NHL.com',
-    fontsize=14, color='#B0B0B0', style='italic')
+plt.text(x=19.75, y=1440,
+    s='alexgalea.ca',
+    fontsize=14, color='black', style='italic')
 
 savefig('time_elapsed_gamma_normed_mcmc_samples')
 
@@ -639,9 +641,9 @@ plt.text(x=14.78, y=0.00625,
     s='Normalized MCMC gamma posterior models.\nLine heights reflect the relative probability of each outcome at time $t$.',
     fontsize=14, color='black', style='italic')
 
-plt.text(x=19.02, y=0.00625,
-    s=HALF_SPACE+'                alexgalea.ca\nTraining Data: NHL.com',
-    fontsize=14, color='#B0B0B0', style='italic')
+plt.text(x=19.72, y=0.00625,
+    s='alexgalea.ca',
+    fontsize=14, color='black', style='italic')
 
 
 savefig('time_elapsed_gamma_normed')
@@ -716,9 +718,9 @@ plt.text(x=14.78, y=0.58,
     s='Cumulative sum of posterior outcome probabilities. Line heights on far right side\nsum to 1 and represent the average probability of each outcome.',
     fontsize=14, color='black', style='italic')
 
-plt.text(x=19.06, y=0.57,
-    s=HALF_SPACE+'                alexgalea.ca\nTraining Data: NHL.com',
-    fontsize=14, color='#B0B0B0', style='italic')
+plt.text(x=19.72, y=0.57,
+    s='alexgalea.ca',
+    fontsize=14, color='black', style='italic')
 
 
 savefig('time_elapsed_gamma_cdf')
@@ -804,9 +806,9 @@ plt.text(x=14.78, y=1.1,
     s='The chance of each outcome if pulling the goalie at time $t$.\nThe point of maximum Goal For likelihood is marked with a vertical black line.',
     fontsize=14, color='black', style='italic')
 
-plt.text(x=19.06, y=1.1,
-    s=HALF_SPACE+'               alexgalea.ca\nTraining Data: NHL.com',
-    fontsize=14, color='#B0B0B0', style='italic')
+plt.text(x=19.72, y=1.1,
+    s='alexgalea.ca',
+    fontsize=14, color='black', style='italic')
 
 # Plotting below with error bar
 savefig('time_elapsed_gamma_outcome_likelihoods')
@@ -973,9 +975,9 @@ plt.text(x=15.67, y=1.05,
     s='The chance of each outcome if pulling the goalie at time $t$. Error bands\nrepresent statistical uncertainty, which is dominant for early times.',
     fontsize=14, color='black', style='italic')
 
-plt.text(x=19.06, y=1.05,
-    s=HALF_SPACE+'                alexgalea.ca\nTraining Data: NHL.com',
-    fontsize=14, color='#B0B0B0', style='italic')
+plt.text(x=19.6, y=1.05,
+    s='alexgalea.ca',
+    fontsize=14, color='black', style='italic')
 
 
 savefig('time_elapsed_gamma_outcome_likelihoods_error_bars')
@@ -1105,9 +1107,9 @@ plt.text(x=15.1, y=0.42,
     s='The chance of scoring if pulling the goalie at time $t$. Error bands\nrepresent statistical uncertainty, which is dominant for early times.',
     fontsize=14, color='black', style='italic')
 
-plt.text(x=18.78, y=0.42,
-    s=HALF_SPACE+'                alexgalea.ca\nTraining Data: NHL.com',
-    fontsize=14, color='#B0B0B0', style='italic')
+plt.text(x=19.3, y=0.42,
+    s='alexgalea.ca',
+    fontsize=14, color='black', style='italic')
 
 
 savefig('time_elapsed_gamma_odds_goal_for')
